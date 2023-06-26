@@ -64,7 +64,7 @@ public class AccountController {
 			String acapActyId = firstAccount.getAcap_acty_id();
 			System.out.println("acap_acty_id of first object: " + acapActyId);
 		}
-
+		System.out.println("hello");
 		model.addAttribute("list_of_account_applications", list1);
 		return "New_account_application";
 	}
@@ -105,7 +105,8 @@ public class AccountController {
 	// ===========================================================================================
 
 	@RequestMapping(value = "/account_application_save", method = RequestMethod.POST)
-	public String accountApplicationSave(@Validated AccountApplicationInput accountApplication, HttpServletRequest request) {
+	public String accountApplicationSave(@Validated AccountApplicationInput accountApplication,
+			HttpServletRequest request) {
 		AccountApplication account = new AccountApplication();
 		account.setInputModelValues(accountApplication);
 		ac.save(account);
@@ -118,7 +119,7 @@ public class AccountController {
 
 	// ===================================================================================================
 	@RequestMapping(value = "/save_to_account_database", method = RequestMethod.POST)
-	public String save_to_account_database(@Validated AccountInput account, Model model,HttpServletRequest request) {
+	public String save_to_account_database(@Validated AccountInput account, Model model, HttpServletRequest request) {
 		Account a = new Account();
 		a.setInputModelValues(account);
 		ac.save1(a);
