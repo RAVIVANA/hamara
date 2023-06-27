@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Audit Logs</title>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="./css/audit-logs.css">
+</head>
+<body>
+	<div class="body">
+		<div class="container">
+			<h1>Audit Logs</h1>
+			<table class="table">
+				<thead>
+					<tr>
+						<th>ID</th>
+						<th>Event</th>
+						<th>Timestamp</th>
+						<th>Username</th>
+					</tr>
+				</thead>
+				<tbody>
+					<!-- Loop through the list of audit logs and populate the table rows -->
+					<tr th:each="auditLog : ${auditLogs}">
+						<td th:text="${auditLog.id}"></td>
+						<td th:text="${auditLog.event}"></td>
+						<td th:text="${auditLog.timestamp}"></td>
+						<td th:text="${auditLog.username}"></td>
+					</tr>
+				</tbody>
+			</table>
+			<!-- Pagination -->
+			<div class="pagination">
+				<a th:if="${currentPage > 0}"
+					th:href="@{|/auditLogs?page=${currentPage-1}|}">&laquo;
+					Previous</a> <a th:each="pageNumber :   ${pageNumbers}"
+					th:href="@{|/auditLogs?page=${pageNumber}|}"
+					th:class="${pageNumber == currentPage} ? 'active' : ''"
+					th:text="${pageNumber + 1}"></a> <a
+					th:if="${currentPage < totalPages - 1}"
+					th:href="@{|/auditLogs?page=${currentPage+1}|}">Next &raquo;</a>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
