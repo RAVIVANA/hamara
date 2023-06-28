@@ -6,7 +6,7 @@ function deposit_money() {
 	var amount = document.getElementById("amount").value;
 	var complete = document.getElementById("complete").value;
 	var date = document.getElementById("date").value;
-	var installment_no = document.getElementById("remainMonths").value;
+	var installment_no = document.getElementById("paidMonths").value;
 	var requestData = {
 		Loanid: loanid,
 		EMI: emi,

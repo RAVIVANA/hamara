@@ -37,33 +37,33 @@ public class TransactionController {
 	@Autowired
 	private CustomerSetter s;
 
+	// Mapping for money deposit form
 	@RequestMapping(value = "/moneyDeposit", method = RequestMethod.GET)
 	public String moneyDepositeForm(Model model) {
 		return "money-deposit";
 	}
 
+	// Mapping for loan repayment form
 	@RequestMapping(value = "/loanRepay", method = RequestMethod.GET)
 	public String loanRepaymentForm(Model model) {
 		return "loan-repayment";
 	}
 
-	@RequestMapping(value = "/interest", method = RequestMethod.GET)
-	public String interestDepositForm(Model model) {
-		return "interest-deposit";
-	}
-
+	// Mapping for money withdrawal form
 	@RequestMapping(value = "/withdrawl", method = RequestMethod.GET)
 	public String moneyWithdrawlForm(Model model) {
 		return "money-withdrawl-form";
 	}
 
+	// Mapping for loan withdrawal form
 	@RequestMapping(value = "/lowid", method = RequestMethod.GET)
 	public String loWithdrawlForm(Model model) {
 		return "loan-withdrawl-form";
 	}
-	// =================================================================================
 
-	// money_deposit
+	// =================================================================================
+	// money-deposit.html
+	// Get account details for money deposit
 	@RequestMapping(value = "/getAccountDetails", method = RequestMethod.POST)
 	public String getAccountDetails(@RequestParam("accountNumber") int Acnt_id, Model model) {
 		Account account = ti.getAccountById(Acnt_id); // Get the account details for the provided account number
@@ -72,7 +72,8 @@ public class TransactionController {
 		return "sub-money-deposit"; // Return the name of the view to be rendered
 	}
 
-	// sub_money_deposit
+	// sub-money-deposit.html
+	// Process money deposit
 	@RequestMapping(value = "/moneyDepositUrl")
 	public ResponseEntity<String> getDepositMoney(@Validated transactioninfo tarn, Model model,
 			HttpServletRequest request) {
@@ -80,14 +81,16 @@ public class TransactionController {
 		Transaction t = ti.transactionSave1(tarn); // Save the transaction details using the 'tarn' object
 		HttpSession session = request.getSession(); // Get the current session
 		String username = (String) session.getAttribute("username"); // Get the username from the session
-		applicationEventPublisher.publishEvent(new TransactionEvent("Money Deposited ", username)); // Publish a
-																									// transaction event
+		// Publish a transaction event
+		applicationEventPublisher.publishEvent(new TransactionEvent("Money Deposited ", username));
 		ti.saveTransaction(t); // Save the transaction to the database
 
 		return ResponseEntity.ok("deposit sucessfully"); // Return a response with a success message
 	}
 
-	// money_withdrawl
+	// =================================================================================
+	// money-withdrawl-form.html
+	// Get account details for money withdrawal
 	@RequestMapping(value = "/getAccountDetailsMoneyWithdrawl", method = RequestMethod.POST)
 	public String getAccountDetailsForMoneyWithdrawl(@RequestParam("accountNumber") int Acnt_id, Model model) {
 		Account account = ti.getAccountById(Acnt_id); // Get the account details for the provided account number
@@ -96,7 +99,8 @@ public class TransactionController {
 		return "sub-money-withdrawl"; // Return the name of the view to be rendered
 	}
 
-	// sub_money_withdrawl
+	// sub-money-withdrawl.html
+	// Process money withdrawal
 	@RequestMapping(value = "/moneyWithDrawlUrl")
 	public ResponseEntity<String> getMoneyWithdrawlAmount(@Validated transactioninfo tarn, Model model,
 			HttpServletRequest request) {
@@ -104,58 +108,54 @@ public class TransactionController {
 		Transaction t = ti.transactionSave(tarn); // Save the transaction
 		HttpSession session = request.getSession();
 		String username = (String) session.getAttribute("username"); // Retrieve the username from the session
-		applicationEventPublisher.publishEvent(new TransactionEvent("Money Withdrawed ", username)); // Publish a
-																										// transaction
-																										// event
+		// Publish a transaction event
+		applicationEventPublisher.publishEvent(new TransactionEvent("Money Withdrawed ", username));
 		ti.saveTransaction(t); // Save the transaction to the database
-		return ResponseEntity.ok("Money withdrawal Successfully"); // Return a response entity with "Money withdrawal
-																	// Successfully" message
+		// Return a response entity with "Money withdrawal Successfully" message
+		return ResponseEntity.ok("Money withdrawal Successfully");
 	}
 
 	// =====================================================================================================================
-
-	// loan_withdrawl
-
-	// loan_withdrawl
+	// loan-withdrawl-form.html
+	// Get loan account details for loan withdrawal
 	@RequestMapping(value = "/getLoanDetails", method = RequestMethod.POST)
 	public String getLoandetails(@RequestParam("accountNumber") long loan_id, Model model) {
 		long acnt_id = loan_id; // Assign the loan_id to the acnt_id variable
 		LoanAccount account = ti.getLoanAccountById(acnt_id); // Retrieve the LoanAccount object by its ID
-		Customertrail customer = ti.getCustomerByLoanID(account.getCustomerId().getId()); // Retrieve the Customertrail
-																							// object associated with
-																							// the loan account
-		System.out.println("the value is" + account.getdeductionAmt()); // Print the value of the deductionAmt property
-																		// of the account
+		// Retrieve the Customertrail object associated with the loan account
+		Customertrail customer = ti.getCustomerByLoanID(account.getCustomerId().getId());
+		System.out.println("the value is" + account.getdeductionAmt());
 		if (account.getdeductionAmt() == 0) { // Check if the deductionAmt property of the account is 0
 			model.addAttribute("account", account); // Add the account object to the model attribute
-			model.addAttribute("customerss", customer); // Add the customer object to the model attribute with the name
-														// "customerss"
-			return "sub-loan-withdrawl"; // Return the view name "sub_loan_withdrawl" to display the loan withdrawal
-											// form
+			// Add the customer object to the model attribute with the name "customerss"
+			model.addAttribute("customerss", customer);
+			// Return the view name "sub_loan_withdrawl" to display the loan withdrawal form
+			return "sub-loan-withdrawl";
 		} else {
 			return null; // Return null if the deductionAmt is not 0
 		}
 	}
 
-	// // sub_loan_withdrawl
-	//
+	// sub-loan-withdrawl.html
+	// Process loan withdrawal
 	@RequestMapping(value = "/loanWithDrawlUrl", method = RequestMethod.POST)
 	public ResponseEntity<String> getLoanmoneyWithdrawlAmount(@Validated transactioninfo tarn, Model model,
 			HttpServletRequest request) {
 		ti.loanWithdrawl(tarn.getAccountNumber()); // Perform the loan withdrawal operation based on the account number
 		tempRepayment temp = s.setthistarn(tarn); // Set temporary repayment information using the tarn object
-		LoanTransactions t = ti.LoanTransactionw(temp); // Create a LoanTransactions object based on the temporary
-														// repayment
+		// Create a LoanTransactions object based on the temprepayment
+		LoanTransactions t = ti.LoanTransactionw(temp);
 		HttpSession session = request.getSession(); // Get the HttpSession object from the request
 		String username = (String) session.getAttribute("username"); // Get the username from the session attribute
-		applicationEventPublisher.publishEvent(new TransactionEvent("Loan Withdrawed ", username)); // Publish a
-																									// TransactionEvent
-																									// for loan
-																									// withdrawal
+		// Publish a TransactionEvent for loan withdrawal
+		applicationEventPublisher.publishEvent(new TransactionEvent("Loan Withdrawed ", username));
 		ti.saveLoanTransaction(t); // Save the LoanTransactions object
 		return ResponseEntity.ok("Loan withdrawl Successfully"); // Return a ResponseEntity with a success message
 	}
 
+	// =====================================================================================================================
+	// loan_repayment
+	// Get loan account details for loan repayment
 	@RequestMapping(value = "/getLoanRepaytDetails", method = RequestMethod.POST)
 	public String getloanrepaytdetails(@RequestParam("accountNumber") long loan_id, Model model) {
 
@@ -171,22 +171,22 @@ public class TransactionController {
 	}
 
 	// sub_loan_repayment
+	// Process loan repayment
 	@RequestMapping(value = "/loanRepaymentUrl")
 	public ResponseEntity<String> getloanrepaymenAmount(@Validated tempRepayment tarn, Model model,
 			HttpServletRequest request) {
 
-		System.out.println("the value of tar complete :" + tarn.getComplete()); // Print the value of the "complete"
-																				// field in the tempRepayment object
+		System.out.println("the value of tar complete :" + tarn.getComplete());
 		ti.loanRepayment(tarn); // Perform the loan repayment based on the tempRepayment object
-		LoanTransactions t = ti.LoanTransaction(tarn); // Create a LoanTransactions object based on the tempRepayment
-														// object
+		// Create a LoanTransactions object based on the tempRepayment object
+		LoanTransactions t = ti.LoanTransaction(tarn);
 		HttpSession session = request.getSession();
 		String username = (String) session.getAttribute("username");
-		applicationEventPublisher.publishEvent(new TransactionEvent("Loan repayed ", username)); // Publish a Loan
-																									// repayed event
+		// Publish a Loan repayed event
+		applicationEventPublisher.publishEvent(new TransactionEvent("Loan repayed ", username));
 		ti.saveLoanTransaction(t); // Save the LoanTransactions object
-		return ResponseEntity.ok("Loan Repayed Successfully "); // Return a response entity indicating successful loan
-																// repayment
+		// Return a response entity indicating successful loan repayment
+		return ResponseEntity.ok("Loan Repayed Successfully ");
 	}
 
 }

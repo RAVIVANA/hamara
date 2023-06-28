@@ -1,11 +1,26 @@
-/* 
-  let date = document.getElementById("date");
-  var currentDate = new Date();
-  var options = { year: 'numeric', month: 'long', day: 'numeric' };
-  var formattedDate = currentDate.toLocaleDateString(undefined, options);
-  date.value = formattedDate; */
 
+function getDate()
+{
+	var today = new Date();
+	document.getElementById("date").value = today.getFullYear()+'-'+('0'+(today.getMonth()+1)).slice(-2)+'-'+('0'+today.getDate()).slice(-2);
+}
 
+function validateLoanWithdrawlForm() 
+{
+	let x = document.getElementById("date").value;
+	
+	if (x == "") 
+	{
+		alert("date must be filled");
+	    return false;
+	}
+	
+	
+	else
+	{
+		withdraw_money(); 
+	}
+}
 
 function withdraw_money() {
 	var accountNumber = document.getElementById("loanid").value;

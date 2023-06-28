@@ -64,9 +64,9 @@
 				</div>
 
 				<div class="form-group">
-					<label for="remainMonths">No of Installments Paid:</label> <input
-						type="number" class="form-control" id="remainMonths"
-						name="remainMonths" th:value="${account.getPaidMonths()}" readonly>
+					<label for="paidMonths">No of Installments Paid:</label> <input
+						type="number" class="form-control" id="paidMonths"
+						name="paidMonths" th:value="${account.getPaidMonths()}" readonly>
 				</div>
 
 				<div class="form-group">
@@ -85,13 +85,22 @@
 						th:value="${account.getTotal()}" readonly>
 				</div>
 				<hr>
-
+				
+				 <div class="form-group">
+                        <label for="pastdue">Past due:</label>
+                        <input type="number" class="form-control" id="pastdue" name="pastdue" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="totalwithpenalty">This month Total with pastdue:</label>
+                        <input type="number" class="form-control" id="totalwithpenalty" name="totalwithpenalty"  readonly>
+                    </div><hr>
 				<div class="form-group">
 					<label for="complete">Complete loan to be paid:</label> <input
 						type="number" class="form-control" id="complete" name="complete"
 						th:value="${account. getComplete()}" readonly>
 				</div>
 				<hr>
+				
 				<div class="form-group">
 					<label for="amount">Amount:</label> <input type="number"
 						class="form-control" id="amount" name="amount" required>

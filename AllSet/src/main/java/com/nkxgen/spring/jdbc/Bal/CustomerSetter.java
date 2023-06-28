@@ -70,17 +70,19 @@ public class CustomerSetter {
 		return customer2;
 	}
 
+	// =============================================================================
 	public Transaction transactionSet(transactioninfo tarn) {
 		Transaction t = new Transaction();
-		t.setTran_amount(tarn.getAmount());
+
 		t.setTran_anct_id(tarn.getAccountNumber());
 		t.setTran_date(tarn.getDate());
+		// t.setTran_type();
 		t.setTran_mode("cash");
+		t.setTran_amount(tarn.getAmount());
 		t.setTran_processedby(1);
 		return t;
 	}
 
-	// =============================================================================
 	public EMIpay changeToEmiObj(LoanAccount account) {
 		EMIpay obj1 = new EMIpay();
 		obj1.setLoanId(account.getLoanId());

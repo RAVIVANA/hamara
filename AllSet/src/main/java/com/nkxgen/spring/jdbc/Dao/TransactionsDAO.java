@@ -36,59 +36,68 @@ public class TransactionsDAO implements TransactionsInterface {
 
 	@Override
 	public void moneyDeposit(transactioninfo trans) {
-		Account account = entityManager.find(Account.class, (long) trans.getAccountNumber()); // Find the account object
-																								// with the given
-																								// account number using
-																								// the entity manager
-		long balance = (long) (account.getBalance() + (long) trans.getAmount()); // Calculate the new balance by adding
-																					// the deposit amount to the current
-																					// balance
+		// Find the account object with the given account number using the entity manager
+		Account account = entityManager.find(Account.class, (long) trans.getAccountNumber());
+
+		// Calculate the new balance by adding the deposit amount to the current balance
+		long balance = (long) (account.getBalance() + trans.getAmount());
+
 		account.setBal(balance); // Update the balance of the account with the new balance
+
 	}
 
 	@Override
 	public void moneyWithdrawl(transactioninfo trans) {
-		Account account = entityManager.find(Account.class, (long) trans.getAccountNumber()); // Find the account object
-																								// with the given
-																								// account number using
-																								// the entity manager
-		if (account.getBalance() >= (long) trans.getAmount()) { // Check if the account balance is sufficient for the
-																// withdrawal
-			long balance = (long) (account.getBalance() - (long) trans.getAmount()); // Calculate the new balance by
-																						// subtracting the withdrawal
-																						// amount from the current
-																						// balance
+
+		// Find the account object with the given account number using the entity manager
+		Account account = entityManager.find(Account.class, (long) trans.getAccountNumber());
+
+		// Check if the account balance is sufficient for the withdrawal
+		if (account.getBalance() >= (long) trans.getAmount()) {
+
+			// Calculate the new balance by subtracting the withdrawal amount from the current balance
+			long balance = (long) (account.getBalance() - (long) trans.getAmount());
+
 			account.setBal(balance); // Update the balance of the account with the new balance
 		} else {
-			System.out.println("no sufficient balance"); // Print a message indicating that there is no sufficient
-															// balance for the withdrawal
+
+			// Print a message indicating that there is no sufficient balance for the withdrawal
+			System.out.println("no sufficient balance");
 		}
+
 	}
 
 	public Account getAccountById(int id) {
-		Account account = entityManager.find(Account.class, (long) id); // Find the account object with the given ID
-																		// using the entity manager
+		// Find the account object with the given ID using the entity manager
+		Account account = entityManager.find(Account.class, (long) id);
 		return account; // Return the found account object
 	}
 
 	@Override
 	public Transaction transactionSave(transactioninfo tarn) {
-		Transaction t = s.transactionSet(tarn); // Create a new Transaction object by calling a method 'transactionSet'
-												// from another class or service, passing a transactioninfo object
+		// Create a new Transaction object by calling a method 'transactionSet' from another class or service, passing a
+		// transactioninfo object
+		Transaction t = s.transactionSet(tarn);
+		t.setTran_mode(tarn.getMode());
 		t.setTran_type("Withdrawl"); // Set the transaction type to "Withdrawl"
+
 		return t; // Return the created Transaction object
 	}
 
 	@Override
 	public void saveTransaction(Transaction transaction) {
-		entityManager.persist(transaction); // Persist the provided Transaction object by adding it to the entity
-											// manager, allowing it to be saved in the data store
+		// Persist the provided Transaction object by adding it to the entity manager, allowing it to be saved in the
+		// data store
+		entityManager.persist(transaction);
 	}
 
 	@Override
+	// save deposit transactions
 	public Transaction transactionSave1(transactioninfo tarn) {
-		Transaction t = s.transactionSet(tarn); // Create a new Transaction object by calling a method 'transactionSet'
-												// from another class or service, passing a transactioninfo object
+		// Create a new Transaction object by calling a method 'transactionSet' from another class or service, passing a
+		// transactioninfo object
+		Transaction t = s.transactionSet(tarn);
+
 		t.setTran_type("deposit"); // Set the transaction type to "deposit"
 		return t; // Return the created Transaction object
 	}
