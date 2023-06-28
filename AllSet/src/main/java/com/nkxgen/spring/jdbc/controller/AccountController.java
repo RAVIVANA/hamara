@@ -113,7 +113,7 @@ public class AccountController {
 	}
 
 	// ===========================================================================================
-	@RequestMapping("/accountNewApplicationAorm")
+	@RequestMapping("/accountNewApplicationForm")
 	public String accountNewApplicationForm(Model model) {
 		return "account-new-application-form";
 	}
