@@ -163,7 +163,7 @@ $(document).ready(function() {
 		$.ajax({
 			url: 'anyTypeAccountInfo',
 			type: 'POST',
-			data: { hrefValue: listItemValue },
+			data: { Typevalue: listItemValue },
 			success: function(response) {
 				mainContent.html(response);
 			},
@@ -183,7 +183,7 @@ $(document).ready(function() {
 		$.ajax({
 			url: 'anyTypeAccountInfo',
 			type: 'POST',
-			data: { hrefValue: listItemValue },
+			data: { Typevalue: listItemValue },
 			success: function(response) {
 				mainContent.html(response);
 			},
@@ -203,7 +203,7 @@ $(document).ready(function() {
 		$.ajax({
 			url: 'anyTypeAccountInfo',
 			type: 'POST',
-			data: { hrefValue: listItemValue },
+			data: { Typevalue: listItemValue },
 			success: function(response) {
 				mainContent.html(response);
 			},
@@ -223,7 +223,7 @@ $(document).ready(function() {
 		$.ajax({
 			url: 'anyTypeAccountInfo',
 			type: 'POST',
-			data: { hrefValue: listItemValue },
+			data: { Typevalue: listItemValue },
 			success: function(response) {
 				mainContent.html(response);
 			},
@@ -244,7 +244,7 @@ $(document).ready(function() {
 		$.ajax({
 			url: 'newAccountApplication',
 			type: 'POST',
-			data: { hrefValue: listItemValue },
+			data: { Typevalue: listItemValue },
 			success: function(response) {
 				mainContent.html(response);
 			},
@@ -264,7 +264,7 @@ $(document).ready(function() {
 		$.ajax({
 			url: 'newAccountApplication',
 			type: 'POST',
-			data: { hrefValue: listItemValue },
+			data: { Typevalue: listItemValue },
 			success: function(response) {
 				mainContent.html(response);
 			},
@@ -284,7 +284,7 @@ $(document).ready(function() {
 		$.ajax({
 			url: 'newAccountApplication',
 			type: 'POST',
-			data: { hrefValue: listItemValue },
+			data: { Typevalue: listItemValue },
 			success: function(response) {
 				mainContent.html(response);
 			},
@@ -304,7 +304,7 @@ $(document).ready(function() {
 		$.ajax({
 			url: 'newAccountApplication',
 			type: 'POST',
-			data: { hrefValue: listItemValue },
+			data: { Typevalue: listItemValue },
 			success: function(response) {
 				mainContent.html(response);
 			},
@@ -328,7 +328,7 @@ $(document).ready(function() {
 		$.ajax({
 			url: 'account',
 			type: 'POST',
-			data: { hrefValue: listItemValue },
+			data: { Typevalue: listItemValue },
 			success: function(response) {
 				mainContent.html(response);
 			},
@@ -348,7 +348,7 @@ $(document).ready(function() {
 		$.ajax({
 			url: 'account',
 			type: 'POST',
-			data: { hrefValue: listItemValue },
+			data: { Typevalue: listItemValue },
 			success: function(response) {
 				mainContent.html(response);
 			},
@@ -368,7 +368,7 @@ $(document).ready(function() {
 		$.ajax({
 			url: 'account',
 			type: 'POST',
-			data: { hrefValue: listItemValue },
+			data: { Typevalue: listItemValue },
 			success: function(response) {
 				mainContent.html(response);
 			},
@@ -388,7 +388,7 @@ $(document).ready(function() {
 		$.ajax({
 			url: 'account',
 			type: 'POST',
-			data: { hrefValue: listItemValue },
+			data: { Typevalue: listItemValue },
 			success: function(response) {
 				mainContent.html(response);
 			},
@@ -409,7 +409,7 @@ $(document).ready(function() {
 		$.ajax({
 			url: 'getApplications',
 			type: 'POST',
-			data: { hrefValue: listItemValue },
+			data: { Typevalue: listItemValue },
 			success: function(response) {
 				mainContent.html(response);
 			},
@@ -429,7 +429,7 @@ $(document).ready(function() {
 		$.ajax({
 			url: 'getApplications',
 			type: 'POST',
-			data: { hrefValue: listItemValue },
+			data: { Typevalue: listItemValue },
 			success: function(response) {
 				mainContent.html(response);
 			},
@@ -449,7 +449,7 @@ $(document).ready(function() {
 		$.ajax({
 			url: 'getApplications',
 			type: 'POST',
-			data: { hrefValue: listItemValue },
+			data: { Typevalue: listItemValue },
 			success: function(response) {
 				mainContent.html(response);
 			},
@@ -469,7 +469,7 @@ $(document).ready(function() {
 		$.ajax({
 			url: 'getApplications',
 			type: 'POST',
-			data: { hrefValue: listItemValue },
+			data: { Typevalue: listItemValue },
 			success: function(response) {
 				mainContent.html(response);
 			},

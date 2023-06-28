@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.nkxgen.spring.jdbc.Bal.ViewInterface;
 import com.nkxgen.spring.jdbc.DaoInterfaces.AccountApplicationDaoInterface;
@@ -28,7 +29,6 @@ import com.nkxgen.spring.jdbc.model.Account;
 import com.nkxgen.spring.jdbc.model.AccountApplication;
 import com.nkxgen.spring.jdbc.model.Accountdocument;
 import com.nkxgen.spring.jdbc.model.Customertrail;
-import com.nkxgen.spring.jdbc.model.Types;
 
 @Controller
 // The @Controller annotation indicates that this class is a controller in the Spring MVC framework.
@@ -58,9 +58,9 @@ public class AccountController {
 
 	// The @RequestMapping annotation maps the /New_account_application URL to the getAccountApplicationByType method,
 	// which accepts a Types object and a Model object as parameters
-	@RequestMapping(value = "/accountNewApplicationForm", method = RequestMethod.POST)
-	public String getAccountApplicationByType(@Validated Types t, Model model) {
-		String value = t.getTypevalue();// get the account type value
+	@RequestMapping(value = "/newAccountApplication", method = RequestMethod.POST)
+	public String getAccountApplicationByType(@RequestParam("Typevalue") String accountType, Model model) {
+		String value = accountType;// get the account type value
 
 		List<AccountApplicationViewModel> list1 = v.getAccountsappByType(value);
 
@@ -75,10 +75,10 @@ public class AccountController {
 
 	// =====================================================================================
 	//
-	@RequestMapping(value = "/anyTypeAccountAnfo", method = RequestMethod.POST)
-	public String viewAccounts(@Validated Types t, Model model) {
+	@RequestMapping(value = "/anyTypeAccountInfo", method = RequestMethod.POST)
+	public String viewAccounts(@RequestParam("Typevalue") String accountType, Model model) {
 		// Retrieve the value from the validated 'Types' object
-		String value = t.getTypevalue();
+		String value = accountType;
 
 		// Print the retrieved value to the console
 		System.out.println(value);
@@ -88,7 +88,7 @@ public class AccountController {
 
 		// Create an empty list to store Customertrail objects
 		List<Customertrail> list2 = new ArrayList<>();
-
+		System.out.println("print the list values");
 		// Iterate through each AccountViewModel object in the list
 		for (AccountViewModel account : list1) {
 			// Retrieve the Customertrail object based on the customerId of the account
@@ -97,13 +97,15 @@ public class AccountController {
 			// Add the retrieved customer to the list of Customertrail objects
 			list2.add(customer);
 		}
-
+		for (AccountViewModel a : list1) {
+			System.out.println(a.getBalance());
+		}
 		// Add the list of AccountViewModel objects and the list of Customertrail objects to the model
 		model.addAttribute("list_of_account", list1);
 		model.addAttribute("list_of_customer", list2);
 
 		// Return the view name "Any_Type_account_info" to render the page
-		return "any-Type-account-info";
+		return "any-type-account-info";
 	}
 
 	// ===============================================================================================

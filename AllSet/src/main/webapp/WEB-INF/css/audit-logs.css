@@ -1,5 +1,12 @@
 @charset "ISO-8859-1";
 
+button {
+	text-align: right;
+	margin-bottom: 10px;
+	background-color: #003366;
+	color: fff;
+}
+
 body {
 	background-color: #003366;
 	padding-top: 50px;

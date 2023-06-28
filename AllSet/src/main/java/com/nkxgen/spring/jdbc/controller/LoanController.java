@@ -23,7 +23,6 @@ import com.nkxgen.spring.jdbc.ViewModels.LoanApplicationViewModel;
 import com.nkxgen.spring.jdbc.events.LoanAppApprovalEvent;
 import com.nkxgen.spring.jdbc.events.LoanAppRequestEvent;
 import com.nkxgen.spring.jdbc.model.LoanApplication;
-import com.nkxgen.spring.jdbc.model.Types;
 
 @Controller
 public class LoanController {
@@ -103,9 +102,9 @@ public class LoanController {
 	}
 
 	@RequestMapping(value = "/getApplications", method = RequestMethod.POST)
-	public String GetLoanApplication(@Validated Types l, Model model) {
+	public String GetLoanApplication(@RequestParam("Typevalue") String accountType, Model model) {
 		// Get the loan applications based on the value from the Types object
-		List<LoanApplicationViewModel> list = v.getLoanApplicationByValue(l.getTypevalue());
+		List<LoanApplicationViewModel> list = v.getLoanApplicationByValue(accountType);
 
 		// Add the loan applications to the model attribute
 		model.addAttribute("loanApplications", list);
@@ -115,9 +114,9 @@ public class LoanController {
 	}
 
 	@RequestMapping(value = "/account", method = RequestMethod.POST)
-	public String GetLoanAccounts(@Validated Types l, Model model) {
+	public String GetLoanAccounts(@RequestParam("Typevalue") String accountType, Model model) {
 		// Get the loan accounts based on the loan type value from the Types object
-		List<LoanAccountViewModel> list = v.getLoanAccountsByLoanType(l.getTypevalue());
+		List<LoanAccountViewModel> list = v.getLoanAccountsByLoanType(accountType);
 
 		// Add the loan accounts to the model attribute
 		model.addAttribute("loanAccounts", list);
