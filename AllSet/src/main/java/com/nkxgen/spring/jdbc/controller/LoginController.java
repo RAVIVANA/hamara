@@ -2,7 +2,6 @@ package com.nkxgen.spring.jdbc.controller;
 
 import java.util.Locale;
 
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -22,6 +21,7 @@ import com.nkxgen.spring.jdbc.validation.MailSender;;
 
 @Controller
 public class LoginController {
+	private static final Logger LOGGER = LoggerFactory.getLogger(LoginController.class);
 
 	@Autowired
 	ApplicationEventPublisher applicationEventPublisher;
@@ -29,8 +29,8 @@ public class LoginController {
 	// =====================================================================================================
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String login(Locale locale, Model model) {
-		Logger logger = LoggerFactory.getLogger(LoginController.class);
-		logger.info("Your Message -from log file!!");
+
+		LOGGER.info("Your Message -from log file!!");
 		return "login-page";
 	}
 
@@ -80,8 +80,8 @@ public class LoginController {
 
 	@RequestMapping(value = "/Test", method = RequestMethod.POST)
 	public String main_page(Model model, HttpServletRequest request) {
-		Logger logger = LoggerFactory.getLogger(LoginController.class);
-		logger.info("Your Message -from log file!!");
+
+		// LOGGER.info("Your Message -from log file!!");
 		HttpSession session = request.getSession();
 		String username = (String) session.getAttribute("username");
 

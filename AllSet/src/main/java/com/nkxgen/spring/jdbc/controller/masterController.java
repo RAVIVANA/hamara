@@ -2,6 +2,8 @@ package com.nkxgen.spring.jdbc.controller;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,6 +35,8 @@ public class masterController {
 	@Autowired
 	private LoanTypesInterface loan;
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(masterController.class);
+
 	@RequestMapping(value = "/accountDataSave", method = RequestMethod.POST)
 	public String accountApplicationSave(AccountTypeInput accountTypes, Model model) {
 		// Create a new instance of accountTypes
@@ -58,6 +62,7 @@ public class masterController {
 
 		// Add the list of AccountTypeView objects to the model attribute "accountTypes"
 		model.addAttribute("accountTypes", list);
+		LOGGER.info("in dashboard");
 
 		return "get-accounts"; // Return the view name "getaccounts" to render the page
 	}

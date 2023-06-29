@@ -2,36 +2,35 @@
 <Configuration status="WARN" monitorInterval="30">
     <Properties>
         <Property name="LOG_PATTERN">%d{yyyy-MM-dd HH:mm:ss} %-5p %c{1} - %m%n</Property>
-        <Property name="basePath">C:/logfiles</Property>
+        <Property name="basePath">D:/chandrasekhar/logs</Property>
+        <Property name="currentDate">${date:yyyy-MM-dd}</Property>
     </Properties>
  
-    <Appenders>
+      <Appenders>
         <Console name="console" target="SYSTEM_OUT" follow="true">
             <PatternLayout pattern="${LOG_PATTERN}"/>
         </Console>
         
-  	<RollingFile name="fileLogger"
-			fileName="${basePath}/app.log"
-			filePattern="${basePath}/app-%d{yyyy-MM-dd}.log">
-			<PatternLayout>
-				<pattern>[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c{1} - %msg%n
-				</pattern>
-			</PatternLayout>
-			<Policies>
-				<TimeBasedTriggeringPolicy interval="1" modulate="true" />
-				<SizeBasedTriggeringPolicy size="10MB" />
-			</Policies>
-			<!-- Max 10 files will be created everyday -->
-			<DefaultRolloverStrategy max="10">
-				<Delete basePath="${basePathr}" maxDepth="10">
-					<!-- Delete all files older than 30 days -->
-					<IfLastModified age="30d" />
-				</Delete>
-			</DefaultRolloverStrategy>
-	</RollingFile>
+        <RollingFile name="fileLogger"
+             fileName="${basePath}/HRMS-${currentDate}.log"
+            filePattern="${basePath}/HRMS-%d{yyyy-MM-dd}.log">
+            <PatternLayout>
+                <pattern>[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c{1} - %msg%n</pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true" />
+                <SizeBasedTriggeringPolicy size="10MB" />
+            </Policies>
+            <!-- Max 10 files will be created every day -->
+            <DefaultRolloverStrategy max="10">
+                <Delete basePath="${basePath}" maxDepth="10">
+                    <!-- Delete all files older than 30 days -->
+                    <IfLastModified age="30d" />
+                </Delete>
+            </DefaultRolloverStrategy>
+        </RollingFile>
     </Appenders>
- 
-    <Loggers>
+        <Loggers>
     	<Root level="info" additivity="false">
 	    <appender-ref ref="fileLogger" />
             <AppenderRef ref="console"/>

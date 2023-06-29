@@ -13,9 +13,11 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.nkxgen.spring.jdbc.DaoInterfaces.UserCredentialsDAO;
 
+@Component
 public class LoginFilter implements Filter {
 
 	@Autowired
