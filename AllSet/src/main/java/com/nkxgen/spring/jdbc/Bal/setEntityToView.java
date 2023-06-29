@@ -13,6 +13,8 @@ import com.nkxgen.spring.jdbc.DaoInterfaces.CustomerDaoInterface;
 import com.nkxgen.spring.jdbc.DaoInterfaces.LoanApplicationDaoInterface;
 import com.nkxgen.spring.jdbc.DaoInterfaces.LoanTypesInterface;
 import com.nkxgen.spring.jdbc.DaoInterfaces.TransactionsInterface;
+import com.nkxgen.spring.jdbc.Exception.AccountNotFound;
+import com.nkxgen.spring.jdbc.Exception.ApplicationNotFound;
 import com.nkxgen.spring.jdbc.InputModels.BankUserInput;
 import com.nkxgen.spring.jdbc.ViewModels.AccountApplicationViewModel;
 import com.nkxgen.spring.jdbc.ViewModels.AccountTypeView;
@@ -77,12 +79,17 @@ public class setEntityToView implements ViewInterface {
 	}
 
 	@Override
-	public AccountViewModel getAccountById(int act) {
+	public AccountViewModel getAccountById(int act) throws AccountNotFound {
+		AccountViewModel a2 = new AccountViewModel();
 		Account a = ti.getAccountById(act); // Get the Account object by account ID from the ti object
+		if (a == null) {
+			throw new AccountNotFound("Account not founded");
 
-		AccountViewModel a1 = new AccountViewModel(); // Create a new AccountViewModel object
-		AccountViewModel a2 = a1.mapToViewModel(a); // Map the values from the Account object to the AccountViewModel
-													// object
+		} else {
+			AccountViewModel a1 = new AccountViewModel(); // Create a new AccountViewModel object
+			a2 = a1.mapToViewModel(a);
+		} // Map the values from the Account object to the AccountViewModel
+			// object
 
 		return a2; // Return the AccountViewModel object
 	}
@@ -135,6 +142,21 @@ public class setEntityToView implements ViewInterface {
 		}
 
 		return viewlist4; // Return the list of AccountApplicationViewModel objects
+	}
+
+	@Override
+	public AccountApplicationViewModel getAccountsappById(int typee) throws ApplicationNotFound {
+		AccountApplicationViewModel la = new AccountApplicationViewModel();
+		AccountApplication list = ac.getAccountsappById((long) typee); // Retrieve the list of AccountApplication
+		if (list == null) {
+			throw new ApplicationNotFound("ApplicationNotFound");
+		} else {
+			// Create a new
+			// AccountApplicationViewModel object
+			la.setEntityModelValues(list); // Set the values from the AccountApplication object to the
+		} // AccountApplicationViewModel object
+
+		return la; // Return the list of AccountApplicationViewModel objects
 	}
 
 	@Override

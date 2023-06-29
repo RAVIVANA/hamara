@@ -69,3 +69,21 @@ function updateRow() {
 function closeForm() {
 	document.getElementById("editForm").style.display = "none";
 }
+function filterAccounts(){
+	var mainContent = $('#main-content');
+	var val = document.getElementById('accountFilter').value;
+    console.log(val);
+$.ajax({
+		url: 'getAccountById',
+		type: 'POST',
+		data: {Data:val},
+		success: function(response) {
+		mainContent.html(response);
+					},
+		error: function(jqXHR, textStatus, errorThrown) {
+			// Handle the error
+			console.error('Third server request error:', textStatus, errorThrown);
+		}
+	});
+
+}

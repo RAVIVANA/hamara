@@ -25,7 +25,7 @@ public class customercontroller {
 	@Autowired
 	ViewInterface v;
 
-	@RequestMapping(value = "/customerDataTrailSave", method = RequestMethod.POST)
+	@RequestMapping(value = "/customer_data_trail_save", method = RequestMethod.POST)
 	public String customerDataSaveToDb(@Validated CustomerViewModel customer, Model model) {
 		// Print the new customer ID
 		System.out.println("this is my new customer id : " + customer.getId());

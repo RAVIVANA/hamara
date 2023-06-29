@@ -29,7 +29,6 @@ public class AccountApplicationDAO implements AccountApplicationDaoInterface {
 	}
 
 	public List<AccountApplication> getAccountsappByType(String value) {
-		System.out.println("neeraj function loki vacahav repository lo : " + value);
 
 		// Create a JPQL query to select AccountApplication objects based on the given type value
 		String jpql = "SELECT la FROM AccountApplication la WHERE la.acap_acty_id = :value";
@@ -41,12 +40,15 @@ public class AccountApplicationDAO implements AccountApplicationDaoInterface {
 		// Execute the query and retrieve the list of AccountApplication objects
 		List<AccountApplication> list1 = query.getResultList();
 
-		if (!list1.isEmpty()) {
-			// If the list is not empty, retrieve the acap_acty_id of the first object for testing
-			AccountApplication firstAccount = list1.get(0);
-			String acapActyId = firstAccount.getAcap_acty_id();
-			System.out.println("acap_acty_id of first object: " + acapActyId);
-		}
+		return list1;
+	}
+
+	public AccountApplication getAccountsappById(long value) {
+
+		// Create a JPQL query to select AccountApplication objects based on the given type value
+
+		// Execute the query and retrieve the list of AccountApplication objects
+		AccountApplication list1 = entityManager.find(AccountApplication.class, value);
 
 		return list1;
 	}

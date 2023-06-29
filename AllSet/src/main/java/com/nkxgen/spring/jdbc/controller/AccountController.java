@@ -6,6 +6,8 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Controller;
@@ -18,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.nkxgen.spring.jdbc.Bal.ViewInterface;
 import com.nkxgen.spring.jdbc.DaoInterfaces.AccountApplicationDaoInterface;
 import com.nkxgen.spring.jdbc.DaoInterfaces.CustomerDaoInterface;
+import com.nkxgen.spring.jdbc.Exception.AccountNotFound;
+import com.nkxgen.spring.jdbc.Exception.ApplicationNotFound;
 import com.nkxgen.spring.jdbc.InputModels.AccountApplicationInput;
 import com.nkxgen.spring.jdbc.InputModels.AccountDocumentInput;
 import com.nkxgen.spring.jdbc.InputModels.AccountInput;
@@ -33,6 +37,7 @@ import com.nkxgen.spring.jdbc.model.Customertrail;
 @Controller
 // The @Controller annotation indicates that this class is a controller in the Spring MVC framework.
 public class AccountController {
+	Logger LOGGER = LoggerFactory.getLogger(LoginController.class);
 
 	@Autowired
 	ApplicationEventPublisher applicationEventPublisher;
@@ -56,6 +61,42 @@ public class AccountController {
 		return "account-master-entry";
 	}
 
+	@RequestMapping(value = "/getAccountById", method = RequestMethod.POST)
+	public String getAccountById(@RequestParam("Data") int accountId, Model model) {
+		try {
+			AccountViewModel account = v.getAccountById(accountId);
+			List<AccountViewModel> list1 = new ArrayList<AccountViewModel>();
+			// Retrieve the Customertrail object based on the customerId of the account
+			Customertrail customer = cd.getRealCustomerById(account.getCustomerId());
+			List<Customertrail> list2 = new ArrayList<Customertrail>();
+			// Add the retrieved customer to the list of Customertrail objects
+			list1.add(account);
+			list2.add(customer);
+			LOGGER.info("AccountFound");
+			model.addAttribute("list_of_account", list1);
+			model.addAttribute("list_of_customer", list2);
+			return "any-type-account-info";
+		} catch (AccountNotFound e) {
+			LOGGER.error(e.getMessage());
+			return "AccountNotFound";
+		}
+
+	}
+
+	@RequestMapping(value = "/getApplicationById", method = RequestMethod.POST)
+	public String getAccountApplicationById(@RequestParam("Data") int accountId, Model model) {
+		try {
+			AccountApplicationViewModel application = v.getAccountsappById(accountId);
+			List<AccountApplicationViewModel> list1 = new ArrayList<AccountApplicationViewModel>();
+			list1.add(application);
+			model.addAttribute("listOfAccountApplications", list1);
+			return "new-account-application";
+		} catch (ApplicationNotFound e) {
+			return "ApplicationNotFound";
+		}
+
+	}
+
 	// The @RequestMapping annotation maps the /New_account_application URL to the getAccountApplicationByType method,
 	// which accepts a Types object and a Model object as parameters
 	@RequestMapping(value = "/newAccountApplication", method = RequestMethod.POST)
@@ -70,6 +111,7 @@ public class AccountController {
 			String acapActyId = firstAccount.getAcap_acty_id();
 		}
 		model.addAttribute("listOfAccountApplications", list1);
+
 		return "new-account-application";
 	}
 
@@ -97,9 +139,7 @@ public class AccountController {
 			// Add the retrieved customer to the list of Customertrail objects
 			list2.add(customer);
 		}
-		for (AccountViewModel a : list1) {
-			System.out.println(a.getBalance());
-		}
+
 		// Add the list of AccountViewModel objects and the list of Customertrail objects to the model
 		model.addAttribute("list_of_account", list1);
 		model.addAttribute("list_of_customer", list2);
