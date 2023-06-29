@@ -58,7 +58,7 @@ public class AccountTypesDAO implements AccountTypeInterface {
 	}
 
 	public void saveAccountTypes(accountTypes accountTypes) {
-		entityManager.merge(accountTypes); // Merge the account type entity with the persistence context
+		entityManager.persist(accountTypes); // Merge the account type entity with the persistence context
 	}
 
 	// =================================================

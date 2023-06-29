@@ -45,8 +45,9 @@
 					<td><a href="#" th:text="${accountApplication.getDriving()}">View</a></td>
 					<td><a href="#" th:text="${accountApplication.getJobcard()}">View</a></td>
 					<td>
-						<button type="button" class="in"
+						<button type="button" class="in" id="approveButton"	
 							onclick="approveAccountApplication('${accountApplication.id}', this)">Approve</button>
+							
 
 					</td>
 				</tr>

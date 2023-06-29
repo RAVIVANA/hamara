@@ -22,4 +22,10 @@ public interface AccountApplicationDaoInterface {
 	List<Account> getAccountssByType(String acnt_acty_id);
 
 	public Account mergeAccount(Account account);
+
+	AccountApplication getAccountApplicationById(Long applicationId);
+
+	void savetheAccountapp(AccountApplication accountap);
+
+	Account getAccountById(Long num);
 }

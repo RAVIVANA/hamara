@@ -20,6 +20,7 @@ import com.nkxgen.spring.jdbc.DaoInterfaces.LoanApplicationDaoInterface;
 import com.nkxgen.spring.jdbc.InputModels.LoanApplicationInput;
 import com.nkxgen.spring.jdbc.ViewModels.LoanAccountViewModel;
 import com.nkxgen.spring.jdbc.ViewModels.LoanApplicationViewModel;
+import com.nkxgen.spring.jdbc.ViewModels.LoanViewModel;
 import com.nkxgen.spring.jdbc.events.LoanAppApprovalEvent;
 import com.nkxgen.spring.jdbc.events.LoanAppRequestEvent;
 import com.nkxgen.spring.jdbc.model.LoanApplication;
@@ -39,6 +40,15 @@ public class LoanController {
 
 	@RequestMapping(value = "/loanNewApplicationForm", method = RequestMethod.GET)
 	public String loanNewApplicationForm(Model model) {
+		List<LoanViewModel> list = v.getAllLoans();
+
+		// Print the loan type for each loan in the list
+		for (LoanViewModel ll : list) {
+			System.out.println(ll.getLoanType());
+		}
+
+		// Add the list of loans to the model attribute "loans"
+		model.addAttribute("loan", list);
 		return "loan-new-application-form";
 	}
 
@@ -139,6 +149,14 @@ public class LoanController {
 			@RequestParam("customerId") Long custid, Model model, HttpServletRequest request) {
 		// Approve the loan application based on the loanId and customerId parameters
 		ll.approveApplication(accountType, custid);
+
+		System.out.println("the loan application id is :" + accountType);
+		LoanApplication loanapp = ll.getLoanApplicationByid(accountType);
+		System.out.println("the acquired looan id is :" + loanapp.getId());
+		loanapp.setProcessedStatus("Approved");
+		loanapp.setStatus("Approved");
+
+		ll.saveTheApprovedLoanApplication(loanapp);
 
 		// Get the session object from the request
 		HttpSession session = request.getSession();

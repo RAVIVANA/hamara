@@ -39,6 +39,7 @@ function closeModal() {
 		modal.style.display = "none";
 	});
 }
+
 $(document).ready(function() {
 	$.ajax({
 		url: "getAccountTypes",

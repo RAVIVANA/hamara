@@ -18,6 +18,10 @@ function editRow(button) {
 	document.getElementById("editForm").style.display = "block";
 }
 
+
+  
+
+
 // Function to update the edited row
 function updateRow() {
 	var cells = selectedRow.getElementsByTagName("td");
@@ -69,3 +73,60 @@ function updateRow() {
 function closeForm() {
 	document.getElementById("editForm").style.display = "none";
 }
+
+function deleteRow(button) {
+	
+    var row = button.parentNode.parentNode;
+    var cells = row.getElementsByTagName("td");
+    var statusCell = row.cells[12]; 
+    statusCell.textContent = "Inactive";
+    button.disabled = true;
+    
+    var num = cells[0].innerText;
+    $.ajax({
+		url: 'chnageTheStatusOfAccount',
+		type: 'POST',
+		data: {
+			num: num
+		},
+		success: function(response) {
+			// Handle the success response
+			console.log('Third server request success:', response);
+		},
+		error: function(jqXHR, textStatus, errorThrown) {
+			// Handle the error
+			console.error('Third server request error:', textStatus, errorThrown);
+		}
+	});
+    
+    
+}
+
+function activeRow(button) {
+	
+    var row = button.parentNode.parentNode;
+    var cells = row.getElementsByTagName("td");
+    var statusCell = row.cells[12]; 
+    statusCell.textContent = "Active";
+    button.disabled = true;
+    
+    var num = cells[0].innerText;
+    $.ajax({
+		url: 'chnageTheStatusOfAccountToActive',
+		type: 'POST',
+		data: {
+			num: num
+		},
+		success: function(response) {
+			// Handle the success response
+			console.log('Third server request success:', response);
+		},
+		error: function(jqXHR, textStatus, errorThrown) {
+			// Handle the error
+			console.error('Third server request error:', textStatus, errorThrown);
+		}
+	});
+    
+    
+}
+

@@ -22,6 +22,7 @@ import com.nkxgen.spring.jdbc.InputModels.AccountApplicationInput;
 import com.nkxgen.spring.jdbc.InputModels.AccountDocumentInput;
 import com.nkxgen.spring.jdbc.InputModels.AccountInput;
 import com.nkxgen.spring.jdbc.ViewModels.AccountApplicationViewModel;
+import com.nkxgen.spring.jdbc.ViewModels.AccountTypeView;
 import com.nkxgen.spring.jdbc.ViewModels.AccountViewModel;
 import com.nkxgen.spring.jdbc.events.AccountAppApprovalEvent;
 import com.nkxgen.spring.jdbc.events.AccountAppRequestEvent;
@@ -58,6 +59,7 @@ public class AccountController {
 
 	// The @RequestMapping annotation maps the /New_account_application URL to the getAccountApplicationByType method,
 	// which accepts a Types object and a Model object as parameters
+
 	@RequestMapping(value = "/newAccountApplication", method = RequestMethod.POST)
 	public String getAccountApplicationByType(@RequestParam("Typevalue") String accountType, Model model) {
 		String value = accountType;// get the account type value
@@ -117,6 +119,13 @@ public class AccountController {
 	// ===========================================================================================
 	@RequestMapping("/accountNewApplicationForm")
 	public String accountNewApplicationForm(Model model) {
+		List<AccountTypeView> list = v.set11();
+		for (AccountTypeView ll : list) {
+			System.out.println(ll.getAccountType());
+		}
+
+		// Add the list of AccountTypeView objects to the model attribute "accountTypes"
+		model.addAttribute("accountTyped", list);
 		return "account-new-application-form";
 	}
 
@@ -175,6 +184,12 @@ public class AccountController {
 		// Publish an AccountAppApprovalEvent with the event message and username
 		applicationEventPublisher.publishEvent(new AccountAppApprovalEvent("Account Application Approved", username));
 
+		AccountApplication accountap = ac.getAccountApplicationById(account.getApplicationId());
+		System.out.println("the status of application is :" + accountap.getStatus());
+		accountap.setStatus("approved");
+		System.out.println("the status of application is :" + accountap.getStatus());
+		ac.savetheAccountapp(accountap);
+
 		// Change the return to the view name "Account_new_application_form" to render the page
 		return "account-new-application-form";
 	}
@@ -195,5 +210,30 @@ public class AccountController {
 	}
 
 	// // ======================================================================================================
+	/*
+	 * @RequestMapping(value = "/changeTheStatusOfAccountApp", method = RequestMethod.POST) public String
+	 * getAccountApplicationbyid(@RequestParam("ApplicationId") Long ApplicationId) {
+	 * 
+	 * AccountApplication accountap = ac.getAccountApplicationById(ApplicationId);
+	 * System.out.println("the status of application is :" + accountap.getStatus()); accountap.setStatus("approved");
+	 * return "account-new-application-form";
+	 * 
+	 * }
+	 */
 
+	@RequestMapping(value = "/chnageTheStatusOfAccount", method = RequestMethod.POST)
+	public String chnageTheStatusOfAccount(@RequestParam("num") Long num) {
+		Account account = ac.getAccountById(num);
+		account.setAccountStatus("Inactive");
+		ac.mergeAccount(account);
+		return "any-type-account-info";
+	}
+
+	@RequestMapping(value = "/chnageTheStatusOfAccountToActive", method = RequestMethod.POST)
+	public String chnageTheStatusOfAccountToActive(@RequestParam("num") Long num) {
+		Account account = ac.getAccountById(num);
+		account.setAccountStatus("Active");
+		ac.mergeAccount(account);
+		return "any-type-account-info";
+	}
 }

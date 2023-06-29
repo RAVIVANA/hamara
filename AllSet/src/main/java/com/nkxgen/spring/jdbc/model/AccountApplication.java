@@ -31,6 +31,9 @@ public class AccountApplication {
 	@Column(name = "acap_nominee_ln")
 	private String acapNomineeLastName;
 
+	@Column(name = "acap_status")
+	private String acapStatus = "approve";
+
 	@Column(name = "acap_acty_id")
 	private String acap_acty_id;
 
@@ -115,6 +118,10 @@ public class AccountApplication {
 		return jobcard;
 	}
 
+	public String getStatus() {
+		return acapStatus;
+	}
+
 	public void setAcapId(Long acapId) {
 		this.acapId = acapId;
 	}
@@ -157,6 +164,10 @@ public class AccountApplication {
 
 	public void setJobcard(String jobcard) {
 		this.jobcard = jobcard;
+	}
+
+	public void setStatus(String apStatus) {
+		this.acapStatus = apStatus;
 	}
 
 	public BankUser getCreatedByUser() {

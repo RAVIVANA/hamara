@@ -1,7 +1,9 @@
 function toggleForms() {
-	document.getElementById("second-form").classList.add("hidden");
-	document.getElementById("first-form").classList.remove("hidden");
+  document.getElementById("second-form").classList.add("hidden");
+  document.getElementById("first-form").classList.remove("hidden");
+
 }
+
 
 function submit_application_data() {
 	// Code for submitting application data
@@ -94,7 +96,7 @@ function submit_cutomer_data() {
 
 	// Make AJAX call to save the form data
 	$.ajax({
-		url: "customerDataTrailSave",
+		url: "customer_data_trail_save",
 		type: "POST",
 		data: formData,
 		success: function(response) {
@@ -110,4 +112,9 @@ function submit_cutomer_data() {
 function submitbothforms() {
 	submit_cutomer_data();
 	submit_application_data();
+	
 }
+
+
+//===========================
+

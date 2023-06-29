@@ -12,17 +12,21 @@
 			<tr>
 				<th>id</th>
 				<th>ActypeID</th>
-				<th>NomineeFirstName</th>
-				<th>NomineeLastName</th>
+				<th>FirstName</th>
+				<th>LastName</th>
 				<th>CustomerID</th>
 				<th>CreateDate</th>
 				<th>CreatedBy</th>
 				<th>ProcessedBy</th>
 				<th>CustTitle</th>
-				<th>PhoneNo</th>
+				<th>PhNo</th>
 				<th>Address</th>
 				<th>Balance</th>
+				<th>Status</th>
 				<th>Actions</th>
+			    <th>delete</th>
+			    <th>Active</th>
+				
 			</tr>
 		</thead>
 		<tbody>
@@ -49,9 +53,16 @@
 				<td data-column="customer_address"
 					th:text="${list_of_customer[rowStat.index].getResidenceAddress()}"></td>
 				<td data-column="account_balance" th:text="${account.getBalance()}"></td>
+				<td data-column="account_status" th:text="${account.getStatus()}"></td>
 
 				<td>
 					<button class="edit-button" onclick="editRow(this)">Edit</button>
+				</td>
+				<td>
+					<button class="edit-button" onclick="deleteRow(this)">del</button>
+				</td>
+				<td>
+					<button class="edit-button" onclick="activeRow(this)">Active</button>
 				</td>
 			</tr>
 		</tbody>

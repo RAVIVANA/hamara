@@ -122,11 +122,13 @@ public class LoanApplicationDao implements LoanApplicationDaoInterface {
 
 	@Override
 	public void approveApplication(int loanId, long custId) {
-		LoanApplication loanApplication = entityManager.find(LoanApplication.class, loanId); // Find the loan
-																								// application object
-																								// with the given
-																								// 'loanId' using the
-																								// entity manager
+		LoanApplication loanApplication = entityManager.find(LoanApplication.class, loanId);
+		// Find the loan
+
+		// application object
+		// with the given
+		// 'loanId' using the
+		// entity manager
 
 		Customertrail customer = entityManager.find(Customertrail.class, custId); // Find the customer object with the
 																					// given 'custId' using the entity
@@ -147,6 +149,20 @@ public class LoanApplicationDao implements LoanApplicationDaoInterface {
 																							// specifying the result
 																							// type as 'LoanAccount'
 		return query.getResultList(); // Execute the query and return a list of all loan account objects
+	}
+
+	@Override
+	public LoanApplication getLoanApplicationByid(int accountType) {
+
+		LoanApplication LoanApplication = entityManager.find(LoanApplication.class, accountType);
+		return LoanApplication;
+
+	}
+
+	@Override
+	public void saveTheApprovedLoanApplication(LoanApplication loanapp) {
+		entityManager.merge(loanapp);
+
 	}
 
 }

@@ -48,6 +48,7 @@ public class Account {
 
 	@Column(name = "interest")
 	private long intrest;
+
 	@Column(name = "count")
 	private int count;
 
@@ -177,6 +178,17 @@ public class Account {
 		this.count = 0;
 		this.intrest = 0;
 		this.lastUpdate = input.getCreated_date();
+	}
+
+	@Column(name = "account_status")
+	private String accountstatus = "Active";
+
+	public String getAccountStatus() {
+		return accountstatus;
+	}
+
+	public void setAccountStatus(String accountstatus) {
+		this.accountstatus = accountstatus;
 	}
 
 }

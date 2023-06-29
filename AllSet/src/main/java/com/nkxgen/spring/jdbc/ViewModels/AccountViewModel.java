@@ -15,6 +15,7 @@ public class AccountViewModel {
 	private long intrest;
 	private int count;
 	private String lastupdate;
+	private String status;
 	// Getters and setters
 
 	public Long getApplicationId() {
@@ -116,6 +117,14 @@ public class AccountViewModel {
 		this.lastupdate = lastUpdate;
 	}
 
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
 	public static AccountViewModel mapToViewModel(Account account) {
 		AccountViewModel viewModel = new AccountViewModel();
 		viewModel.setApplicationId(account.getApplicationId());
@@ -130,6 +139,7 @@ public class AccountViewModel {
 		viewModel.setIntrest(account.getIntrest());
 		viewModel.setCount(account.getCount());
 		viewModel.setLastUpdate(account.getLastUpdate());
+		viewModel.setStatus(account.getAccountStatus());
 
 		return viewModel;
 	}

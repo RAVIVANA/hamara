@@ -122,13 +122,35 @@ function saveFormData(accountId) {
 	var popup = document.getElementById('edit-popup');
 	popup.style.display = 'none';
 }
+/*function Approve1(event) {
+    var row = event.target.parentNode.parentNode;
+    var processedStatusCell = row.cells[13];
+    var statusCell = row.cells[16];
+
+    processedStatusCell.textContent = 'Approved';
+    statusCell.textContent = 'Approved';
+
+    event.target.disabled = true;
+}*/
 
 
-function Approve(loanId, customerId) {
-	var row = event.target.parentNode.parentNode;
-	var loanId = row.cells[0].textContent;
-	var customerId = row.cells[1].textContent;
-	console.log(customerId);
+function Approve(button) {
+    
+	 var row = button.parentNode.parentNode;
+	 button.innerText = "Approved";
+	 var loanId = row.cells[0].textContent;
+	 var customerId = row.cells[1].textContent;
+	
+	 var processedStatusCell = row.cells[13];
+     var statusCell = row.cells[16];
+
+     processedStatusCell.textContent = 'Approved';
+     statusCell.textContent = 'Approved';
+    
+     button.disabled = true;
+      
+	 console.log(customerId);
+	
 	$.ajax({
 		url: 'approveLoan',
 		type: 'POST',
@@ -138,6 +160,9 @@ function Approve(loanId, customerId) {
 		success: function(response) {
 			// Handle the success response here
 			console.log('Loan application approved successfully');
+	        /*var button = event.target;
+			button.innerText = "Approved";
+		    button.disabled = true;*/
 		},
 		error: function(jqXHR, textStatus, errorThrown) {
 			// Handle the error response here

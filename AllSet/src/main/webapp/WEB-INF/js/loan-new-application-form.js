@@ -50,13 +50,7 @@ function submit() {
 			Attachment: attachment
 		},
 		success: function(resultText) {
-			$('#successMessage').text(resultText).fadeIn();
-
-			setTimeout(function() {
-				$('#successMessage').fadeOut();
-			}, 3000);
-
-			form.trigger('reset'); // Optional: Reset the form after successful submission
+			
 			console.log('First form submitted successfully');
 		},
 		error: function(jqXHR, exception) {

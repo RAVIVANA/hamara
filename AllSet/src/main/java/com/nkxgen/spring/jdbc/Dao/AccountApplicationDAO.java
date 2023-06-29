@@ -1,5 +1,6 @@
 package com.nkxgen.spring.jdbc.Dao;
 
+import java.util.Iterator;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -28,6 +29,26 @@ public class AccountApplicationDAO implements AccountApplicationDaoInterface {
 		entityManager.persist(accountApplication); // Persist the AccountApplication object to the database
 	}
 
+	/*
+	 * public List<AccountApplication> getAccountsappByType(String value) {
+	 * System.out.println("neeraj function loki vacahav repository lo : " + value);
+	 * 
+	 * // Create a JPQL query to select AccountApplication objects based on the given type value String jpql =
+	 * "SELECT la FROM AccountApplication la WHERE la.acap_acty_id = :value"; TypedQuery<AccountApplication> query =
+	 * entityManager.createQuery(jpql, AccountApplication.class);
+	 * 
+	 * // Set the value parameter in the query query.setParameter("value", value);
+	 * 
+	 * // Execute the query and retrieve the list of AccountApplication objects List<AccountApplication> list1 =
+	 * query.getResultList();
+	 * 
+	 * if (!list1.isEmpty()) { // If the list is not empty, retrieve the acap_acty_id of the first object for testing
+	 * AccountApplication firstAccount = list1.get(0); String acapActyId = firstAccount.getAcap_acty_id();
+	 * System.out.println("acap_acty_id of first object: " + acapActyId); }
+	 * 
+	 * return list1; }
+	 */
+
 	public List<AccountApplication> getAccountsappByType(String value) {
 		System.out.println("neeraj function loki vacahav repository lo : " + value);
 
@@ -41,11 +62,13 @@ public class AccountApplicationDAO implements AccountApplicationDaoInterface {
 		// Execute the query and retrieve the list of AccountApplication objects
 		List<AccountApplication> list1 = query.getResultList();
 
-		if (!list1.isEmpty()) {
-			// If the list is not empty, retrieve the acap_acty_id of the first object for testing
-			AccountApplication firstAccount = list1.get(0);
-			String acapActyId = firstAccount.getAcap_acty_id();
-			System.out.println("acap_acty_id of first object: " + acapActyId);
+		Iterator<AccountApplication> iterator = list1.iterator();
+
+		while (iterator.hasNext()) {
+			AccountApplication application = iterator.next();
+			if (application.getStatus().equals("approved")) {
+				iterator.remove();
+			}
 		}
 
 		return list1;
@@ -113,4 +136,22 @@ public class AccountApplicationDAO implements AccountApplicationDaoInterface {
 	// return query.getSingleResult();
 	// }
 
+	@Override
+	public AccountApplication getAccountApplicationById(Long applicationId) {
+
+		AccountApplication AccountApplication = entityManager.find(AccountApplication.class, applicationId);
+		System.out.println("in the accountapplication dao: " + AccountApplication.getStatus());
+		return AccountApplication;
+	}
+
+	public void savetheAccountapp(AccountApplication accountApplication) {
+		entityManager.merge(accountApplication); // Persist the AccountApplication object to the database
+	}
+
+	@Override
+	public Account getAccountById(Long num) {
+		Account Account = entityManager.find(Account.class, num);
+
+		return Account;
+	}
 }
