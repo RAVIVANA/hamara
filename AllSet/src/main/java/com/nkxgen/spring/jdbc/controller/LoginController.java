@@ -21,7 +21,7 @@ import com.nkxgen.spring.jdbc.validation.MailSender;;
 
 @Controller
 public class LoginController {
-	private static final Logger LOGGER = LoggerFactory.getLogger(LoginController.class);
+	Logger LOGGER = LoggerFactory.getLogger(LoginController.class);
 
 	@Autowired
 	ApplicationEventPublisher applicationEventPublisher;
@@ -81,7 +81,7 @@ public class LoginController {
 	@RequestMapping(value = "/Test", method = RequestMethod.POST)
 	public String main_page(Model model, HttpServletRequest request) {
 
-		// LOGGER.info("Your Message -from log file!!");
+		LOGGER.info("Your Message -from log file!!");
 		HttpSession session = request.getSession();
 		String username = (String) session.getAttribute("username");
 
