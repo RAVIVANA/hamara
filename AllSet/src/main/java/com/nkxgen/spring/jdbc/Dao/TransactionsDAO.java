@@ -16,6 +16,7 @@ import com.nkxgen.spring.jdbc.model.Account;
 import com.nkxgen.spring.jdbc.model.Customertrail;
 import com.nkxgen.spring.jdbc.model.EMIpay;
 import com.nkxgen.spring.jdbc.model.LoanAccount;
+import com.nkxgen.spring.jdbc.model.LoanApplication;
 import com.nkxgen.spring.jdbc.model.LoanTransactions;
 import com.nkxgen.spring.jdbc.model.Transaction;
 import com.nkxgen.spring.jdbc.model.tempRepayment;
@@ -103,34 +104,45 @@ public class TransactionsDAO implements TransactionsInterface {
 	}
 
 	// =================================================================
+	@Override
 	public LoanAccount getLoanAccountById(long id) {
-		LoanAccount account = entityManager.find(LoanAccount.class, id); // Find the loan account object with the given
-																			// ID using the entity manager
+		// Find the loan account object with the given ID using the entity manager
+		LoanAccount account = entityManager.find(LoanAccount.class, id);
 		return account; // Return the found loan account object
 	}
 
+	// =================================================================
+	// =================================================================
+	@Override
+	public LoanApplication getLoanAccountApplicationById(long id) {
+		LoanApplication account = entityManager.find(LoanApplication.class, (long) id);
+
+		return account; // Return the found loan account object
+	}
+	// =================================================================
+	// =================================================================
+
 	@Override
 	public void loanWithdrawl(long id) {
-		LoanAccount account = entityManager.find(LoanAccount.class, id); // Find the loan account object with the given
-																			// ID using the entity manager
-		if (account.getLoanAmount() != account.getdeductionAmt()) { // If the loan amount is not equal to the deduction
-																	// amount
+
+		// Find the loan account object with the given ID using the entity manager
+		LoanAccount account = entityManager.find(LoanAccount.class, id);
+		if (account.getdeductionAmt() == 0) {
 			account.setdeductionAmt(account.getLoanAmount()); // Set the deduction amount to the loan amount
 		} else {
-			System.out.println("already withdrawal over"); // Print a message indicating that the withdrawal is already
-															// over
+			System.out.println("already withdrawal over");
 		}
 	}
 
 	@Override
 	public void loanRepayment(tempRepayment trans) {
-		LoanAccount account = entityManager.find(LoanAccount.class, (long) trans.getLoanid()); // Find the loan account
-																								// object with the given
-																								// loan ID using the
-																								// entity manager
-		System.out.println("the value is nothing");
+
+		// Find the loan account object with the given loan ID using the entity manager
+		LoanAccount account = entityManager.find(LoanAccount.class, (long) trans.getLoanid());
+
 		int x = (int) Math.ceil(trans.getEMI()); // Calculate the EMI value and round it up to the nearest integer
 		if (trans.getAmount() == trans.getTotal()) { // If the repayment amount is equal to the total amount
+
 			account.setdeductionAmt(account.getdeductionAmt() - x); // Update the due balance by subtracting the EMI
 																	// amount
 		} else if (trans.getAmount() == trans.getComplete()) { // If the repayment amount is equal to the complete
@@ -156,7 +168,7 @@ public class TransactionsDAO implements TransactionsInterface {
 	}
 
 	@Override
-	public LoanTransactions LoanTransaction(tempRepayment lt) {
+	public LoanTransactions loanTransactionRepay(tempRepayment lt) {
 		LoanTransactions t = s.loantransactionSet(lt); // Create a new LoanTransactions object by calling a method
 														// 'loantransactionSet' from another class or service
 		t.setDate(LocalDate.now().toString()); // Set the date of the loan transaction to the current date
@@ -170,9 +182,10 @@ public class TransactionsDAO implements TransactionsInterface {
 	}
 
 	@Override
-	public LoanTransactions LoanTransactionw(tempRepayment temp) {
+	public LoanTransactions loanTransactionWithdrawl(tempRepayment temp) {
 		LoanTransactions t = s.loantransactionSet(temp); // Create a new LoanTransactions object by calling a method
 															// 'loantransactionSet' from another class or service
+		t.setDate(LocalDate.now().toString()); // Set the date of the loan transaction to the current date
 		t.setType("loan withdrawl"); // Set the type of the loan transaction to "loan withdrawl"
 		return t; // Return the created LoanTransactions object
 	}

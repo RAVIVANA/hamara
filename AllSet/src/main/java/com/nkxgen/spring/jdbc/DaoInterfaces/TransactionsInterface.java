@@ -4,6 +4,7 @@ import com.nkxgen.spring.jdbc.model.Account;
 import com.nkxgen.spring.jdbc.model.Customertrail;
 import com.nkxgen.spring.jdbc.model.EMIpay;
 import com.nkxgen.spring.jdbc.model.LoanAccount;
+import com.nkxgen.spring.jdbc.model.LoanApplication;
 import com.nkxgen.spring.jdbc.model.LoanTransactions;
 import com.nkxgen.spring.jdbc.model.Transaction;
 import com.nkxgen.spring.jdbc.model.tempRepayment;
@@ -16,6 +17,8 @@ public interface TransactionsInterface {
 
 	// Retrieves a LoanAccount object by its ID
 	public LoanAccount getLoanAccountById(long acnt_id);
+
+	public LoanApplication getLoanAccountApplicationById(long acnt_id);
 
 	// Performs a money deposit transaction
 	public void moneyDeposit(transactioninfo tempacc);
@@ -42,11 +45,11 @@ public interface TransactionsInterface {
 	public EMIpay changeToEMI(LoanAccount account);
 
 	// Creates a LoanTransactions object based on repayment information
-	public LoanTransactions LoanTransaction(tempRepayment tarn);
+	public LoanTransactions loanTransactionRepay(tempRepayment tarn);
 
 	// Saves a LoanTransactions object
 	public void saveLoanTransaction(LoanTransactions t);
 
-	public LoanTransactions LoanTransactionw(tempRepayment temp);
+	public LoanTransactions loanTransactionWithdrawl(tempRepayment temp);
 
 }

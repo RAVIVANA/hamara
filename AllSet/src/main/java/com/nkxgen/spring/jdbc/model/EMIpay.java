@@ -12,8 +12,10 @@ public class EMIpay {
 	private int paidMonths;
 	private double emi;
 	private double interest;
-	private double total;
-	private double complete;
+	private int total;
+	private int pastdue;
+	private int totalwithpenalty;
+	private int complete;
 
 	public EMIpay() {
 
@@ -83,11 +85,11 @@ public class EMIpay {
 		this.paidMonths = paidMonths;
 	}
 
-	public double getEmi() {
+	public double getEMI() {
 		return emi;
 	}
 
-	public void setEmi(double emi) {
+	public void setEMI(double emi) {
 		this.emi = emi;
 	}
 
@@ -99,11 +101,11 @@ public class EMIpay {
 		this.interest = interest;
 	}
 
-	public double getTotal() {
+	public int getTotal() {
 		return total;
 	}
 
-	public void setTotal(double total) {
+	public void setTotal(int total) {
 		this.total = total;
 	}
 
@@ -115,11 +117,27 @@ public class EMIpay {
 		this.interestRate = interestRate;
 	}
 
-	public double getComplete() {
+	public int getPastDue() {
+		return pastdue;
+	}
+
+	public void setPastDue(int pastdue) {
+		this.pastdue = pastdue;
+	}
+
+	public int getTotalWithPenalty() {
+		return totalwithpenalty;
+	}
+
+	public void setTotalWithPenalty(int totalwithpenalty) {
+		this.totalwithpenalty = totalwithpenalty;
+	}
+
+	public int getComplete() {
 		return complete;
 	}
 
-	public void setComplete(double complete) {
+	public void setComplete(int complete) {
 		this.complete = complete;
 	}
 }

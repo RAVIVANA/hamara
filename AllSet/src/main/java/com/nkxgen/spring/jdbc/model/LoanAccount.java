@@ -29,7 +29,7 @@ public class LoanAccount {
 	private long loanAmount;
 
 	@Column(name = "interest_rate")
-	private long interestRate;
+	private double interestRate;
 
 	@Column(name = "loan_duration")
 	private int loanDuration;
@@ -54,7 +54,7 @@ public class LoanAccount {
 		this.loanAmount = loanAmount;
 	}
 
-	public void setInterestRate(long interestRate) {
+	public void setInterestRate(double interestRate) {
 		this.interestRate = interestRate;
 	}
 
@@ -83,7 +83,7 @@ public class LoanAccount {
 		return loanAmount;
 	}
 
-	public long getInterestRate() {
+	public double getInterestRate() {
 		return interestRate;
 	}
 

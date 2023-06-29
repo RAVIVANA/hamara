@@ -18,11 +18,11 @@ function validateLoanWithdrawlForm()
 	
 	else
 	{
-		withdraw_money(); 
+		withdrawMoney(); 
 	}
 }
 
-function withdraw_money() {
+function withdrawMoney() {
 	var accountNumber = document.getElementById("loanid").value;
 	var loanamount = document.getElementById("loanamount").value;
 	var date = document.getElementById("date").value;

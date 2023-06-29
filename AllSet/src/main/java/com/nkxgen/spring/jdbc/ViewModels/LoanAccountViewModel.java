@@ -8,7 +8,7 @@ public class LoanAccountViewModel {
 	private String loanType;
 	private long customerId;
 	private long loanAmount;
-	private long interestRate;
+	private double interestRate;
 	private int loanDuration;
 	private int intrest;
 
@@ -43,7 +43,7 @@ public class LoanAccountViewModel {
 		this.loanAmount = loanAmount;
 	}
 
-	public void setInterestRate(long interestRate) {
+	public void setInterestRate(double interestRate) {
 		this.interestRate = interestRate;
 	}
 
@@ -68,7 +68,7 @@ public class LoanAccountViewModel {
 		return loanAmount;
 	}
 
-	public long getInterestRate() {
+	public double getInterestRate() {
 		return interestRate;
 	}
 
