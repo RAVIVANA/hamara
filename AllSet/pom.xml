@@ -111,38 +111,33 @@
 		    <version>1.2.17</version>
 		</dependency>
 		
-  <!-- Log4j API -->
-		<dependency>
-			<groupId>org.apache.logging.log4j</groupId>
-			<artifactId>log4j-api</artifactId>
-			<version>2.15.0</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.logging.log4j</groupId>
-			<artifactId>log4j-core</artifactId>
-			<version>2.15.0</version>
-		</dependency>
-			<!-- SLF4J API -->
+  <dependency>
+    <groupId>org.apache.logging.log4j</groupId>
+    <artifactId>log4j-api</artifactId>
+    <version>2.3.2</version>
+</dependency>
 <dependency>
-  <groupId>org.slf4j</groupId>
-  <artifactId>slf4j-api</artifactId>
-  <version>1.7.32</version>
+    <groupId>org.apache.logging.log4j</groupId>
+    <artifactId>log4j-core</artifactId>
+    <version>2.3.2</version>
+</dependency>
+<dependency>
+    <groupId>io.github.hakky54</groupId>
+    <artifactId>logcaptor</artifactId>
+    <version>2.3.2</version>
+ 
 </dependency>
 		<dependency>
-			<groupId>org.apache.logging.log4j</groupId>
-			<artifactId>log4j-slf4j-impl</artifactId>
-			<version>2.15.0</version>
-			
-			
-			
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.7.32</version>
 		</dependency>
-		
 
 
 	</dependencies>
 	
   <build>
-  		<sourceDirectory>src</sourceDirectory>
+	<sourceDirectory>src</sourceDirectory>
 		<resources>
 			<resource>
 				<directory>src/main/resources/</directory>
@@ -153,7 +148,7 @@
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.8.1</version>
         <configuration>
-                <release>17</release>
+                <release>14</release>
             </configuration>
       </plugin>
       <plugin>
