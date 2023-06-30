@@ -170,9 +170,11 @@ public class CustomerSetter {
 	public static int pastdue(long LoanId, double damount, double lamount, int duration, double ir, String typee) {
 
 		System.out.println("++++++++++++++++++++++++++++++++++++++++");
+
 		LoanApplication account = ti.getLoanAccountApplicationById(LoanId);
 
 		System.out.println("++++++-------------------------");
+		System.out.println(account.getProcessDate());
 		String startDateString = (String) account.getProcessDate();
 
 		System.out.println(account.getProcessDate());
