@@ -6,6 +6,10 @@
 <script type="text/javascript" src="./js/loan-approval.js"></script>
 </head>
 <body>
+<div class="filter-container">
+			<input type="text" id="accountFilter" placeholder="Filter by Account Number" >
+			<button onclick="filterAccounts()">submit</button>
+		</div>
 	<h2>Loan Applications</h2>
 	<table>
 		<thead>
@@ -69,4 +73,23 @@
 		</div>
 	</div>
 </body>
+<script>
+function filterAccounts(){
+	var mainContent = $('#main-content');
+	var val = document.getElementById('accountFilter').value;
+    console.log(val);
+$.ajax({
+		url: 'getLoanApplicationsById',
+		type: 'POST',
+		data: {Data:val},
+		success: function(response) {
+		mainContent.html(response);
+					},
+		error: function(jqXHR, textStatus, errorThrown) {
+			// Handle the error
+			console.error('Third server request error:', textStatus, errorThrown);
+		}
+	});
+
+}</script>
 </html>

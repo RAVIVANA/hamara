@@ -22,4 +22,8 @@ public interface LoanApplicationDaoInterface {
 	List<LoanAccount> getAllLoans();
 
 	void approveApplication(int loanId, long custId);
+
+	LoanApplication getLoanApplicationById(int id);
+
+	LoanAccount getLoanAccountById(int accountnumber);
 }

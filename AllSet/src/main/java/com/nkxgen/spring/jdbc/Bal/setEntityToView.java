@@ -178,6 +178,21 @@ public class setEntityToView implements ViewInterface {
 	}
 
 	@Override
+	public LoanApplicationViewModel getLoanApplicationById(int typee) throws ApplicationNotFound {
+		LoanApplicationViewModel la = new LoanApplicationViewModel();
+		LoanApplication list = ll.getLoanApplicationById(typee); // Retrieve the list of LoanApplication
+																	// objects by value
+		if (list == null) {
+			throw new ApplicationNotFound("Application not found");
+		} else { // object
+			la.copyFromEntity(list); // Copy the values from the LoanApplication object to the LoanApplicationViewModel
+		} // object
+		return la; // Add the LoanApplicationViewModel object to the viewlist1 list
+		// Return the list of LoanApplicationViewModel objects
+
+	}
+
+	@Override
 	public List<AccountViewModel> getAccountsByType(String typee) {
 		viewlist2.clear(); // Clear the existing contents of the viewlist2 list
 
@@ -350,12 +365,14 @@ public class setEntityToView implements ViewInterface {
 	}
 
 	@Override
-	public LoanAccountViewModel getLoanAccountById(int accountnumber) {
-		LoanAccount la = ti.getLoanAccountById(accountnumber); // Retrieve LoanAccount by account number
-
+	public LoanAccountViewModel getLoanAccountById(int accountnumber) throws AccountNotFound {
 		LoanAccountViewModel la2 = new LoanAccountViewModel();
-		la2.setValuesFromLoanAccount(la); // Convert LoanAccount to LoanAccountViewModel
-
+		LoanAccount la = ll.getLoanAccountById(accountnumber); // Retrieve LoanAccount by account number
+		if (la == null) {
+			throw new AccountNotFound("Accountnot found");
+		} else {
+			la2.setValuesFromLoanAccount(la); // Convert LoanAccount to LoanAccountViewModel
+		}
 		return la2; // Return the LoanAccountViewModel
 	}
 

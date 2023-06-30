@@ -77,7 +77,7 @@ public class AccountController {
 			model.addAttribute("list_of_customer", list2);
 			return "any-type-account-info";
 		} catch (AccountNotFound e) {
-			LOGGER.error(e.getMessage());
+			LOGGER.warn(e.getMessage());
 			return "AccountNotFound";
 		}
 

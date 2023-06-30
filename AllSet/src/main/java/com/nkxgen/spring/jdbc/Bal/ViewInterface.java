@@ -53,7 +53,10 @@ public interface ViewInterface {
 
 	List<Customer> getAllCustomers();
 
-	LoanAccountViewModel getLoanAccountById(int accountnumber);
+	LoanAccountViewModel getLoanAccountById(int accountnumber) throws AccountNotFound;
 
 	AccountApplicationViewModel getAccountsappById(int typee) throws ApplicationNotFound;
+
+	public LoanApplicationViewModel getLoanApplicationById(int typee) throws ApplicationNotFound;
+
 }

@@ -6,6 +6,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +22,7 @@ import com.nkxgen.spring.jdbc.model.LoanApplication;
 @Repository
 @Transactional
 public class LoanApplicationDao implements LoanApplicationDaoInterface {
+	private static final Logger logger = LoggerFactory.getLogger(LoanApplicationDao.class);
 
 	@PersistenceContext
 	private EntityManager entityManager;
@@ -57,6 +60,12 @@ public class LoanApplicationDao implements LoanApplicationDaoInterface {
 	public void saveLoanApplication(LoanApplication loanApplication) {
 		entityManager.persist(loanApplication); // Persist the 'loanApplication' object by adding it to the entity
 												// manager
+	}
+
+	@Override
+	public LoanApplication getLoanApplicationById(int id) {
+		return entityManager.find(LoanApplication.class, id);
+
 	}
 
 	@Override
@@ -140,13 +149,32 @@ public class LoanApplicationDao implements LoanApplicationDaoInterface {
 		entityManager.persist(l); // Persist the LoanAccount object by adding it to the entity manager
 	}
 
+	@Override
 	public List<LoanAccount> getAllLoans() {
-		String jpql = "SELECT l FROM LoanAccount l"; // Define a JPQL query to retrieve all loan account objects
-		TypedQuery<LoanAccount> query = entityManager.createQuery(jpql, LoanAccount.class); // Create a typed query
-																							// using the JPQL query and
-																							// specifying the result
-																							// type as 'LoanAccount'
-		return query.getResultList(); // Execute the query and return a list of all loan account objects
+		// Log the start of the method
+		logger.info("getAllLoans method started.");
+
+		String jpql = "SELECT l FROM LoanAccount l";
+		TypedQuery<LoanAccount> query = entityManager.createQuery(jpql, LoanAccount.class);
+
+		List<LoanAccount> loanAccounts = query.getResultList();
+
+		// Log the completion of the method
+		logger.info("getAllLoans method completed.");
+
+		return loanAccounts;
 	}
 
+	@Override
+	public LoanAccount getLoanAccountById(int accountnumber) {
+		// Log the start of the method
+		logger.info("getLoanAccountById method started.");
+
+		LoanAccount loanAccount = entityManager.find(LoanAccount.class, (long) accountnumber);
+
+		// Log the completion of the method
+		logger.info("getLoanAccountById method completed.");
+
+		return loanAccount;
+	}
 }
