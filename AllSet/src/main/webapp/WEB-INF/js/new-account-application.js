@@ -57,6 +57,22 @@ function approveAccountApplication(applicationId, button) {
 			console.error('Second server request error:', textStatus, errorThrown);
 		}
 	});
+	
+	/*$.ajax({
+		url: 'changeTheStatusOfAccountApp',
+		type: 'POST',
+		data: {
+			ApplicationId: ApplicationId
+		},
+		success: function(response) {
+			// Handle the success response
+			console.log('Third server request success:', response);
+		},
+		error: function(jqXHR, textStatus, errorThrown) {
+			// Handle the error
+			console.error('Third server request error:', textStatus, errorThrown);
+		}
+	});*/
 
 	$.ajax({
 		url: 'saveToCustomerDatabase',
@@ -73,6 +89,13 @@ function approveAccountApplication(applicationId, button) {
 			console.error('Third server request error:', textStatus, errorThrown);
 		}
 	});
+	
+	
+	
+	  button.innerText = "Approved";
+	  button.disabled = true;
+  
+	
 
 
 }

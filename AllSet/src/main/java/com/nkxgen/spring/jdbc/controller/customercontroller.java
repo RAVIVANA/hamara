@@ -107,7 +107,7 @@ public class customercontroller {
 		cd.changethese(customer2, CustomerSub);
 
 		// Return the view name "Any_Type_account_info" to render the page
-		return "any-Type-account-info";
+		return "any-type-account-info";
 	}
 
 }

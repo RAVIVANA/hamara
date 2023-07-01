@@ -6,7 +6,8 @@
 	href="./css/new-account-application.css">
 <script type="text/javascript" src="./js/new-account-application.js"></script>
 </head>
-<body><div class="filter-container">
+<body>
+<div class="filter-container">
 			<input type="text" id="accountFilter" placeholder="Filter by Account Number" >
 			<button onclick="filterAccounts()">submit</button>
 		</div>
@@ -48,8 +49,9 @@
 					<td><a href="#" th:text="${accountApplication.getDriving()}">View</a></td>
 					<td><a href="#" th:text="${accountApplication.getJobcard()}">View</a></td>
 					<td>
-						<button type="button" class="in"
+						<button type="button" class="in" id="approveButton"	
 							onclick="approveAccountApplication('${accountApplication.id}', this)">Approve</button>
+							
 
 					</td>
 				</tr>

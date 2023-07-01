@@ -58,5 +58,4 @@ public interface ViewInterface {
 	AccountApplicationViewModel getAccountsappById(int typee) throws ApplicationNotFound;
 
 	public LoanApplicationViewModel getLoanApplicationById(int typee) throws ApplicationNotFound;
-
 }

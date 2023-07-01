@@ -95,24 +95,7 @@ $(document).ready(function() {
 		});
 	});
 	//--------------------------- Account New Application------------------------
-	var newaccount = $('#newaccount');
-	var mainContent = $('#main-content');
-
-	newaccount.on('click', function(event) {
-		// Prevent the default behavior of the anchor tag
-
-		// Load Neeraj page content using AJAX
-		$.ajax({
-			url: 'AccountNewApplicationForm',
-			type: 'GET',
-			success: function(response) {
-				mainContent.html(response);
-			},
-			error: function() {
-				alert('Failed to load page.');
-			}
-		});
-	});
+	
 	//------------------------------------ Loans New Application -------------------
 	var newloan = $('#newloan');
 	var mainContent = $('#main-content');
@@ -496,7 +479,7 @@ $(document).ready(function() {
 			}
 		});
 	});
-	//========================================================
+	//========================================================forms==================
 	var savingsacc = $('#newloan');
 	var mainContent = $('#main-content');
 
@@ -516,12 +499,11 @@ $(document).ready(function() {
 			}
 		});
 	});
-	var savingsacc = $('#newaccount');
+	var account = $('#newaccount');
 	var mainContent = $('#main-content');
 
-	savingsacc.on('click', function(event) {
-		// Prevent the default behavior of the anchor tag
-		// Load Neeraj page content using AJAX
+	account.on('click', function(event) {
+		
 		$.ajax({
 			url: 'accountNewApplicationForm',
 			type: 'GET',

@@ -139,13 +139,14 @@ public class TransactionController {
 
 	// // sub_loan_withdrawl
 	//
-	@RequestMapping(value = "/loanWithDrawlUrl", method = RequestMethod.POST)
+	@RequestMapping(value = "/loanWithdrawlUrl", method = RequestMethod.POST)
 	public ResponseEntity<String> getLoanmoneyWithdrawlAmount(@Validated transactioninfo tarn, Model model,
 			HttpServletRequest request) {
 		ti.loanWithdrawl(tarn.getAccountNumber()); // Perform the loan withdrawal operation based on the account number
 		tempRepayment temp = s.setthistarn(tarn); // Set temporary repayment information using the tarn object
-		LoanTransactions t = ti.LoanTransactionw(temp); // Create a LoanTransactions object based on the temporary
-														// repayment
+		LoanTransactions t = ti.LoanTransactionwithdrawl(temp); // Create a LoanTransactions object based on the
+																// temporary
+		// repayment
 		HttpSession session = request.getSession(); // Get the HttpSession object from the request
 		String username = (String) session.getAttribute("username"); // Get the username from the session attribute
 		applicationEventPublisher.publishEvent(new TransactionEvent("Loan Withdrawed ", username)); // Publish a
@@ -164,7 +165,7 @@ public class TransactionController {
 		if (account.getdeductionAmt() != 0) { // Check if the deduction amount is not zero
 			EMIpay emiobj = ti.changeToEMI(account); // Convert the account to EMIpay object
 			model.addAttribute("account", emiobj); // Add the emiobj to the model attribute
-			return "sub-loan-repayment.html"; // Return the view for loan repayment
+			return "sub-loan-repayment"; // Return the view for loan repayment
 		} else {
 			return null; // Return null if the deduction amount is zero
 		}
@@ -178,8 +179,9 @@ public class TransactionController {
 		System.out.println("the value of tar complete :" + tarn.getComplete()); // Print the value of the "complete"
 																				// field in the tempRepayment object
 		ti.loanRepayment(tarn); // Perform the loan repayment based on the tempRepayment object
-		LoanTransactions t = ti.LoanTransaction(tarn); // Create a LoanTransactions object based on the tempRepayment
-														// object
+		LoanTransactions t = ti.loanTransactionRepay(tarn); // Create a LoanTransactions object based on the
+															// tempRepayment
+		// object
 		HttpSession session = request.getSession();
 		String username = (String) session.getAttribute("username");
 		applicationEventPublisher.publishEvent(new TransactionEvent("Loan repayed ", username)); // Publish a Loan

@@ -23,5 +23,11 @@ public interface AccountApplicationDaoInterface {
 
 	public Account mergeAccount(Account account);
 
-	public AccountApplication getAccountsappById(long value);
+	AccountApplication getAccountApplicationById(Long applicationId);
+
+	void savetheAccountapp(AccountApplication accountap);
+
+	Account getAccountById(Long num);
+
+	AccountApplication getAccountsappById(long typee);
 }

@@ -18,6 +18,9 @@ public class LoanAccount {
 	@Column(name = "loan_id")
 	private Long loanId;
 
+	@Column(name = "loanapp_id")
+	private Long loanappId;
+
 	@Column(name = "loan_type")
 	private String loanType;
 
@@ -40,6 +43,10 @@ public class LoanAccount {
 	// Setters
 	public void setLoanId(Long loanId) {
 		this.loanId = loanId;
+	}
+
+	public void setloanappId(Long loanappId) {
+		this.loanappId = loanappId;
 	}
 
 	public void setLoanType(String loanType) {
@@ -71,6 +78,10 @@ public class LoanAccount {
 		return loanId;
 	}
 
+	public Long getloanappId() {
+		return loanappId;
+	}
+
 	public String getLoanType() {
 		return loanType;
 	}
@@ -98,7 +109,9 @@ public class LoanAccount {
 	public void setValuesFromLoanAccount(LoanApplication loanAccount) {
 		Customertrail c = new Customertrail();
 		c.setId(loanAccount.getCustId().getId());
+
 		this.loanType = loanAccount.getLoanTypeId();
+		this.loanappId = (long) loanAccount.getId();
 		this.customer = c;
 		this.loanAmount = loanAccount.getAmount();
 		this.interestRate = loanAccount.getIntrest();

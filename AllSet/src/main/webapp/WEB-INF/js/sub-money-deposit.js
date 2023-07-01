@@ -1,18 +1,47 @@
-  /* let date = document.getElementById("date");
-  var currentDate = new Date();
-  var options = { year: 'numeric', month: 'long', day: 'numeric' };
-  var formattedDate = currentDate.toLocaleDateString(undefined, options);
-  date.value = formattedDate; */
+function getDate()
+{
+	var today = new Date();
+	document.getElementById("date").value = today.getFullYear()+'-'+('0'+(today.getMonth()+1)).slice(-2)+'-'+('0'+today.getDate()).slice(-2);
+}
+
+function validateDepositeForm() 
+{
+	let x = document.getElementById("date").value;
+	let y = document.getElementById("amount").value;
+	if (x == "") 
+	{
+		alert("date must be filled");
+	    return false;
+	}
+	else if (y == "") 
+	{
+		alert("enter amount to deposit");
+	    return false;
+	}
+	else if (y<=0 || y.includes(".")) 
+	{
+		alert("invalid amount");
+	    return false;
+	}
+	
+	else
+	{
+		deposit_money(); 
+	}
+}
 
 
-  
-  function deposit_money() {
+
+   function deposit_money() {
 	  
 	  var accountNumber = document.getElementById("accountNumber").value;
-	  var amount = document.getElementById("amount").value;      
+	  var amount = document.getElementById("amount").value;  
+	  var date = document.getElementById("date").value;  
+	      
 	  var requestData = {
 			  AccountNumber: accountNumber,
 			  Amount: amount,
+			  Date: date
 	  };
 
 	  // Send the AJAX request
@@ -37,29 +66,7 @@
 	      console.error('Third server request error:', textStatus, errorThrown);
 	    }
 	  });
- 
-/* 	  
-      console.log("Money deposit done successfully");
-		var formdata = $('#accountNumber').val();
-		console.log(formdata);
-      $.ajax({
-        url: "moneyDepositurl",
-        type: "GET",
-    
-    	
-        success: function(response) {
-          // Handle success response
-          console.log(data);
-          console.log("Money deposit done successfully");
-          
-        },
-        error: function(xhr, status, error) {
-          // Handle error response
-          console.log("Error occurred while deposit");
-          
 
-        }
-      }); */
       
     }
   

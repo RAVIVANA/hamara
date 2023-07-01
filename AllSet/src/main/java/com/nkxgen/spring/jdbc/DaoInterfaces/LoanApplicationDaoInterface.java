@@ -23,7 +23,12 @@ public interface LoanApplicationDaoInterface {
 
 	void approveApplication(int loanId, long custId);
 
-	LoanApplication getLoanApplicationById(int id);
+	LoanApplication getLoanApplicationByid(long accountType);
+
+	void saveTheApprovedLoanApplication(LoanApplication loanapp);
+
+	LoanApplication getLoanApplicationById(int typee);
 
 	LoanAccount getLoanAccountById(int accountnumber);
+
 }

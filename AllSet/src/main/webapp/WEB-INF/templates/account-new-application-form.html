@@ -17,10 +17,10 @@
 			<table>
 				<h1>Account Application Form</h1>
 				<br>
-				<tr>
+				<!-- <tr>
 					<td><label for="acap_id">Application ID:</label></td>
 					<td><input type="number" id="acap_id" name="acap_id">
-					</td>
+					</td> -->
 					<td><label for="acap_cust_id">Customer ID:</label></td>
 					<td><input type="number" id="acap_cust_id" name="acap_cust_id">
 					</td>
@@ -34,9 +34,21 @@
 						name="acap_nominee_ln"></td>
 				</tr>
 				<tr>
-					<td><label for="acap_acty_id">Account Type ID:</label></td>
-					<td><input type="text" id="acap_acty_id" name="acap_acty_id">
-					</td>
+					
+			  <td>
+				  <label for="acap_acty_id">Select an Account Type:</label>
+				</td>
+				<td>
+				  <select id="acap_acty_id" name="acap_acty_id"  value="selectaccount">
+				    <option value="">Select an option</option>
+				    <option th:each="account : ${accountTyped}"
+				            th:value="${account.getAccountType()}"
+				            th:text="${account.getAccountType()}"></option>
+				  </select>
+				</td>
+
+
+					
 					<td><label for="acap_createdby">Created By:</label></td>
 					<td><input type="text" id="acap_createdby"
 						name="acap_createdby"></td>

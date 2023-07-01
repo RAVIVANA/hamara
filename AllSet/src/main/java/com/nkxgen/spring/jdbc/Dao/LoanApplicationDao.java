@@ -6,8 +6,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,7 +20,6 @@ import com.nkxgen.spring.jdbc.model.LoanApplication;
 @Repository
 @Transactional
 public class LoanApplicationDao implements LoanApplicationDaoInterface {
-	private static final Logger logger = LoggerFactory.getLogger(LoanApplicationDao.class);
 
 	@PersistenceContext
 	private EntityManager entityManager;
@@ -63,14 +60,8 @@ public class LoanApplicationDao implements LoanApplicationDaoInterface {
 	}
 
 	@Override
-	public LoanApplication getLoanApplicationById(int id) {
-		return entityManager.find(LoanApplication.class, id);
-
-	}
-
-	@Override
 	public void updateLoanApplication(LoanApplicationInput loanApplication) {
-		LoanApplication la = entityManager.find(LoanApplication.class, loanApplication.getId()); // Find the loan
+		LoanApplication la = entityManager.find(LoanApplication.class,(long) loanApplication.getId()); // Find the loan
 																									// application
 																									// object with the
 																									// given ID using
@@ -131,11 +122,13 @@ public class LoanApplicationDao implements LoanApplicationDaoInterface {
 
 	@Override
 	public void approveApplication(int loanId, long custId) {
-		LoanApplication loanApplication = entityManager.find(LoanApplication.class, loanId); // Find the loan
-																								// application object
-																								// with the given
-																								// 'loanId' using the
-																								// entity manager
+		LoanApplication loanApplication = entityManager.find(LoanApplication.class,(long) loanId);
+		// Find the loan
+
+		// application object
+		// with the given
+		// 'loanId' using the
+		// entity manager
 
 		Customertrail customer = entityManager.find(Customertrail.class, custId); // Find the customer object with the
 																					// given 'custId' using the entity
@@ -149,32 +142,43 @@ public class LoanApplicationDao implements LoanApplicationDaoInterface {
 		entityManager.persist(l); // Persist the LoanAccount object by adding it to the entity manager
 	}
 
-	@Override
 	public List<LoanAccount> getAllLoans() {
-		// Log the start of the method
-		logger.info("getAllLoans method started.");
-
-		String jpql = "SELECT l FROM LoanAccount l";
-		TypedQuery<LoanAccount> query = entityManager.createQuery(jpql, LoanAccount.class);
-
-		List<LoanAccount> loanAccounts = query.getResultList();
-
-		// Log the completion of the method
-		logger.info("getAllLoans method completed.");
-
-		return loanAccounts;
+		String jpql = "SELECT l FROM LoanAccount l"; // Define a JPQL query to retrieve all loan account objects
+		TypedQuery<LoanAccount> query = entityManager.createQuery(jpql, LoanAccount.class); // Create a typed query
+																							// using the JPQL query and
+																							// specifying the result
+																							// type as 'LoanAccount'
+		return query.getResultList(); // Execute the query and return a list of all loan account objects
 	}
 
 	@Override
+	public LoanApplication getLoanApplicationByid(long accountType) {
+
+		LoanApplication LoanApplication = entityManager.find(LoanApplication.class, accountType);
+		return LoanApplication;
+
+	}
+
+	@Override
+	public void saveTheApprovedLoanApplication(LoanApplication loanapp) {
+		entityManager.merge(loanapp);
+
+	}
+
+	@Override
+	public LoanApplication getLoanApplicationById(int id) {
+		return entityManager.find(LoanApplication.class, id);
+
+	}
+	@Override
 	public LoanAccount getLoanAccountById(int accountnumber) {
 		// Log the start of the method
-		logger.info("getLoanAccountById method started.");
 
 		LoanAccount loanAccount = entityManager.find(LoanAccount.class, (long) accountnumber);
 
 		// Log the completion of the method
-		logger.info("getLoanAccountById method completed.");
 
 		return loanAccount;
 	}
+
 }

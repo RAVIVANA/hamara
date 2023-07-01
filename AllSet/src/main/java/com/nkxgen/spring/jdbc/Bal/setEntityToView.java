@@ -78,21 +78,6 @@ public class setEntityToView implements ViewInterface {
 		return viewlist; // Return the viewlist containing LoanAccountViewModel objects
 	}
 
-	@Override
-	public AccountViewModel getAccountById(int act) throws AccountNotFound {
-		AccountViewModel a2 = new AccountViewModel();
-		Account a = ti.getAccountById(act); // Get the Account object by account ID from the ti object
-		if (a == null) {
-			throw new AccountNotFound("Account not founded");
-
-		} else {
-			AccountViewModel a1 = new AccountViewModel(); // Create a new AccountViewModel object
-			a2 = a1.mapToViewModel(a);
-		} // Map the values from the Account object to the AccountViewModel
-			// object
-
-		return a2; // Return the AccountViewModel object
-	}
 
 	@Override
 	public List<AccountViewModel> getAccoutsByType(List<Account> typee) {
@@ -145,21 +130,6 @@ public class setEntityToView implements ViewInterface {
 	}
 
 	@Override
-	public AccountApplicationViewModel getAccountsappById(int typee) throws ApplicationNotFound {
-		AccountApplicationViewModel la = new AccountApplicationViewModel();
-		AccountApplication list = ac.getAccountsappById((long) typee); // Retrieve the list of AccountApplication
-		if (list == null) {
-			throw new ApplicationNotFound("ApplicationNotFound");
-		} else {
-			// Create a new
-			// AccountApplicationViewModel object
-			la.setEntityModelValues(list); // Set the values from the AccountApplication object to the
-		} // AccountApplicationViewModel object
-
-		return la; // Return the list of AccountApplicationViewModel objects
-	}
-
-	@Override
 	public List<LoanApplicationViewModel> getLoanApplicationByValue(String typee) {
 		viewlist1.clear(); // Clear the existing contents of the viewlist1 list
 
@@ -175,21 +145,6 @@ public class setEntityToView implements ViewInterface {
 		}
 
 		return viewlist1; // Return the list of LoanApplicationViewModel objects
-	}
-
-	@Override
-	public LoanApplicationViewModel getLoanApplicationById(int typee) throws ApplicationNotFound {
-		LoanApplicationViewModel la = new LoanApplicationViewModel();
-		LoanApplication list = ll.getLoanApplicationById(typee); // Retrieve the list of LoanApplication
-																	// objects by value
-		if (list == null) {
-			throw new ApplicationNotFound("Application not found");
-		} else { // object
-			la.copyFromEntity(list); // Copy the values from the LoanApplication object to the LoanApplicationViewModel
-		} // object
-		return la; // Add the LoanApplicationViewModel object to the viewlist1 list
-		// Return the list of LoanApplicationViewModel objects
-
 	}
 
 	@Override
@@ -374,6 +329,52 @@ public class setEntityToView implements ViewInterface {
 			la2.setValuesFromLoanAccount(la); // Convert LoanAccount to LoanAccountViewModel
 		}
 		return la2; // Return the LoanAccountViewModel
+	}
+	@Override
+	public AccountViewModel getAccountById(int act) throws AccountNotFound {
+		AccountViewModel a2 = new AccountViewModel();
+		Account a = ti.getAccountById(act); // Get the Account object by account ID from the ti object
+		if (a == null) {
+			throw new AccountNotFound("Account not founded");
+
+		} else {
+			AccountViewModel a1 = new AccountViewModel(); // Create a new AccountViewModel object
+			a2 = a1.mapToViewModel(a);
+		} // Map the values from the Account object to the AccountViewModel
+			// object
+
+		return a2; // Return the AccountViewModel object
+	}
+
+
+	@Override
+	public AccountApplicationViewModel getAccountsappById(int typee) throws ApplicationNotFound {
+		AccountApplicationViewModel la = new AccountApplicationViewModel();
+		AccountApplication list = ac.getAccountsappById((long) typee); // Retrieve the list of AccountApplication
+		if (list == null) {
+			throw new ApplicationNotFound("ApplicationNotFound");
+		} else {
+			// Create a new
+			// AccountApplicationViewModel object
+			la.setEntityModelValues(list); // Set the values from the AccountApplication object to the
+		} // AccountApplicationViewModel object
+
+		return la; // Return the list of AccountApplicationViewModel objects
+	}
+
+	@Override
+	public LoanApplicationViewModel getLoanApplicationById(int typee) throws ApplicationNotFound {
+		LoanApplicationViewModel la = new LoanApplicationViewModel();
+		LoanApplication list = ll.getLoanApplicationById(typee); // Retrieve the list of LoanApplication
+																	// objects by value
+		if (list == null) {
+			throw new ApplicationNotFound("Application not found");
+		} else { // object
+			la.copyFromEntity(list); // Copy the values from the LoanApplication object to the LoanApplicationViewModel
+		} // object
+		return la; // Add the LoanApplicationViewModel object to the viewlist1 list
+		// Return the list of LoanApplicationViewModel objects
+
 	}
 
 }

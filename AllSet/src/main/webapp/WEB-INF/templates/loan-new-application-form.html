@@ -9,9 +9,10 @@
 	href="./css/loan-new-application-form.css">
 <script type="text/javascript" src="./js/loan-new-application-form.js"></script>
 </head>
+
 <body>
 	<div class="form-container">
-		<from id="first-form" class="hidden" >
+		<from id="first-form" class="hidden" method="post">
 			<table class="custom-table">
 				<h2>Loan Application Form</h2>
 				<tr>
@@ -21,9 +22,17 @@
 					<td><label for="apdate">Application Date:</label></td>
 					<td><input type="date" id="apdate" name="apdate" required>
 					</td>
-					<td><label for="lnty_id">Loan Type ID:</label></td>
-					<td><input type="text" id="lnty_id" name="lnty_id" required>
-					</td>
+					 <td>
+						  <label for="lnty_id">Select an Account Type:</label>
+						</td>
+						<td>
+						  <select id="lnty_id" name="lnty_id"  value="selectloan">
+						    <option value="">Select an option</option>
+						    <option th:each="loans : ${loan}"
+						            th:value="${loans.getLoanType()}"
+						            th:text="${loans.getLoanType()}"></option>
+						  </select>
+						</td>
 				</tr>
 				<tr>
 					<td><label for="amount">Loan Amount:</label></td>

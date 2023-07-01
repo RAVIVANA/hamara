@@ -3,13 +3,13 @@ function validateAndProcessAccountNumber() {
 	var value = input.value;
 
 	// Validate the input
-	if (value.length > 1) {
-		input.value = value.slice(0, 1); // Restrict to one digit
-	}
+	/*if (value.length > 1) {
+		input.value = value.slice(0, 2); // Restrict to one digit
+	}*/
 
 	// Call your function here with the account number value
 	// Only if the input is valid and has a length of 1
-	if (value.length === 1) {
+	if (value.length >= 1) {
 		processAccountNumber(value);
 	}
 }

@@ -50,7 +50,7 @@ function submit() {
 			Attachment: attachment
 		},
 		success: function(resultText) {
-
+			
 			console.log('First form submitted successfully');
 		},
 		error: function(jqXHR, exception) {

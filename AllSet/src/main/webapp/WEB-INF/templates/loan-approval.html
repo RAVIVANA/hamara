@@ -4,6 +4,8 @@
 <title>Loan Applications</title>
 <link rel="stylesheet" type="text/css" href="./css/loan-approval.css">
 <script type="text/javascript" src="./js/loan-approval.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 </head>
 <body>
 <div class="filter-container">
@@ -61,7 +63,7 @@
 				<td th:text="${loanApp.getIntrest()}"></td>
 				<td>
 					<button onclick="editRow(this)">Edit</button>
-					<button onclick="Approve()">Approve</button>
+					<button type="button" id="approveButton" onclick="Approve(this)">Approve</button>
 				</td>
 			</tr>
 		</tbody>

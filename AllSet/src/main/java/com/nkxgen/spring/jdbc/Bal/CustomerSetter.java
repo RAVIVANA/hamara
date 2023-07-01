@@ -1,11 +1,18 @@
 package com.nkxgen.spring.jdbc.Bal;
 
+import java.time.LocalDate;
+import java.time.Period;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.nkxgen.spring.jdbc.DaoInterfaces.TransactionsInterface;
 import com.nkxgen.spring.jdbc.ViewModels.CustomerViewModel;
 import com.nkxgen.spring.jdbc.model.Customer;
 import com.nkxgen.spring.jdbc.model.CustomerSub;
 import com.nkxgen.spring.jdbc.model.Customertrail;
 import com.nkxgen.spring.jdbc.model.EMIpay;
 import com.nkxgen.spring.jdbc.model.LoanAccount;
+import com.nkxgen.spring.jdbc.model.LoanApplication;
 import com.nkxgen.spring.jdbc.model.LoanTransactions;
 import com.nkxgen.spring.jdbc.model.Transaction;
 import com.nkxgen.spring.jdbc.model.cashChest;
@@ -14,6 +21,8 @@ import com.nkxgen.spring.jdbc.model.transactioninfo;
 
 public class CustomerSetter {
 	static int value = 0;
+	@Autowired
+	private static TransactionsInterface ti;
 
 	public static Customer dotheservice(Customertrail customertrail) {
 		Customer customer = new Customer();
@@ -72,16 +81,19 @@ public class CustomerSetter {
 
 	public Transaction transactionSet(transactioninfo tarn) {
 		Transaction t = new Transaction();
-		t.setTran_amount(tarn.getAmount());
+
 		t.setTran_anct_id(tarn.getAccountNumber());
 		t.setTran_date(tarn.getDate());
+		// t.setTran_type();
 		t.setTran_mode("cash");
+		t.setTran_amount(tarn.getAmount());
 		t.setTran_processedby(1);
 		return t;
 	}
 
 	// =============================================================================
-	public EMIpay changeToEmiObj(LoanAccount account) {
+	public EMIpay changeToEmiObj(LoanAccount account, TransactionsInterface ti) {
+		this.ti = ti;
 		EMIpay obj1 = new EMIpay();
 		obj1.setLoanId(account.getLoanId());
 		// obj.setAccountHolder(account.);
@@ -95,13 +107,16 @@ public class CustomerSetter {
 		obj1.setPaidMonths(
 				CustomerSetter.calPM(account.getdeductionAmt(), account.getLoanAmount(), account.getLoanDuration()));
 
-		obj1.setEmi(
+		obj1.setEMI(
 				CustomerSetter.calEMI(account.getLoanAmount(), account.getLoanDuration(), account.getdeductionAmt()));
 		obj1.setInterest(CustomerSetter.calinterest(account.getLoanAmount(), account.getdeductionAmt(),
 				account.getLoanDuration(), account.getInterestRate(), account.getLoanType()));
 		obj1.setTotal(CustomerSetter.total(account.getLoanAmount(), account.getLoanDuration(),
 				account.getInterestRate(), account.getdeductionAmt(), account.getLoanType()));
-
+		obj1.setPastDue(CustomerSetter.pastdue(account.getLoanId(), account.getdeductionAmt(), account.getLoanAmount(),
+				account.getLoanDuration(), account.getInterestRate(), account.getLoanType()));
+		obj1.setTotalWithPenalty(CustomerSetter.totalwithpenalty(account.getLoanAmount(), account.getLoanDuration(),
+				account.getInterestRate(), account.getdeductionAmt(), account.getLoanType()));
 		obj1.setComplete(
 				CustomerSetter.complete(account.getLoanDuration(), account.getdeductionAmt(), account.getLoanAmount(),
 						account.getInterestRate(), account.getLoanType(), account.getLoanDuration() * 12));
@@ -129,7 +144,7 @@ public class CustomerSetter {
 
 			String s1 = typee;
 			String s2 = "Personal";
-			if (s1.equals(s2) || s1.equals("safe")) {
+			if (s1.equals(s2) || s1.equals(s1)) {
 				double value1 = ((lamount * duration * ir) / 1200);
 				return value1;
 			} else {
@@ -149,6 +164,48 @@ public class CustomerSetter {
 		int x = (int) Math.ceil(value2);
 		return x;
 
+	}
+
+	public static int pastdue(long LoanId, double damount, double lamount, int duration, double ir, String typee) {
+
+		// System.out.println("++++++++++++++++++++++++++++++++++++++++");
+		LoanAccount account = ti.getLoanAccountById((long) LoanId);
+		System.out.println("the account name is:" + account.getLoanAmount());
+		//
+		LoanApplication Application = ti.getLoanAccountApplicationById(account.getloanappId());
+		System.out.println("the processed date is :" + Application.getCreatedDate());
+		//
+		System.out.println("++++++-------------------------");
+		// String startDateString = (String) account.getProcessDate();
+
+		// System.out.println(account.getProcessDate());
+		// String endDateString = LocalDate.now().toString();
+
+		// String startDateString = Application.getApplicationDate();
+		// String endDateString = "2023-06-29";
+
+		LocalDate startDate = LocalDate.parse(Application.getApplicationDate());
+		LocalDate endDate = LocalDate.now();
+
+		int pm = calPM(damount, lamount, duration);
+
+		// Calculate the difference in months
+		Period period = Period.between(startDate, endDate);
+		int months = period.getYears() * 12 + period.getMonths();
+
+		int pereachmonth = total(lamount, duration, ir, damount, typee);
+
+		int pastduee = months - pm;
+		pastduee = pastduee * pereachmonth;
+		// System.out.println("Number of months between the two dates: " + months);
+
+		return pastduee;
+	}
+
+	public static int totalwithpenalty(double lamount, int duration, double ir, double damount, String typee) {
+		double value1 = total(lamount, duration, ir, damount, typee); // + pastdue();
+		int x = (int) Math.ceil(value1);
+		return x;
 	}
 
 	public static int complete(int duration, double damount, double lamount, double ir, String typee, int noi) {
@@ -206,7 +263,7 @@ public class CustomerSetter {
 		tempRepayment t = new tempRepayment();
 		t.setLoanid(tarn.getAccountNumber());
 		t.setDate(tarn.getDate());
-		t.setTotal(tarn.getAmount());
+		t.setTotal((int) tarn.getAmount());
 		return t;
 	}
 

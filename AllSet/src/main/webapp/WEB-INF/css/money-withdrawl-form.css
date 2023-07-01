@@ -31,11 +31,10 @@ h3 {
 
 .form-control {
 	width: 100%;
-	padding: 10px;
 	font-size: 14px;
 	border: 1px solid #ccc;
 	border-radius: 4px;
-	word-wrap: break-word;
+	
 }
 
 #resulttable {

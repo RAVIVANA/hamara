@@ -187,7 +187,7 @@ public class LoanApplicationViewModel {
 	}
 
 	public void copyFromEntity(LoanApplication loanApplication) {
-		setId(loanApplication.getId());
+		setId((int) loanApplication.getId());
 		setCustomerId(loanApplication.getCustId().getId());
 		setApplicationDate(loanApplication.getApplicationDate());
 		setLoanTypeId(loanApplication.getLoanTypeId());

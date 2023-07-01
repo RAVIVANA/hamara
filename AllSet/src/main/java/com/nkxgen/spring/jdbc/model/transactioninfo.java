@@ -1,9 +1,10 @@
 package com.nkxgen.spring.jdbc.model;
 
 public class transactioninfo {
-	private int accountNumber;
-	private int amount;
+	private int AccountNumber;
+	private int Amount;
 	private String Date;
+	private String Mode;
 
 	public transactioninfo() {
 
@@ -18,18 +19,26 @@ public class transactioninfo {
 	}
 
 	public int getAccountNumber() {
-		return accountNumber;
+		return AccountNumber;
 	}
 
-	public void setAccountNumber(int accountNumber) {
-		this.accountNumber = accountNumber;
+	public void setAccountNumber(int AccountNumber) {
+		this.AccountNumber = AccountNumber;
 	}
 
 	public double getAmount() {
-		return amount;
+		return Amount;
 	}
 
-	public void setAmount(int amount) {
-		this.amount = amount;
+	public void setAmount(int Amount) {
+		this.Amount = Amount;
+	}
+
+	public String getMode() {
+		return Mode;
+	}
+
+	public void setMode(String Mode) {
+		this.Mode = Mode;
 	}
 }

@@ -1,4 +1,37 @@
-function deposit_money() {
+
+function getDate()
+{
+	var today = new Date();
+	document.getElementById("date").value = today.getFullYear()+'-'+('0'+(today.getMonth()+1)).slice(-2)+'-'+('0'+today.getDate()).slice(-2);
+}
+
+
+function validateLoanWithdrawlForm() 
+{
+	let x = document.getElementById("date").value;
+	let y = document.getElementById("amount").value;
+	if (x == "") 
+	{
+		alert("date must be filled");
+	    return false;
+	}
+	else if (y == "") 
+	{
+		alert("enter amount");
+	    return false;
+	}
+	else if (y<=0 || y.includes(".")) 
+	{
+		alert("invalid amount");
+	    return false;
+	}
+	else
+	{
+		depositMoney(); 
+	}
+}
+
+function depositMoney() {
 	var loanid = document.getElementById("loanid").value;
 	var emi = document.getElementById("emi").value;
 	var interest = document.getElementById("interest").value;
@@ -6,14 +39,17 @@ function deposit_money() {
 	var amount = document.getElementById("amount").value;
 	var complete = document.getElementById("complete").value;
 	var date = document.getElementById("date").value;
-	var installment_no = document.getElementById("remainMonths").value;
+	var installment_no = document.getElementById("paidMonths").value;
+	var pastdue = document.getElementById("pastdue").value;
+	var totalwithpenalty = document.getElementById("totalwithpenalty").value;
+	
 	var requestData = {
-		Loanid: loanid,
+		loanid: loanid,
 		EMI: emi,
-		Interset: interest,
-		Total: total,
-		Amount: amount,
-		Complete: complete,
+		interest: interest,
+		total: total,
+		amount: amount,
+		complete: complete,
 		Date: date,
 		installment_no: installment_no
 	};
@@ -38,10 +74,3 @@ function deposit_money() {
 		}
 	});
 }
-
-/* 
-  let date = document.getElementById("date");
-  var currentDate = new Date();
-  var options = { year: 'numeric', month: 'long', day: 'numeric' };
-  var formattedDate = currentDate.toLocaleDateString(undefined, options);
-  date.value = formattedDate; */

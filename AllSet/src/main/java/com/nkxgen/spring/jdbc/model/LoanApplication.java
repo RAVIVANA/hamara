@@ -18,7 +18,7 @@ public class LoanApplication {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "lnap_id")
-	private int id;
+	private long id;
 
 	@Column(name = "lnap_apdate")
 	private String applicationDate;
@@ -83,11 +83,11 @@ public class LoanApplication {
 
 	// Setters and Getters
 
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 

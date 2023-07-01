@@ -5,8 +5,6 @@ import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Controller;
@@ -21,7 +19,6 @@ import com.nkxgen.spring.jdbc.validation.MailSender;;
 
 @Controller
 public class LoginController {
-	Logger LOGGER = LoggerFactory.getLogger(LoginController.class);
 
 	@Autowired
 	ApplicationEventPublisher applicationEventPublisher;
@@ -30,7 +27,6 @@ public class LoginController {
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String login(Locale locale, Model model) {
 
-		LOGGER.info("Your Message -from log file!!");
 		return "login-page";
 	}
 
@@ -80,8 +76,6 @@ public class LoginController {
 
 	@RequestMapping(value = "/Test", method = RequestMethod.POST)
 	public String main_page(Model model, HttpServletRequest request) {
-
-		LOGGER.info("Your Message -from log file!!");
 		HttpSession session = request.getSession();
 		String username = (String) session.getAttribute("username");
 
@@ -118,6 +112,7 @@ public class LoginController {
 
 		return "customer-edit-details-form"; // Return the view name "customer_edit_details_form" to render the page
 	}
+
 
 	// ===========================================================================
 

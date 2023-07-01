@@ -16,6 +16,7 @@ import com.nkxgen.spring.jdbc.model.Account;
 import com.nkxgen.spring.jdbc.model.Customertrail;
 import com.nkxgen.spring.jdbc.model.EMIpay;
 import com.nkxgen.spring.jdbc.model.LoanAccount;
+import com.nkxgen.spring.jdbc.model.LoanApplication;
 import com.nkxgen.spring.jdbc.model.LoanTransactions;
 import com.nkxgen.spring.jdbc.model.Transaction;
 import com.nkxgen.spring.jdbc.model.tempRepayment;
@@ -33,6 +34,8 @@ public class TransactionsDAO implements TransactionsInterface {
 
 	@Autowired
 	private CustomerDaoInterface cd;
+	@Autowired
+	private TransactionsInterface ti;
 
 	@Override
 	public void moneyDeposit(transactioninfo trans) {
@@ -74,7 +77,7 @@ public class TransactionsDAO implements TransactionsInterface {
 	@Override
 	public Transaction transactionSave(transactioninfo tarn) {
 		Transaction t = s.transactionSet(tarn); // Create a new Transaction object by calling a method 'transactionSet'
-												// from another class or service, passing a transactioninfo object
+		t.setTran_mode(tarn.getMode()); // from another class or service, passing a transactioninfo object
 		t.setTran_type("Withdrawl"); // Set the transaction type to "Withdrawl"
 		return t; // Return the created Transaction object
 	}
@@ -141,13 +144,14 @@ public class TransactionsDAO implements TransactionsInterface {
 
 	@Override
 	public EMIpay changeToEMI(LoanAccount account) {
-		EMIpay obj = s.changeToEmiObj(account); // Create a new EMIpay object by calling a method 'changeToEmiObj' from
-												// another class or service, passing the loan account object
+		EMIpay obj = s.changeToEmiObj(account, ti); // Create a new EMIpay object by calling a method 'changeToEmiObj'
+													// from
+		// another class or service, passing the loan account object
 		return obj; // Return the created EMIpay object
 	}
 
 	@Override
-	public LoanTransactions LoanTransaction(tempRepayment lt) {
+	public LoanTransactions loanTransactionRepay(tempRepayment lt) {
 		LoanTransactions t = s.loantransactionSet(lt); // Create a new LoanTransactions object by calling a method
 														// 'loantransactionSet' from another class or service
 		t.setDate(LocalDate.now().toString()); // Set the date of the loan transaction to the current date
@@ -161,11 +165,17 @@ public class TransactionsDAO implements TransactionsInterface {
 	}
 
 	@Override
-	public LoanTransactions LoanTransactionw(tempRepayment temp) {
+	public LoanTransactions LoanTransactionwithdrawl(tempRepayment temp) {
 		LoanTransactions t = s.loantransactionSet(temp); // Create a new LoanTransactions object by calling a method
-															// 'loantransactionSet' from another class or service
+		t.setDate(LocalDate.now().toString()); // 'loantransactionSet' from another class or service
 		t.setType("loan withdrawl"); // Set the type of the loan transaction to "loan withdrawl"
 		return t; // Return the created LoanTransactions object
+	}
+
+	@Override
+	public LoanApplication getLoanAccountApplicationById(long id) {
+		LoanApplication account = entityManager.find(LoanApplication.class, (long) id);
+		return account; // Return the found loan account object
 	}
 
 }
