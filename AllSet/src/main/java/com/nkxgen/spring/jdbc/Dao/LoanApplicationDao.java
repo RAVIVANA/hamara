@@ -20,11 +20,14 @@ import com.nkxgen.spring.jdbc.model.LoanApplication;
 @Repository
 @Transactional
 public class LoanApplicationDao implements LoanApplicationDaoInterface {
-
 	@PersistenceContext
 	private EntityManager entityManager;
 	@Autowired
 	CustomerSetter s;
+
+	public void setEntity(EntityManager entityManager) {
+		this.entityManager = entityManager;
+	}
 
 	@Override
 	public List<LoanApplication> getLoanApplicationByValue(String value) {
@@ -61,12 +64,14 @@ public class LoanApplicationDao implements LoanApplicationDaoInterface {
 
 	@Override
 	public void updateLoanApplication(LoanApplicationInput loanApplication) {
-		LoanApplication la = entityManager.find(LoanApplication.class,(long) loanApplication.getId()); // Find the loan
-																									// application
-																									// object with the
-																									// given ID using
-																									// the entity
-																									// manager
+		LoanApplication la = entityManager.find(LoanApplication.class, (long) loanApplication.getId()); // Find the loan
+																										// application
+																										// object with
+																										// the
+																										// given ID
+																										// using
+																										// the entity
+																										// manager
 		la.LoanApplication(loanApplication); // Update the properties of the loan application object using the provided
 												// loan application input
 		entityManager.merge(la); // Merge the updated loan application object with the entity manager to update it in
@@ -122,7 +127,7 @@ public class LoanApplicationDao implements LoanApplicationDaoInterface {
 
 	@Override
 	public void approveApplication(int loanId, long custId) {
-		LoanApplication loanApplication = entityManager.find(LoanApplication.class,(long) loanId);
+		LoanApplication loanApplication = entityManager.find(LoanApplication.class, (long) loanId);
 		// Find the loan
 
 		// application object
@@ -170,6 +175,7 @@ public class LoanApplicationDao implements LoanApplicationDaoInterface {
 		return entityManager.find(LoanApplication.class, id);
 
 	}
+
 	@Override
 	public LoanAccount getLoanAccountById(int accountnumber) {
 		// Log the start of the method

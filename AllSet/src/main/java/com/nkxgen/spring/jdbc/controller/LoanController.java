@@ -1,7 +1,7 @@
 package com.nkxgen.spring.jdbc.controller;
 
-import java.util.*;
-
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -46,7 +46,6 @@ public class LoanController {
 	public String loanNewApplicationForm(Model model) {
 		List<LoanViewModel> list = v.getAllLoans();
 
-
 		// Add the list of loans to the model attribute "loans"
 		model.addAttribute("loan", list);
 		return "loan-new-application-form";
@@ -59,94 +58,95 @@ public class LoanController {
 
 	@RequestMapping(value = "/redirected", method = RequestMethod.GET)
 	public String redirectForm(Model model) {
-	    try {
-	        // Get a list of loan applications with the status "redirecting"
-	        List<LoanApplicationViewModel> list = v.getLoanApplicationsByStatus("redirecting");
+		try {
+			// Get a list of loan applications with the status "redirecting"
+			List<LoanApplicationViewModel> list = v.getLoanApplicationsByStatus("redirecting");
 
-	        // Add the list of loan applications as a model attribute
-	        model.addAttribute("loanApplications", list);
+			// Add the list of loan applications as a model attribute
+			model.addAttribute("loanApplications", list);
 
-	        // Return the view name "Application1" to render the page
-	        return "redirected-applications";
-	    } catch (Exception e) {
-	        throw new DataIntegrityViolationException("Foreign key violation occurred.", e);
-	    }
+			// Return the view name "Application1" to render the page
+			return "redirected-applications";
+		} catch (Exception e) {
+			throw new DataIntegrityViolationException("Foreign key violation occurred.", e);
+		}
 	}
 
 	@RequestMapping(value = "/newLoanApplication", method = RequestMethod.POST)
 	public String newLoanApplication(@Validated LoanApplicationInput l, Model model, HttpServletRequest request) {
-	    try {
-	        // Create a new instance of LoanApplication
-	        LoanApplication loan = new LoanApplication();
+		try {
+			// Create a new instance of LoanApplication
+			LoanApplication loan = new LoanApplication();
 
-	     // Set the input model values of the loan application using the LoanApplicationInput object
+			// Set the input model values of the loan application using the LoanApplicationInput object
 			loan.LoanApplication(l);
 
 			// Save the loan application to the database using the ll (LoanApplicationDaoInterface) object
 			ll.saveLoanApplication(loan);
 
-	        // Get the current session
-	        HttpSession session = request.getSession();
+			// Get the current session
+			HttpSession session = request.getSession();
 
-	        // Get the username from the session attribute
-	        String username = (String) session.getAttribute("username");
+			// Get the username from the session attribute
+			String username = (String) session.getAttribute("username");
 
-	        // Publish a loan application request event with the event message and username
-	        applicationEventPublisher.publishEvent(new LoanAppRequestEvent("New Loan Application Filled", username));
+			// Publish a loan application request event with the event message and username
+			applicationEventPublisher.publishEvent(new LoanAppRequestEvent("New Loan Application Filled", username));
 
-	        // Change the return to the view name "loan_new_application_form" to render the page
-	        return "loan-new-application-form";
-	    } catch (Exception e) {
-	        model.addAttribute("error", "An error occurred while processing the new loan application.");
-	        return "error-view";
-	    }
+			// Change the return to the view name "loan_new_application_form" to render the page
+			return "loan-new-application-form";
+		} catch (Exception e) {
+			model.addAttribute("error", "An error occurred while processing the new loan application.");
+			return "error-view";
+		}
 	}
 
-
 	@RequestMapping(value = "/updateApplication", method = RequestMethod.POST)
-	public String updateLoanApplication(@Validated LoanApplicationInput loanApplication, HttpServletRequest request, Model model) {
-	    try {
-	        // Update the loan application using the ll (LoanApplicationDaoInterface) object
-	        ll.updateLoanApplication(loanApplication);
+	public String updateLoanApplication(@Validated LoanApplicationInput loanApplication, HttpServletRequest request,
+			Model model) {
+		try {
+			// Update the loan application using the ll (LoanApplicationDaoInterface) object
+			ll.updateLoanApplication(loanApplication);
 
-	        // Get the current session
-	        HttpSession session = request.getSession();
+			// Get the current session
+			HttpSession session = request.getSession();
 
-	        // Get the username from the session attribute
-	        String username = (String) session.getAttribute("username");
+			// Get the username from the session attribute
+			String username = (String) session.getAttribute("username");
 
-	        // Publish a loan application approval event with the event message and username
-	        applicationEventPublisher.publishEvent(new LoanAppApprovalEvent("Loan Application Updated", username));
+			// Publish a loan application approval event with the event message and username
+			applicationEventPublisher.publishEvent(new LoanAppApprovalEvent("Loan Application Updated", username));
 
-	        // Change the return to the view name "loan-approval" to render the page
-	        return "loan-approval";
-	    } catch (Exception e) {
-	        model.addAttribute("error", "An error occurred while updating the loan application.");
-	        return "error-view";
-	    }
+			// Change the return to the view name "loan-approval" to render the page
+			return "loan-approval";
+		} catch (Exception e) {
+			model.addAttribute("error", "An error occurred while updating the loan application.");
+			return "error-view";
+		}
 	}
 
 	@RequestMapping(value = "/update_application", method = RequestMethod.POST)
-	public String updateLoanApplication1(@Validated LoanApplicationInput loanApplication, HttpServletRequest request,Model model) {
+	public String updateLoanApplication1(@Validated LoanApplicationInput loanApplication, HttpServletRequest request,
+			Model model) {
 		try {
-	        // Update the loan application using the ll (LoanApplicationDaoInterface) object
-	        ll.updateLoanApplication(loanApplication);
+			// Update the loan application using the ll (LoanApplicationDaoInterface) object
+			ll.updateLoanApplication(loanApplication);
 
-	        // Get the current session
-	        HttpSession session = request.getSession();
+			// Get the current session
+			HttpSession session = request.getSession();
 
-	        // Get the username from the session attribute
-	        String username = (String) session.getAttribute("username");
+			// Get the username from the session attribute
+			String username = (String) session.getAttribute("username");
 
-	        // Publish a loan application approval event with the event message and username
-	        applicationEventPublisher.publishEvent(new LoanAppApprovalEvent("Loan Application Updated", username));
+			// Publish a loan application approval event with the event message and username
+			applicationEventPublisher.publishEvent(new LoanAppApprovalEvent("Loan Application Updated", username));
 
-	        // Change the return to the view name "loan-approval" to render the page
-	        return "loan-approval";
-	    } catch (Exception e) {
-	        model.addAttribute("error", "An error occurred while updating the loan application.");
-	        return "error-view";
-	    }
+			// Change the return to the view name "loan-approval" to render the page
+			return "loan-approval";
+		} catch (Exception e) {
+			model.addAttribute("error", "An error occurred while updating the loan application.");
+			return "error-view";
+		}
 	}
 
 	@RequestMapping(value = "/getApplications", method = RequestMethod.POST)
@@ -175,48 +175,45 @@ public class LoanController {
 
 	@RequestMapping(value = "/deleteLoan", method = RequestMethod.POST)
 	public String deleteLoanApplication(@RequestParam("loanId") int loanId, Model model) {
-	    try {
-	        // Delete the loan application based on the loanId parameter
-	        ll.deleteApplication(loanId);
+		try {
+			// Delete the loan application based on the loanId parameter
+			ll.deleteApplication(loanId);
 
-	        // Change the return to the view name "loan-approval" to render the page
-	        return "loan-approval";
-	    } catch (Exception e) {
-	        model.addAttribute("error", "An error occurred while deleting the loan application.");
-	        return "error-view";
-	    }
+			// Change the return to the view name "loan-approval" to render the page
+			return "loan-approval";
+		} catch (Exception e) {
+			model.addAttribute("error", "An error occurred while deleting the loan application.");
+			return "error-view";
+		}
 	}
-
 
 	@RequestMapping(value = "/approveLoan", method = RequestMethod.POST)
 	public String approveLoanApplication(@RequestParam("loanId") int loanId,
-	                                    @RequestParam("customerId") Long customerId,
-	                                    Model model,
-	                                    HttpServletRequest request) {
-	    try {
-	        // Approve the loan application based on the loanId and customerId parameters
-	        System.out.println("the loan application id is: " + loanId);
-	        LoanApplication loanapp = ll.getLoanApplicationByid(loanId);
-	        System.out.println("the acquired loan id is: " + loanapp.getId());
-	        loanapp.setProcessedStatus("Approved");
-	        loanapp.setStatus("Approved");
-	        ll.saveTheApprovedLoanApplication(loanapp);
+			@RequestParam("customerId") Long customerId, Model model, HttpServletRequest request) {
+		try {
+			// Approve the loan application based on the loanId and customerId parameters
+			System.out.println("the loan application id is: " + loanId);
+			LoanApplication loanapp = ll.getLoanApplicationByid(loanId);
+			System.out.println("the acquired loan id is: " + loanapp.getId());
+			loanapp.setProcessedStatus("Approved");
+			loanapp.setStatus("Approved");
+			ll.saveTheApprovedLoanApplication(loanapp);
 
-	        // Get the session object from the request
-	        HttpSession session = request.getSession();
+			// Get the session object from the request
+			HttpSession session = request.getSession();
 
-	        // Get the username attribute from the session
-	        String username = (String) session.getAttribute("username");
+			// Get the username attribute from the session
+			String username = (String) session.getAttribute("username");
 
-	        // Publish a LoanAppApprovalEvent with the appropriate message and username
-	        applicationEventPublisher.publishEvent(new LoanAppApprovalEvent("Loan Application Approved", username));
+			// Publish a LoanAppApprovalEvent with the appropriate message and username
+			applicationEventPublisher.publishEvent(new LoanAppApprovalEvent("Loan Application Approved", username));
 
-	        // Change the return to the view name "loan-approval" to render the page
-	        return "loan-approval";
-	    } catch (Exception e) {
-	        model.addAttribute("error", "An error occurred while approving the loan application.");
-	        return "error-view";
-	    }
+			// Change the return to the view name "loan-approval" to render the page
+			return "loan-approval";
+		} catch (Exception e) {
+			model.addAttribute("error", "An error occurred while approving the loan application.");
+			return "error-view";
+		}
 	}
 
 	@RequestMapping(value = "/getLoanApplicationsById", method = RequestMethod.POST)
