@@ -6,6 +6,8 @@ import java.time.Period;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.nkxgen.spring.jdbc.DaoInterfaces.TransactionsInterface;
+import com.nkxgen.spring.jdbc.Exception.LoanAccountApplicationNotFoundException;
+import com.nkxgen.spring.jdbc.Exception.LoanAccountNotFoundException;
 import com.nkxgen.spring.jdbc.ViewModels.CustomerViewModel;
 import com.nkxgen.spring.jdbc.model.Customer;
 import com.nkxgen.spring.jdbc.model.CustomerSub;
@@ -169,10 +171,22 @@ public class CustomerSetter {
 	public static int pastdue(long LoanId, double damount, double lamount, int duration, double ir, String typee) {
 
 		// System.out.println("++++++++++++++++++++++++++++++++++++++++");
-		LoanAccount account = ti.getLoanAccountById((long) LoanId);
+		LoanAccount account=new LoanAccount();
+		try {
+			account = ti.getLoanAccountById((long) LoanId);
+		} catch (LoanAccountNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		System.out.println("the account name is:" + account.getLoanAmount());
 		//
-		LoanApplication Application = ti.getLoanAccountApplicationById(account.getloanappId());
+		LoanApplication Application = new LoanApplication();
+		try {
+			Application = ti.getLoanAccountApplicationById(account.getloanappId());
+		} catch (LoanAccountApplicationNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		System.out.println("the processed date is :" + Application.getCreatedDate());
 		//
 		System.out.println("++++++-------------------------");

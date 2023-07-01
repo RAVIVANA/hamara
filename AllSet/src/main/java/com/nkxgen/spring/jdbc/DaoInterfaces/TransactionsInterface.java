@@ -1,5 +1,20 @@
 package com.nkxgen.spring.jdbc.DaoInterfaces;
 
+import javax.security.auth.login.AccountNotFoundException;
+
+import com.nkxgen.spring.jdbc.Exception.CustomerNotFoundException;
+import com.nkxgen.spring.jdbc.Exception.EMIpayConversionException;
+import com.nkxgen.spring.jdbc.Exception.InsufficientBalanceException;
+import com.nkxgen.spring.jdbc.Exception.InvalidLoanRepaymentException;
+import com.nkxgen.spring.jdbc.Exception.LoanAccountApplicationNotFoundException;
+import com.nkxgen.spring.jdbc.Exception.LoanAccountNotFoundException;
+import com.nkxgen.spring.jdbc.Exception.LoanTransactionRepayException;
+import com.nkxgen.spring.jdbc.Exception.LoanTransactionSaveException;
+import com.nkxgen.spring.jdbc.Exception.LoanTransactionWithdrawlException;
+import com.nkxgen.spring.jdbc.Exception.LoanWithdrawalException;
+import com.nkxgen.spring.jdbc.Exception.TransactionDepositSaveException;
+import com.nkxgen.spring.jdbc.Exception.TransactionSaveException;
+import com.nkxgen.spring.jdbc.Exception.TransactionWithdrawlSaveException;
 import com.nkxgen.spring.jdbc.model.Account;
 import com.nkxgen.spring.jdbc.model.Customertrail;
 import com.nkxgen.spring.jdbc.model.EMIpay;
@@ -12,34 +27,44 @@ import com.nkxgen.spring.jdbc.model.transactioninfo;
 
 public interface TransactionsInterface {
 
-	public Account getAccountById(int id);
+	// Retrieves an Account object by its ID
+	public Account getAccountById(int id) throws AccountNotFoundException;
 
-	public LoanAccount getLoanAccountById(long acnt_id);
+	// Retrieves a LoanAccount object by its ID
+	public LoanAccount getLoanAccountById(long acnt_id) throws LoanAccountNotFoundException;
 
-	public void moneyDeposit(transactioninfo tempacc);
+	public LoanApplication getLoanAccountApplicationById(long acnt_id) throws LoanAccountApplicationNotFoundException;
 
-	public void loanRepayment(tempRepayment temprr);
+	// Performs a money deposit transaction
+	public void moneyDeposit(transactioninfo tempacc) throws AccountNotFoundException;
 
-	public void moneyWithdrawl(transactioninfo tempacc);
+	// Performs a loan repayment transaction
+	public void loanRepayment(tempRepayment temprr) throws InvalidLoanRepaymentException;
 
-	public void loanWithdrawl(long id);
+	// Performs a money withdrawal transaction
+	public void moneyWithdrawl(transactioninfo tempacc) throws InsufficientBalanceException;
 
-	public Transaction transactionSave(transactioninfo tarn);
+	// Performs a loan withdrawal transaction
+	public void loanWithdrawl(long id) throws LoanWithdrawalException;
 
-	public void saveTransaction(Transaction t);
+	public Transaction transactionSave(transactioninfo tarn) throws TransactionWithdrawlSaveException;
 
-	public Transaction transactionSave1(transactioninfo tarn);
+	public void saveTransaction(Transaction t) throws TransactionSaveException;
 
-	public Customertrail getCustomerByLoanID(Long loanId);
+	public Transaction transactionSave1(transactioninfo tarn) throws TransactionDepositSaveException;
 
-	public EMIpay changeToEMI(LoanAccount account);
+	// Retrieves a Customertrail object by loan ID
+	public Customertrail getCustomerByLoanID(Long loanId) throws CustomerNotFoundException;
 
-	public LoanTransactions loanTransactionRepay(tempRepayment tarn);
+	// Converts a LoanAccount object to EMIpay object
+	public EMIpay changeToEMI(LoanAccount account) throws EMIpayConversionException;
 
-	public void saveLoanTransaction(LoanTransactions t);
+	// Creates a LoanTransactions object based on repayment information
+	public LoanTransactions loanTransactionRepay(tempRepayment tarn) throws LoanTransactionRepayException;
 
-	public LoanTransactions LoanTransactionwithdrawl(tempRepayment temp);
+	// Saves a LoanTransactions object
+	public void saveLoanTransaction(LoanTransactions t) throws LoanTransactionSaveException;
 
-	public LoanApplication getLoanAccountApplicationById(long loanId);
+	public LoanTransactions loanTransactionWithdrawl(tempRepayment temp) throws LoanTransactionWithdrawlException;
 
 }

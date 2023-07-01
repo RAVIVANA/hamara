@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.security.auth.login.AccountNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.nkxgen.spring.jdbc.DaoInterfaces.AccountApplicationDaoInterface;
@@ -333,7 +335,13 @@ public class setEntityToView implements ViewInterface {
 	@Override
 	public AccountViewModel getAccountById(int act) throws AccountNotFound {
 		AccountViewModel a2 = new AccountViewModel();
-		Account a = ti.getAccountById(act); // Get the Account object by account ID from the ti object
+		Account a=new Account();
+		try {
+			a = ti.getAccountById(act);
+		} catch (AccountNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} // Get the Account object by account ID from the ti object
 		if (a == null) {
 			throw new AccountNotFound("Account not founded");
 
