@@ -47,7 +47,13 @@ public class LoanTypesDAO implements LoanTypesInterface {
 	}
 
 	public void save(LoansTypes LoansTypes) {
-		entityManager.merge(LoansTypes); // Merge the 'LoansTypes' object with the entity manager to update it in the
+		if (LoansTypes.getLoanType() != null && LoansTypes.getDescriptionForm() != null) {
+			entityManager.merge(LoansTypes); // Merge the account type entity with the persistence context
+		} else {
+			// Handle the case where either accountType or descriptionForm is null
+			// You can throw an exception, log an error, or perform any appropriate action
+			System.err.println("Invalid account type data. Account type or description form is null.");
+		}// Merge the 'LoansTypes' object with the entity manager to update it in the
 											// data store
 	}
 

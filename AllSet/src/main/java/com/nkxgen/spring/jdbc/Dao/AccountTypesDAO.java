@@ -57,8 +57,14 @@ public class AccountTypesDAO implements AccountTypeInterface {
 		return account; // Return the account type
 	}
 
-	public void saveAccountTypes(accountTypes accountTypes) {
-		entityManager.persist(accountTypes); // Merge the account type entity with the persistence context
+	public void saveAccountTypes(accountTypes accountType) {
+		if (accountType.getAccountType() != null && accountType.getDescriptionForm() != null) {
+			entityManager.merge(accountType); // Merge the account type entity with the persistence context
+		} else {
+			// Handle the case where either accountType or descriptionForm is null
+			// You can throw an exception, log an error, or perform any appropriate action
+			System.err.println("Invalid account type data. Account type or description form is null.");
+		}
 	}
 
 	// =================================================

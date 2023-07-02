@@ -191,6 +191,7 @@ public class LoanController {
 	public String approveLoanApplication(@RequestParam("loanId") int loanId,
 			@RequestParam("customerId") Long customerId, Model model, HttpServletRequest request) {
 		try {
+			ll.approveApplication(loanId, customerId);
 			// Approve the loan application based on the loanId and customerId parameters
 			System.out.println("the loan application id is: " + loanId);
 			LoanApplication loanapp = ll.getLoanApplicationByid(loanId);
