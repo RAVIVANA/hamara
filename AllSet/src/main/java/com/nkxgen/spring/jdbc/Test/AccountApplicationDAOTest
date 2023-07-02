@@ -1,0 +1,162 @@
+import com.nkxgen.spring.jdbc.Dao.AccountApplicationDAO;
+import com.nkxgen.spring.jdbc.model.Account;
+import com.nkxgen.spring.jdbc.model.AccountApplication;
+import com.nkxgen.spring.jdbc.model.Accountdocument;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+
+import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+public class AccountApplicationDAOTest {
+
+    @Mock
+    private EntityManager entityManager;
+
+    @InjectMocks
+    private AccountApplicationDAO accountApplicationDAO;
+
+    @BeforeEach
+    public void setup() {
+        MockitoAnnotations.openMocks(this);
+    }
+
+    @Test
+    public void testSave() {
+        AccountApplication accountApplication = new AccountApplication();
+
+        accountApplicationDAO.save(accountApplication);
+
+        verify(entityManager).persist(accountApplication);
+    }
+
+    @Test
+    public void testGetAccountsappByType() {
+        String value = "type";
+
+        TypedQuery<AccountApplication> query = mock(TypedQuery.class);
+        when(entityManager.createQuery(anyString(), eq(AccountApplication.class))).thenReturn(query);
+        when(query.setParameter(eq("value"), eq(value))).thenReturn(query);
+
+        List<AccountApplication> resultList = new ArrayList<>();
+        when(query.getResultList()).thenReturn(resultList);
+
+        List<AccountApplication> result = accountApplicationDAO.getAccountsappByType(value);
+
+        Assertions.assertEquals(resultList, result);
+        verify(query).getResultList();
+    }
+
+    @Test
+    public void testGetAccountsByType() {
+        String accountTypeId = "type";
+
+        TypedQuery<Account> query = mock(TypedQuery.class);
+        when(entityManager.createQuery(anyString(), eq(Account.class))).thenReturn(query);
+        when(query.setParameter(eq("acnt_acty_id"), eq(accountTypeId))).thenReturn(query);
+
+        List<Account> resultList = new ArrayList<>();
+        when(query.getResultList()).thenReturn(resultList);
+
+        List<Account> result = accountApplicationDAO.getAccountsByType(accountTypeId);
+
+        Assertions.assertEquals(resultList, result);
+        verify(query).getResultList();
+    }
+
+    @Test
+    public void testSaveAccount() {
+        Account account = new Account();
+
+        Account mergedAccount = new Account();
+        when(entityManager.merge(eq(account))).thenReturn(mergedAccount);
+
+        accountApplicationDAO.saveAccount(account);
+
+        verify(entityManager).persist(mergedAccount);
+    }
+
+    @Test
+    public void testSaveAccountdocument() {
+        Accountdocument accountdocument = new Accountdocument();
+
+        Accountdocument mergedAccountdocument = new Accountdocument();
+        when(entityManager.merge(eq(accountdocument))).thenReturn(mergedAccountdocument);
+
+        accountApplicationDAO.saveAccountdocument(accountdocument);
+
+        verify(entityManager).persist(mergedAccountdocument);
+    }
+
+    @Test
+    public void testGetAll() {
+        TypedQuery<Account> query = mock(TypedQuery.class);
+        when(entityManager.createQuery(anyString(), eq(Account.class))).thenReturn(query);
+
+        List<Account> resultList = new ArrayList<>();
+        when(query.getResultList()).thenReturn(resultList);
+
+        List<Account> result = accountApplicationDAO.getall();
+
+        Assertions.assertEquals(resultList, result);
+        verify(query).getResultList();
+    }
+
+    @Test
+    public void testMergeAccount() {
+        Account account = new Account();
+
+        Account mergedAccount = new Account();
+        when(entityManager.merge(eq(account))).thenReturn(mergedAccount);
+
+        Account result = accountApplicationDAO.mergeAccount(account);
+
+        Assertions.assertEquals(mergedAccount, result);
+    }
+
+    @Test
+    public void testGetAccountApplicationById() {
+        Long applicationId = 1L;
+        AccountApplication accountApplication = new AccountApplication();
+        when(entityManager.find(eq(AccountApplication.class), eq(applicationId))).thenReturn(accountApplication);
+
+        AccountApplication result = accountApplicationDAO.getAccountApplicationById(applicationId);
+
+        Assertions.assertEquals(accountApplication, result);
+    }
+
+    @Test
+    public void testSaveTheAccountapp() {
+        AccountApplication accountApplication = new AccountApplication();
+
+        AccountApplication mergedAccountApplication = new AccountApplication();
+        when(entityManager.merge(eq(accountApplication))).thenReturn(mergedAccountApplication);
+
+        accountApplicationDAO.savetheAccountapp(accountApplication);
+
+        verify(entityManager).persist(mergedAccountApplication);
+    }
+
+    @Test
+    public void testGetAccountById() {
+        Long num = 1L;
+        Account account = new Account();
+        when(entityManager.find(eq(Account.class), eq(num))).thenReturn(account);
+
+        Account result = accountApplicationDAO.getAccountById(num);
+
+        Assertions.assertEquals(account, result);
+    }
+
+}
