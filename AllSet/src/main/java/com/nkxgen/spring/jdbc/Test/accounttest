@@ -1,0 +1,229 @@
+import com.nkxgen.spring.jdbc.DaoInterfaces.AccountApplicationDaoInterface;
+import com.nkxgen.spring.jdbc.DaoInterfaces.CustomerDaoInterface;
+import com.nkxgen.spring.jdbc.Exception.AccountNotFound;
+import com.nkxgen.spring.jdbc.Exception.ApplicationNotFound;
+import com.nkxgen.spring.jdbc.InputModels.AccountApplicationInput;
+import com.nkxgen.spring.jdbc.InputModels.AccountDocumentInput;
+import com.nkxgen.spring.jdbc.InputModels.AccountInput;
+import com.nkxgen.spring.jdbc.ViewModels.AccountApplicationViewModel;
+import com.nkxgen.spring.jdbc.ViewModels.AccountTypeView;
+import com.nkxgen.spring.jdbc.ViewModels.AccountViewModel;
+import com.nkxgen.spring.jdbc.events.AccountAppApprovalEvent;
+import com.nkxgen.spring.jdbc.events.AccountAppRequestEvent;
+import com.nkxgen.spring.jdbc.model.Account;
+import com.nkxgen.spring.jdbc.model.AccountApplication;
+import com.nkxgen.spring.jdbc.model.Accountdocument;
+import com.nkxgen.spring.jdbc.model.Customertrail;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
+
+public class AccountControllerTest {
+    @Mock
+    private AccountApplicationDaoInterface accountApplicationDao;
+
+    @Mock
+    private CustomerDaoInterface customerDao;
+
+    @Mock
+    private ApplicationEventPublisher eventPublisher;
+
+    @Mock
+    private HttpServletRequest request;
+
+    @Mock
+    private HttpSession session;
+
+    @Mock
+    private Model model;
+
+    @Mock
+    private ViewInterface viewInterface;
+
+    @InjectMocks
+    private AccountController accountController;
+
+    @BeforeEach
+    public void setup() {
+        MockitoAnnotations.openMocks(this);
+    }
+
+    @Test
+    public void testGetAccountApplicationByType() {
+        String accountType = "some-account-type";
+        List<AccountApplicationViewModel> accountApplications = new ArrayList<>();
+        when(viewInterface.getAccountsappByType(eq(accountType))).thenReturn(accountApplications);
+
+        String result = accountController.getAccountApplicationByType(accountType, model);
+
+        Assertions.assertEquals("new-account-application", result);
+        verify(model).addAttribute(eq("listOfAccountApplications"), eq(accountApplications));
+    }
+
+    @Test
+    public void testViewAccounts() {
+        String accountType = "some-account-type";
+        List<AccountViewModel> accounts = new ArrayList<>();
+        when(viewInterface.getAccountsByType(eq(accountType))).thenReturn(accounts);
+        when(customerDao.getRealCustomerById(anyLong())).thenReturn(new Customertrail());
+
+        String result = accountController.viewAccounts(accountType, model);
+
+        Assertions.assertEquals("any-type-account-info", result);
+        verify(model).addAttribute(eq("list_of_account"), eq(accounts));
+        verify(model).addAttribute(eq("list_of_customer"), any(List.class));
+    }
+
+    @Test
+    public void testAccountApplicationSaveToDb() {
+        AccountApplicationInput accountApplicationInput = new AccountApplicationInput();
+        when(request.getSession()).thenReturn(session);
+        when(session.getAttribute("username")).thenReturn("testuser");
+
+        String result = accountController.accountApplicationSaveToDb(accountApplicationInput, request, model);
+
+        Assertions.assertEquals("account-new-application-form", result);
+        verify(accountApplicationDao).save(any(AccountApplication.class));
+        verify(eventPublisher).publishEvent(any(AccountAppRequestEvent.class));
+        verify(model, never()).addAttribute(eq("error"), anyString());
+    }
+
+    @Test
+    public void testAccountApplicationSaveToDbError() {
+        AccountApplicationInput accountApplicationInput = new AccountApplicationInput();
+        when(request.getSession()).thenReturn(session);
+        when(session.getAttribute("username")).thenReturn("testuser");
+        doThrow(new RuntimeException()).when(accountApplicationDao).save(any(AccountApplication.class));
+
+        String result = accountController.accountApplicationSaveToDb(accountApplicationInput, request, model);
+
+        Assertions.assertEquals("error-view", result);
+        verify(accountApplicationDao).save(any(AccountApplication.class));
+        verify(eventPublisher, never()).publishEvent(any(AccountAppRequestEvent.class));
+        verify(model).addAttribute(eq("error"), anyString());
+    }
+
+    @Test
+    public void testSaveToAccountDatabase() {
+        AccountInput accountInput = new AccountInput();
+        AccountApplication accountApplication = new AccountApplication();
+        when(request.getSession()).thenReturn(session);
+        when(session.getAttribute("username")).thenReturn("testuser");
+        when(accountApplicationDao.getAccountApplicationById(anyLong())).thenReturn(accountApplication);
+
+        String result = accountController.saveToAccountDatabase(accountInput, model, request);
+
+        Assertions.assertEquals("account-new-application-form", result);
+        verify(accountApplicationDao).saveAccount(any(Account.class));
+        verify(eventPublisher).publishEvent(any(AccountAppApprovalEvent.class));
+        verify(accountApplicationDao).savetheAccountapp(eq(accountApplication));
+        verify(model, never()).addAttribute(eq("error"), anyString());
+    }
+
+    @Test
+    public void testSaveToAccountDatabaseError() {
+        AccountInput accountInput = new AccountInput();
+        when(request.getSession()).thenReturn(session);
+        when(session.getAttribute("username")).thenReturn("testuser");
+        doThrow(new RuntimeException()).when(accountApplicationDao).saveAccount(any(Account.class));
+
+        String result = accountController.saveToAccountDatabase(accountInput, model, request);
+
+        Assertions.assertEquals("error-view", result);
+        verify(accountApplicationDao).saveAccount(any(Account.class));
+        verify(eventPublisher, never()).publishEvent(any(AccountAppApprovalEvent.class));
+        verify(model).addAttribute(eq("error"), anyString());
+    }
+
+    @Test
+    public void testSaveToAccountDocumentsDatabase() {
+        AccountDocumentInput accountDocumentInput = new AccountDocumentInput();
+
+        String result = accountController.saveToAccountDocumentsDatabase(accountDocumentInput, model);
+
+        Assertions.assertEquals("account-new-application-form", result);
+        verify(accountApplicationDao).saveAccountdocument(any(Accountdocument.class));
+        verify(model, never()).addAttribute(eq("error"), anyString());
+    }
+
+    @Test
+    public void testSaveToAccountDocumentsDatabaseError() {
+        AccountDocumentInput accountDocumentInput = new AccountDocumentInput();
+        doThrow(new RuntimeException()).when(accountApplicationDao).saveAccountdocument(any(Accountdocument.class));
+
+        String result = accountController.saveToAccountDocumentsDatabase(accountDocumentInput, model);
+
+        Assertions.assertEquals("error-view", result);
+        verify(accountApplicationDao).saveAccountdocument(any(Accountdocument.class));
+        verify(model).addAttribute(eq("error"), anyString());
+    }
+
+    @Test
+    public void testGetAccountById() throws AccountNotFound {
+        int accountId = 1;
+        AccountViewModel accountViewModel = new AccountViewModel();
+        Customertrail customerTrail = new Customertrail();
+        when(viewInterface.getAccountById(eq(accountId))).thenReturn(accountViewModel);
+        when(customerDao.getRealCustomerById(anyLong())).thenReturn(customerTrail);
+
+        String result = accountController.getAccountById(accountId, model);
+
+        Assertions.assertEquals("any-type-account-info", result);
+        verify(model).addAttribute(eq("list_of_account"), anyList());
+        verify(model).addAttribute(eq("list_of_customer"), anyList());
+        verify(model, never()).addAttribute(eq("error"), anyString());
+    }
+
+    @Test
+    public void testGetAccountByIdError() throws AccountNotFound {
+        int accountId = 1;
+        when(viewInterface.getAccountById(eq(accountId))).thenThrow(new AccountNotFound("Account not found"));
+
+        String result = accountController.getAccountById(accountId, model);
+
+        Assertions.assertEquals("AccountNotFound", result);
+        verify(model, never()).addAttribute(eq("list_of_account"), anyList());
+        verify(model, never()).addAttribute(eq("list_of_customer"), anyList());
+        verify(model).addAttribute(eq("error"), anyString());
+    }
+
+    @Test
+    public void testGetAccountApplicationById() throws ApplicationNotFound {
+        int accountId = 1;
+        AccountApplicationViewModel accountApplicationViewModel = new AccountApplicationViewModel();
+        when(viewInterface.getAccountsappById(eq(accountId))).thenReturn(accountApplicationViewModel);
+
+        String result = accountController.getAccountsappById(accountId, model);
+
+        Assertions.assertEquals("new-account-application", result);
+        verify(model).addAttribute(eq("listOfAccountApplications"), anyList());
+        verify(model, never()).addAttribute(eq("error"), anyString());
+    }
+
+    @Test
+    public void testGetAccountApplicationByIdError() throws ApplicationNotFound {
+        int accountId = 1;
+        when(viewInterface.getAccountsappById(eq(accountId))).thenThrow(new ApplicationNotFound("Application not found"));
+
+        String result = accountController.getAccountsappById(accountId, model);
+
+        Assertions.assertEquals("ApplicationNotFound", result);
+        verify(model, never()).addAttribute(eq("listOfAccountApplications"), anyList());
+        verify(model).addAttribute(eq("error"), anyString());
+    }
+}
