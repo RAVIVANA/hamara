@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testng-results ignored="0" total="11" passed="10" failed="1" skipped="0">
+  <reporter-output>
+  </reporter-output>
+  <suite started-at="2023-07-02T11:41:19 IST" name="Default suite" finished-at="2023-07-02T11:41:19 IST" duration-ms="774">
+    <groups>
+    </groups>
+    <test started-at="2023-07-02T11:41:19 IST" name="Default test" finished-at="2023-07-02T11:41:19 IST" duration-ms="774">
+      <class name="com.nkxgen.spring.jdbc.Test.LoanApplicationDaoTest">
+        <test-method is-config="true" signature="setUp()[pri:0, instance:com.nkxgen.spring.jdbc.Test.LoanApplicationDaoTest@503f91c3]" started-at="2023-07-02T11:41:19 IST" name="setUp" finished-at="2023-07-02T11:41:19 IST" duration-ms="654" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setUp -->
+        <test-method signature="testApproveApplication()[pri:0, instance:com.nkxgen.spring.jdbc.Test.LoanApplicationDaoTest@503f91c3]" started-at="2023-07-02T11:41:19 IST" name="testApproveApplication" finished-at="2023-07-02T11:41:19 IST" duration-ms="30" status="FAIL">
+          <exception class="org.mockito.exceptions.verification.WantedButNotInvoked">
+            <message>
+              <![CDATA[
+Wanted but not invoked:
+entityManager.persist(
+    <any com.nkxgen.spring.jdbc.model.LoanAccount>
+);
+-> at com.nkxgen.spring.jdbc.Test.LoanApplicationDaoTest.testApproveApplication(LoanApplicationDaoTest.java:153)
+Actually, there were zero interactions with this mock.
+]]>
+            </message>
+            <full-stacktrace>
+              <![CDATA[Wanted but not invoked:
+entityManager.persist(
+    <any com.nkxgen.spring.jdbc.model.LoanAccount>
+);
+-> at com.nkxgen.spring.jdbc.Test.LoanApplicationDaoTest.testApproveApplication(LoanApplicationDaoTest.java:153)
+Actually, there were zero interactions with this mock.
+
+at com.nkxgen.spring.jdbc.Test.LoanApplicationDaoTest.testApproveApplication(LoanApplicationDaoTest.java:153)
+at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+at org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:139)
+at org.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:664)
+at org.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:227)
+at org.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:50)
+at org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:957)
+at org.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:200)
+at org.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:148)
+at org.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:128)
+at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+at org.testng.TestRunner.privateRun(TestRunner.java:848)
+at org.testng.TestRunner.run(TestRunner.java:621)
+at org.testng.SuiteRunner.runTest(SuiteRunner.java:443)
+at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:437)
+at org.testng.SuiteRunner.privateRun(SuiteRunner.java:397)
+at org.testng.SuiteRunner.run(SuiteRunner.java:336)
+at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
+at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:95)
+at org.testng.TestNG.runSuitesSequentially(TestNG.java:1280)
+at org.testng.TestNG.runSuitesLocally(TestNG.java:1200)
+at org.testng.TestNG.runSuites(TestNG.java:1114)
+at org.testng.TestNG.run(TestNG.java:1082)
+at org.testng.remote.AbstractRemoteTestNG.run(AbstractRemoteTestNG.java:115)
+at org.testng.remote.RemoteTestNG.initAndRun(RemoteTestNG.java:251)
+at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:77)
+]]>
+            </full-stacktrace>
+          </exception> <!-- org.mockito.exceptions.verification.WantedButNotInvoked -->
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testApproveApplication -->
+        <test-method signature="testDeleteApplication()[pri:0, instance:com.nkxgen.spring.jdbc.Test.LoanApplicationDaoTest@503f91c3]" started-at="2023-07-02T11:41:19 IST" name="testDeleteApplication" finished-at="2023-07-02T11:41:19 IST" duration-ms="5" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testDeleteApplication -->
+        <test-method is-config="true" signature="setUp()[pri:0, instance:com.nkxgen.spring.jdbc.Test.LoanApplicationDaoTest@503f91c3]" started-at="2023-07-02T11:41:19 IST" name="setUp" finished-at="2023-07-02T11:41:19 IST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setUp -->
+        <test-method signature="testGetAllLoans()[pri:0, instance:com.nkxgen.spring.jdbc.Test.LoanApplicationDaoTest@503f91c3]" started-at="2023-07-02T11:41:19 IST" name="testGetAllLoans" finished-at="2023-07-02T11:41:19 IST" duration-ms="5" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testGetAllLoans -->
+        <test-method is-config="true" signature="setUp()[pri:0, instance:com.nkxgen.spring.jdbc.Test.LoanApplicationDaoTest@503f91c3]" started-at="2023-07-02T11:41:19 IST" name="setUp" finished-at="2023-07-02T11:41:19 IST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setUp -->
+        <test-method is-config="true" signature="setUp()[pri:0, instance:com.nkxgen.spring.jdbc.Test.LoanApplicationDaoTest@503f91c3]" started-at="2023-07-02T11:41:19 IST" name="setUp" finished-at="2023-07-02T11:41:19 IST" duration-ms="1" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setUp -->
+        <test-method signature="testGetLoanAccountById()[pri:0, instance:com.nkxgen.spring.jdbc.Test.LoanApplicationDaoTest@503f91c3]" started-at="2023-07-02T11:41:19 IST" name="testGetLoanAccountById" finished-at="2023-07-02T11:41:19 IST" duration-ms="2" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testGetLoanAccountById -->
+        <test-method is-config="true" signature="setUp()[pri:0, instance:com.nkxgen.spring.jdbc.Test.LoanApplicationDaoTest@503f91c3]" started-at="2023-07-02T11:41:19 IST" name="setUp" finished-at="2023-07-02T11:41:19 IST" duration-ms="1" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setUp -->
+        <test-method signature="testGetLoanAccountsByLoanType()[pri:0, instance:com.nkxgen.spring.jdbc.Test.LoanApplicationDaoTest@503f91c3]" started-at="2023-07-02T11:41:19 IST" name="testGetLoanAccountsByLoanType" finished-at="2023-07-02T11:41:19 IST" duration-ms="2" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testGetLoanAccountsByLoanType -->
+        <test-method is-config="true" signature="setUp()[pri:0, instance:com.nkxgen.spring.jdbc.Test.LoanApplicationDaoTest@503f91c3]" started-at="2023-07-02T11:41:19 IST" name="setUp" finished-at="2023-07-02T11:41:19 IST" duration-ms="1" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setUp -->
+        <test-method signature="testGetLoanApplicationById()[pri:0, instance:com.nkxgen.spring.jdbc.Test.LoanApplicationDaoTest@503f91c3]" started-at="2023-07-02T11:41:19 IST" name="testGetLoanApplicationById" finished-at="2023-07-02T11:41:19 IST" duration-ms="1" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testGetLoanApplicationById -->
+        <test-method is-config="true" signature="setUp()[pri:0, instance:com.nkxgen.spring.jdbc.Test.LoanApplicationDaoTest@503f91c3]" started-at="2023-07-02T11:41:19 IST" name="setUp" finished-at="2023-07-02T11:41:19 IST" duration-ms="1" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setUp -->
+        <test-method signature="testGetLoanApplicationByValue()[pri:0, instance:com.nkxgen.spring.jdbc.Test.LoanApplicationDaoTest@503f91c3]" started-at="2023-07-02T11:41:19 IST" name="testGetLoanApplicationByValue" finished-at="2023-07-02T11:41:19 IST" duration-ms="2" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testGetLoanApplicationByValue -->
+        <test-method is-config="true" signature="setUp()[pri:0, instance:com.nkxgen.spring.jdbc.Test.LoanApplicationDaoTest@503f91c3]" started-at="2023-07-02T11:41:19 IST" name="setUp" finished-at="2023-07-02T11:41:19 IST" duration-ms="1" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setUp -->
+        <test-method signature="testGetLoanApplicationByid()[pri:0, instance:com.nkxgen.spring.jdbc.Test.LoanApplicationDaoTest@503f91c3]" started-at="2023-07-02T11:41:19 IST" name="testGetLoanApplicationByid" finished-at="2023-07-02T11:41:19 IST" duration-ms="1" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testGetLoanApplicationByid -->
+        <test-method signature="testGetLoanApplicationsByStatus()[pri:0, instance:com.nkxgen.spring.jdbc.Test.LoanApplicationDaoTest@503f91c3]" started-at="2023-07-02T11:41:19 IST" name="testGetLoanApplicationsByStatus" finished-at="2023-07-02T11:41:19 IST" duration-ms="3" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testGetLoanApplicationsByStatus -->
+        <test-method is-config="true" signature="setUp()[pri:0, instance:com.nkxgen.spring.jdbc.Test.LoanApplicationDaoTest@503f91c3]" started-at="2023-07-02T11:41:19 IST" name="setUp" finished-at="2023-07-02T11:41:19 IST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setUp -->
+        <test-method is-config="true" signature="setUp()[pri:0, instance:com.nkxgen.spring.jdbc.Test.LoanApplicationDaoTest@503f91c3]" started-at="2023-07-02T11:41:19 IST" name="setUp" finished-at="2023-07-02T11:41:19 IST" duration-ms="0" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setUp -->
+        <test-method signature="testSaveLoanApplication()[pri:0, instance:com.nkxgen.spring.jdbc.Test.LoanApplicationDaoTest@503f91c3]" started-at="2023-07-02T11:41:19 IST" name="testSaveLoanApplication" finished-at="2023-07-02T11:41:19 IST" duration-ms="1" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testSaveLoanApplication -->
+        <test-method is-config="true" signature="setUp()[pri:0, instance:com.nkxgen.spring.jdbc.Test.LoanApplicationDaoTest@503f91c3]" started-at="2023-07-02T11:41:19 IST" name="setUp" finished-at="2023-07-02T11:41:19 IST" duration-ms="1" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setUp -->
+        <test-method signature="testSaveTheApprovedLoanApplication()[pri:0, instance:com.nkxgen.spring.jdbc.Test.LoanApplicationDaoTest@503f91c3]" started-at="2023-07-02T11:41:19 IST" name="testSaveTheApprovedLoanApplication" finished-at="2023-07-02T11:41:19 IST" duration-ms="1" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testSaveTheApprovedLoanApplication -->
+      </class> <!-- com.nkxgen.spring.jdbc.Test.LoanApplicationDaoTest -->
+    </test> <!-- Default test -->
+  </suite> <!-- Default suite -->
+</testng-results>

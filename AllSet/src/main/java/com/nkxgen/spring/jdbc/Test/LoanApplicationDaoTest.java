@@ -1,9 +1,11 @@
 package com.nkxgen.spring.jdbc.Test;
 
 import static org.mockito.ArgumentMatchers.anyString;
+
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.any;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +21,10 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import com.nkxgen.spring.jdbc.Dao.LoanApplicationDao;
+import com.nkxgen.spring.jdbc.model.LoanAccount;
 import com.nkxgen.spring.jdbc.model.LoanApplication;
+import com.nkxgen.spring.jdbc.model.*;
+
 
 public class LoanApplicationDaoTest {
 
@@ -28,6 +33,8 @@ public class LoanApplicationDaoTest {
 
 	@Mock
 	private TypedQuery<LoanApplication> query;
+	@Mock
+	private TypedQuery<LoanAccount> accountQuery;
 
 	private LoanApplicationDao loanApplicationDao;
 
@@ -43,10 +50,11 @@ public class LoanApplicationDaoTest {
 	@Test
 	public void testGetLoanApplicationByValue() {
 		// Arrange
-		String value = "PL";
+		String value = "ML";
 		String status = "waiting";
 		List<LoanApplication> expectedLoanApplications = new ArrayList<>();
-
+		expectedLoanApplications.add(new LoanApplication());
+		
 		when(entityManager.createQuery(anyString(), eq(LoanApplication.class))).thenReturn(query);
 		when(query.setParameter(eq("value"), eq(value))).thenReturn(query);
 		when(query.setParameter(eq("val"), eq(status))).thenReturn(query);
@@ -63,180 +71,167 @@ public class LoanApplicationDaoTest {
 		verify(query).getResultList();
 	}
 
-	// @Test
-	// public void testSaveLoanApplication() {
-	// // Arrange
-	// LoanApplication loanApplication = new LoanApplication();
-	//
-	// // Act
-	// loanApplicationDao.saveLoanApplication(loanApplication);
-	//
-	// // Assert
-	// verify(entityManager).persist(loanApplication);
-	// }
-	//
-	// @Test
-	// public void testUpdateLoanApplication() {
-	// // Arrange
-	// LoanApplicationInput loanApplicationInput = new LoanApplicationInput();
-	// LoanApplication loanApplication = new LoanApplication();
-	// loanApplication.setId(1L);
-	// when(entityManager.find(eq(LoanApplication.class), eq(1L))).thenReturn(loanApplication);
-	//
-	// // Act
-	// loanApplicationDao.updateLoanApplication(loanApplicationInput);
-	//
-	// // Assert
-	// verify(entityManager).find(eq(LoanApplication.class), eq(1L));
-	// verify(entityManager).merge(eq(loanApplication));
-	// }
-	//
-	// @Test
-	// public void testGetLoanApplicationsByStatus() {
-	// // Arrange
-	// String status = "waiting";
-	// List<LoanApplication> expectedLoanApplications = new ArrayList<>();
-	// when(entityManager.createQuery(anyString(), eq(LoanApplication.class))).thenReturn(query);
-	// when(query.setParameter(eq("status"), eq(status))).thenReturn(query);
-	// when(query.getResultList()).thenReturn(expectedLoanApplications);
-	//
-	// // Act
-	// List<LoanApplication> result = loanApplicationDao.getLoanApplicationsByStatus(status);
-	//
-	// // Assert
-	// Assert.assertEquals(expectedLoanApplications, result);
-	// verify(entityManager).createQuery(anyString(), eq(LoanApplication.class));
-	// verify(query).setParameter(eq("status"), eq(status));
-	// verify(query).getResultList();
-	// }
-	//
-	// @Test
-	// public void testGetLoanAccountsByLoanType() {
-	// // Arrange
-	// String loanType = "personal";
-	// List<LoanAccount> expectedLoanAccounts = new ArrayList<>();
-	// TypedQuery<LoanAccount> accountQuery = mock(TypedQuery.class);
-	// when(entityManager.createQuery(anyString(), eq(LoanAccount.class))).thenReturn(accountQuery);
-	// when(accountQuery.setParameter(eq("loanType"), eq(loanType))).thenReturn(accountQuery);
-	// when(accountQuery.getResultList()).thenReturn(expectedLoanAccounts);
-	//
-	// // Act
-	// List<LoanAccount> result = loanApplicationDao.getLoanAccountsByLoanType(loanType);
-	//
-	// // Assert
-	// Assert.assertEquals(expectedLoanAccounts, result);
-	// verify(entityManager).createQuery(anyString(), eq(LoanAccount.class));
-	// verify(accountQuery).setParameter(eq("loanType"), eq(loanType));
-	// verify(accountQuery).getResultList();
-	// }
-	//
-	// @Test
-	// public void testDeleteApplication() {
-	// // Arrange
-	// int loanId = 1;
-	// LoanApplication loanApplication = new LoanApplication();
-	// when(entityManager.find(eq(LoanApplication.class), eq(loanId))).thenReturn(loanApplication);
-	//
-	// // Act
-	// loanApplicationDao.deleteApplication(loanId);
-	//
-	// // Assert
-	// verify(entityManager).find(eq(LoanApplication.class), eq(loanId));
-	// verify(entityManager).remove(eq(loanApplication));
-	// }
+	 @Test
+	 public void testSaveLoanApplication() {
+	 // Arrange
+	 LoanApplication loanApplication = new LoanApplication();
+	
+	 // Act
+	 loanApplicationDao.saveLoanApplication(loanApplication);
+	
+	 // Assert
+	 verify(entityManager).persist(loanApplication);
+	 }
+	
 
-	// @Test
-	// public void testApproveApplication() {
-	// // Arrange
-	// int loanId = 1;
-	// long custId = 1L;
-	// LoanApplication loanApplication = new LoanApplication();
-	// when(entityManager.find(eq(LoanApplication.class), eq((long) loanId))).thenReturn(loanApplication);
-	// Customertrail customer = new Customertrail();
-	// when(entityManager.find(eq(Customertrail.class), eq(custId))).thenReturn(customer);
-	// LoanAccount loanAccount = new LoanAccount();
-	// when(entityManager.persist(any(LoanAccount.class))).thenReturn(loanAccount);
-	//
-	// // Act
-	// loanApplicationDao.approveApplication(loanId, custId);
-	//
-	// // Assert
-	// verify(entityManager).find(eq(LoanApplication.class), eq((long) loanId));
-	// verify(entityManager).find(eq(Customertrail.class), eq(custId));
-	// verify(entityManager).persist(any(LoanAccount.class));
-	// }
-	//
-	// @Test
-	// public void testGetAllLoans() {
-	// // Arrange
-	// List<LoanAccount> expectedLoanAccounts = new ArrayList<>();
-	// TypedQuery<LoanAccount> query = mock(TypedQuery.class);
-	// when(entityManager.createQuery(anyString(), eq(LoanAccount.class))).thenReturn(query);
-	// when(query.getResultList()).thenReturn(expectedLoanAccounts);
-	//
-	// // Act
-	// List<LoanAccount> result = loanApplicationDao.getAllLoans();
-	//
-	// // Assert
-	// Assert.assertEquals(expectedLoanAccounts, result);
-	// verify(entityManager).createQuery(anyString(), eq(LoanAccount.class));
-	// verify(query).getResultList();
-	// }
-	//
-	// @Test
-	// public void testGetLoanApplicationByid() {
-	// // Arrange
-	// long loanApplicationId = 1L;
-	// LoanApplication expectedLoanApplication = new LoanApplication();
-	// when(entityManager.find(eq(LoanApplication.class), eq(loanApplicationId))).thenReturn(expectedLoanApplication);
-	//
-	// // Act
-	// LoanApplication result = loanApplicationDao.getLoanApplicationByid(loanApplicationId);
-	//
-	// // Assert
-	// Assert.assertEquals(expectedLoanApplication, result);
-	// verify(entityManager).find(eq(LoanApplication.class), eq(loanApplicationId));
-	// }
-	//
-	// @Test
-	// public void testSaveTheApprovedLoanApplication() {
-	// // Arrange
-	// LoanApplication loanApplication = new LoanApplication();
-	//
-	// // Act
-	// loanApplicationDao.saveTheApprovedLoanApplication(loanApplication);
-	//
-	// // Assert
-	// verify(entityManager).merge(eq(loanApplication));
-	// }
-	//
-	// @Test
-	// public void testGetLoanApplicationById() {
-	// // Arrange
-	// int loanApplicationId = 1;
-	// LoanApplication expectedLoanApplication = new LoanApplication();
-	// when(entityManager.find(eq(LoanApplication.class), eq(loanApplicationId))).thenReturn(expectedLoanApplication);
-	//
-	// // Act
-	// LoanApplication result = loanApplicationDao.getLoanApplicationById(loanApplicationId);
-	//
-	// // Assert
-	// Assert.assertEquals(expectedLoanApplication, result);
-	// verify(entityManager).find(eq(LoanApplication.class), eq(loanApplicationId));
-	// }
-	//
-	// @Test
-	// public void testGetLoanAccountById() {
-	// // Arrange
-	// int accountNumber = 1;
-	// LoanAccount expectedLoanAccount = new LoanAccount();
-	// when(entityManager.find(eq(LoanAccount.class), eq((long) accountNumber))).thenReturn(expectedLoanAccount);
-	//
-	// // Act
-	// LoanAccount result = loanApplicationDao.getLoanAccountById(accountNumber);
-	//
-	// // Assert
-	// Assert.assertEquals(expectedLoanAccount, result);
-	// verify(entityManager).find(eq(LoanAccount.class), eq((long) accountNumber));
-	// }
+	
+	 @Test
+	 public void testGetLoanApplicationsByStatus() {
+	 // Arrange
+	 String status = "waiting";
+	 List<LoanApplication> expectedLoanApplications = new ArrayList<>();
+	 expectedLoanApplications.add(new LoanApplication());
+	 when(entityManager.createQuery(anyString(), eq(LoanApplication.class))).thenReturn(query);
+	 when(query.setParameter(eq("status"), eq(status))).thenReturn(query);
+	 when(query.getResultList()).thenReturn(expectedLoanApplications);
+	
+	 // Act
+	 List<LoanApplication> result = loanApplicationDao.getLoanApplicationsByStatus(status);
+	
+	 // Assert
+	 Assert.assertEquals(expectedLoanApplications, result);
+	 verify(entityManager).createQuery(anyString(), eq(LoanApplication.class));
+	 verify(query).setParameter(eq("status"), eq(status));
+	 verify(query).getResultList();
+	 }
+	
+	 @Test
+	 public void testGetLoanAccountsByLoanType() {
+	 // Arrange
+	 String loanType = "personal";
+	 List<LoanAccount> expectedLoanAccounts = new ArrayList<>();
+	 TypedQuery<LoanAccount> accountQuery = Mockito.mock(TypedQuery.class);
+	 when(entityManager.createQuery(anyString(), eq(LoanAccount.class))).thenReturn(accountQuery);
+	 when(accountQuery.setParameter(eq("loanType"), eq(loanType))).thenReturn(accountQuery);
+	 when(accountQuery.getResultList()).thenReturn(expectedLoanAccounts);
+	
+	 // Act
+	 List<LoanAccount> result = loanApplicationDao.getLoanAccountsByLoanType(loanType);
+	
+	 // Assert
+	 Assert.assertEquals(expectedLoanAccounts, result);
+	 verify(entityManager).createQuery(anyString(), eq(LoanAccount.class));
+	 verify(accountQuery).setParameter(eq("loanType"), eq(loanType));
+	 verify(accountQuery).getResultList();
+	 }
+	
+	 @Test
+	 public void testDeleteApplication() {
+	 // Arrange
+	 int loanId = 1;
+	 LoanApplication loanApplication = new LoanApplication();
+	 when(entityManager.find(eq(LoanApplication.class), eq(loanId))).thenReturn(loanApplication);
+	
+	 // Act
+	 loanApplicationDao.deleteApplication(loanId);
+	
+	 // Assert
+	 verify(entityManager).find(eq(LoanApplication.class), eq(loanId));
+	 verify(entityManager).remove(eq(loanApplication));
+	 }
+
+	 @Test
+	 public void testApproveApplication() {
+	 // Arrange
+	 int loanId = 20;
+	 long custId = 1L;
+	 LoanApplication loanApplication = new LoanApplication();
+	 when(entityManager.find(eq(LoanApplication.class), eq((long) loanId))).thenReturn(loanApplication);
+	 Customertrail customer = new Customertrail();
+	 when(entityManager.find(eq(Customertrail.class), eq(custId))).thenReturn(customer);
+	 LoanAccount loanAccount = new LoanAccount();
+	 verify(entityManager).persist(any(LoanAccount.class));
+	
+	 // Act
+	 loanApplicationDao.approveApplication(loanId, custId);
+	
+	 // Assert
+	 verify(entityManager).find(eq(LoanApplication.class), eq((long) loanId));
+	 verify(entityManager).find(eq(Customertrail.class), eq(custId));
+	 verify(entityManager).persist(any(LoanAccount.class));
+	 }
+	
+	 @Test
+	 public void testGetAllLoans() {
+	 // Arrange
+	 List<LoanAccount> expectedLoanAccounts = new ArrayList<>();
+	 TypedQuery<LoanAccount> query =Mockito. mock(TypedQuery.class);
+	 when(entityManager.createQuery(anyString(), eq(LoanAccount.class))).thenReturn(query);
+	 when(query.getResultList()).thenReturn(expectedLoanAccounts);
+	
+	 // Act
+	 List<LoanAccount> result = loanApplicationDao.getAllLoans();
+	
+	 // Assert
+	 Assert.assertEquals(expectedLoanAccounts, result);
+	 verify(entityManager).createQuery(anyString(), eq(LoanAccount.class));
+	 verify(query).getResultList();
+	 }
+	
+	 @Test
+	 public void testGetLoanApplicationByid() {
+	 // Arrange
+	 long loanApplicationId = 1L;
+	 LoanApplication expectedLoanApplication = new LoanApplication();
+	 when(entityManager.find(eq(LoanApplication.class), eq(loanApplicationId))).thenReturn(expectedLoanApplication);
+	
+	 // Act
+	 LoanApplication result = loanApplicationDao.getLoanApplicationByid(loanApplicationId);
+	
+	 // Assert
+	 Assert.assertEquals(expectedLoanApplication, result);
+	 verify(entityManager).find(eq(LoanApplication.class), eq(loanApplicationId));
+	 }
+	
+	 @Test
+	 public void testSaveTheApprovedLoanApplication() {
+	 // Arrange
+	 LoanApplication loanApplication = new LoanApplication();
+	
+	 // Act
+	 loanApplicationDao.saveTheApprovedLoanApplication(loanApplication);
+	
+	 // Assert
+	 verify(entityManager).merge(eq(loanApplication));
+	 }
+	
+	 @Test
+	 public void testGetLoanApplicationById() {
+	 // Arrange
+	 int loanApplicationId = 1;
+	 LoanApplication expectedLoanApplication = new LoanApplication();
+	 when(entityManager.find(eq(LoanApplication.class), eq(loanApplicationId))).thenReturn(expectedLoanApplication);
+	
+	 // Act
+	 LoanApplication result = loanApplicationDao.getLoanApplicationById(loanApplicationId);
+	
+	 // Assert
+	 Assert.assertEquals(expectedLoanApplication, result);
+	 verify(entityManager).find(eq(LoanApplication.class), eq(loanApplicationId));
+	 }
+	
+	 @Test
+	 public void testGetLoanAccountById() {
+	 // Arrange
+	 int accountNumber = 1;
+	 LoanAccount expectedLoanAccount = new LoanAccount();
+	 when(entityManager.find(eq(LoanAccount.class), eq((long) accountNumber))).thenReturn(expectedLoanAccount);
+	
+	 // Act
+	 LoanAccount result = loanApplicationDao.getLoanAccountById(accountNumber);
+	
+	 // Assert
+	 Assert.assertEquals(expectedLoanAccount, result);
+	 verify(entityManager).find(eq(LoanAccount.class), eq((long) accountNumber));
+	 }
 }
