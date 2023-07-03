@@ -8,6 +8,8 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <link rel="stylesheet" type="text/css" href="./css/bank-home-page.css">
 <script type="text/javascript" src="./js/bank-home-page.js"></script>
+<link rel="stylesheet" type="text/css" href="./css/spinner.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js/dist/Chart.js"></script>
 	</head>
 	<div class="hb">
 		<!-- Thymeleaf version -->
@@ -189,8 +191,14 @@
 						<li id="customers"><button class="btn">Customers</button></li>
 
 						<!-- auditlogs -->
-						<li id="auditlogs"><button class="btn">Audit logs</button></li>
-
+						<li>
+							<button class="btn">Audit Logs</button>
+							<ul>
+								<li id="viewAudits"><button class="btn">View</button></li>
+								<li id="downloadAudits"><button class="btn">Download</button></li>
+							</ul>
+						</li>
+						
 						<!-- Users -->
 						<li>
 							<button class="btn">Users</button>
@@ -215,7 +223,24 @@
 			</div>
 		</div>
 
-		<main id="main-content"></main>
+		<main id="main-content">
+		  <div id="spinner" class="spinner-overlay">
+            <div class="lds-spinner">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+		
+		</main>
 
 		<footer> &copy; 2023 HamaraBank. All rights reserved. </footer>
 

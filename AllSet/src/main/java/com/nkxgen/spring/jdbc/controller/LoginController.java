@@ -1,5 +1,6 @@
 package com.nkxgen.spring.jdbc.controller;
 
+import java.util.List;
 import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.nkxgen.spring.jdbc.events.LoginEvent;
 import com.nkxgen.spring.jdbc.events.LogoutEvent;
+import com.nkxgen.spring.jdbc.service.ChartService;
 import com.nkxgen.spring.jdbc.validation.MailSender;;
 
 @Controller
@@ -22,6 +24,37 @@ public class LoginController {
 
 	@Autowired
 	ApplicationEventPublisher applicationEventPublisher;
+	
+	@Autowired
+	private ChartService chartService; // Assuming you have a service class to handle data retrieval
+
+	@RequestMapping(value = "/graphs", method = RequestMethod.GET)
+	public String graphs(Locale locale, Model model) {
+
+		List<Integer> accountData = chartService.getAccountData();
+		List<Integer> loanData = chartService.getLoanData();
+
+		List<String> accountLabels = chartService.getAccountLabels(); // Retrieve account label names
+		List<String> loanLabels = chartService.getLoanLabels(); // Retrieve loan label names
+
+		System.out.println("accountData" + accountData);
+		System.out.println("loanData" + loanData);
+		System.out.println("accountLabels" + accountLabels);
+		System.out.println("loanLabels" + loanLabels);
+
+		// Pass the data to the HTML view using the model
+		model.addAttribute("accountData", accountData);
+		model.addAttribute("loanData", loanData);
+
+		// Add the label names to the model
+		model.addAttribute("accountLabels", accountLabels);
+		model.addAttribute("loanLabels", loanLabels);
+
+		System.out.println("Graphs Method called");
+
+		return "graphs";
+	}
+
 
 	// =====================================================================================================
 	@RequestMapping(value = "/", method = RequestMethod.GET)
@@ -88,21 +121,7 @@ public class LoginController {
 		return "bank-home-page"; // Return the view name "BankHomePage" to render the page
 	}
 
-	// ============================================================================================================================
-	@RequestMapping(value = "/addUser", method = RequestMethod.GET)
-	public String user1(Model model) {
 
-		return "new-bank-user";
-
-	}
-
-	@RequestMapping(value = "/user", method = RequestMethod.GET)
-	public String user(Model model) {
-
-		return "user-details";
-
-	}
-	// ================================================================================================================================
 
 	// =============================================================================
 

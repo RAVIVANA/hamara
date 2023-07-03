@@ -37,6 +37,7 @@ public class UserController {
 
 	private final BankUserInterface bankUserService;
 	@Autowired
+	public
 	ViewInterface v;
 
 	@Autowired

@@ -1,5 +1,31 @@
 // JavaScript to handle page load on Neeraj dropdown click
 $(document).ready(function() {
+	
+		var mainContent = $('#main-content');
+
+	function graphs() {
+		console.log("graphs function called");
+		$.ajax({
+			url: 'graphs',
+			type: 'GET',
+			success: function(response) {
+				$("#spinner").show();
+
+				// Set a timer to hide the spinner after 10 seconds
+				setTimeout(function() {
+					$("#spinner").hide();
+				}, 10000);
+				mainContent.html(response);
+			},
+			error: function() {
+				alert('Failed to load page.');
+			}
+		});
+	}
+
+
+	graphs(); // Call the function on page load
+
 	var adduser = $('#adduser');
 	var mainContent = $('#main-content');
 
@@ -595,13 +621,11 @@ $(document).ready(function() {
 		});
 	});
 
-	//================================auditlogs==========================
-
-
-	var auditlogs = $('#auditlogs');
+	//---------------------------To View AuditLogs---------------------------------
+	var viewAudits = $('#viewAudits');
 	var mainContent = $('#main-content');
 
-	auditlogs.on('click', function(event) {
+	viewAudits.on('click', function(event) {
 		// Prevent the default behavior of the anchor tag
 		// Load Neeraj page content using AJAX
 		$.ajax({
@@ -622,6 +646,46 @@ $(document).ready(function() {
 			}
 		});
 	});
+	//-------------------------------To download AuditLogs ----------------------------------
+
+	var downloadAudits = $('#downloadAudits');
+
+	downloadAudits.on('click', function(event) {
+		event.preventDefault();
+
+		// Make the AJAX call to fetch the PDF content
+		$.ajax({
+			url: 'auditDownloads',
+			type: 'GET',
+			xhrFields: {
+				responseType: 'blob'
+			},
+			success: function(response) {
+				// Create a blob URL from the response
+				var blobUrl = URL.createObjectURL(response);
+
+				// Create a temporary link element to initiate the download
+				var link = document.createElement('a');
+				link.href = blobUrl;
+				link.download = 'audit_logs.pdf';
+				link.style.display = 'none';
+				document.body.appendChild(link);
+
+				// Simulate a click event on the link to trigger the download
+				link.click();
+
+				// Cleanup by revoking the blob URL and removing the link element
+				URL.revokeObjectURL(blobUrl);
+				document.body.removeChild(link);
+			},
+			error: function() {
+				alert('Failed to load PDF.');
+			}
+		});
+	});
+
+
+
 	//======================================================================
 
 	var statement_generation = $('#statement_generation');

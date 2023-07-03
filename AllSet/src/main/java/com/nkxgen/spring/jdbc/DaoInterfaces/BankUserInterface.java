@@ -11,7 +11,7 @@ public interface BankUserInterface {
 
 	List<BankUser> getAllBankUsers();
 
-	BankUser saveUser(BankUser bankUser);
+	void saveUser(BankUser bankUser);
 
 	List<BankUser> getBankUsersByDesignation(String designation);
 

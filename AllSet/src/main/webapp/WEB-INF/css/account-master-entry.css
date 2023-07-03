@@ -48,7 +48,7 @@ table th, table td {
 }
 
 #accountTypeModal button, #descriptionForm button {
-	background-color: #4CAF50;
+	background-color: #003366;
 	color: white;
 	padding: 10px 20px;
 	border: none;
@@ -58,15 +58,15 @@ table th, table td {
 }
 
 #accountTypeModal button:hover, #descriptionForm button:hover {
-	background-color: #45a049;
+	background-color: #003366;
 }
 
 #accountTypeModal button[type="button"], #descriptionForm button[type="button"]
 	{
-	background-color: #f44336;
+	background-color: #003366;
 }
 
 #accountTypeModal button[type="button"]:hover, #descriptionForm button[type="button"]:hover
 	{
-	background-color: #d32f2f;
+	background-color: #003366;
 }

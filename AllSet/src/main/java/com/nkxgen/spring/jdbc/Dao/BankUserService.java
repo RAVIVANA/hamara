@@ -35,9 +35,9 @@ public class BankUserService implements BankUserInterface {
 	}
 
 	@Transactional
-	public BankUser saveUser(BankUser bankUser) {
+	public void saveUser(BankUser bankUser) {
 		// Merge the BankUser object in the database, which will either update an existing record or create a new one
-		return entityManager.merge(bankUser);
+		 entityManager.merge(bankUser);
 	}
 
 	@Transactional
