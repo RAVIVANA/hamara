@@ -14,6 +14,8 @@ import javax.mail.internet.MimeMessage;
 
 import org.springframework.stereotype.Component;
 
+import com.nkxgen.spring.jdbc.model.BankUser;
+
 @Component
 public class MailSenderImpl implements MailSender {
 	public String send(String to_user) {
@@ -21,9 +23,24 @@ public class MailSenderImpl implements MailSender {
 		String otp = generateOTP(); // Generate a random OTP
 		String subject = "Password Reset"; // Set the email subject
 		String body = "The OTP for the Password Reset: " + otp; // Set the email body
-		MailSenderImpl m = new MailSenderImpl(); // Create an instance of the MailSenderImpl class
-		m.sendEmail(to, subject, body); // Invoke the sendEmail method to send the email
+		sendEmail(to, subject, body); // Invoke the sendEmail method to send the email
 		return otp; // Return the generated OTP
+	}
+
+	public void userAdded(BankUser bankUser) {
+		String to = bankUser.getBusr_email(); // Assign the value of the 'to_user' parameter to the 'to' variable
+		String subject = "Greetings From HAMARA BANK"; // Set the email subject
+
+		String body = "Dear " + bankUser.getBusr_title() + ",\n\n"
+				+ "Welcome to the Hamara Bank family! We are thrilled to have you on board as a valued member of our team.\n\n"
+				+ "At Hamara Bank, we strive for excellence in providing exceptional banking services to our customers, and we believe that your skills and expertise will greatly contribute to our mission.\n\n"
+				+ "As you embark on this exciting journey with us, we want you to know that we are committed to fostering a positive and inclusive work environment. We encourage open communication, collaboration, and personal growth, ensuring that you have all the support and resources needed to thrive in your role.\n\n"
+				+ "Please take the time to familiarize yourself with our organization's values, goals, and the services we offer. We believe that together, we can make a significant impact in the lives of our customers and the communities we serve.\n\n"
+				+ "Once again, welcome to Hamara Bank!\n\n" + "Here are your login details:\n" + "Username: "
+				+ bankUser.getBusr_id() + "\n" + "Password: " + bankUser.getBusr_pwd() + "\n\n" + "Best regards,\n"
+				+ bankUser.getBusr_title() + "\n" + bankUser.getBusr_desg() + "\n" + "Hamara Bank";
+
+		sendEmail(to, subject, body); // Invoke the sendEmail method to send the email
 	}
 
 	private static void sendEmail(String to, String subject, String body) {

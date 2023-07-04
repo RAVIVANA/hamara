@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hamara Bank - Enter OTP</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" type="text/css"
+	href="./css/enter-otp.css">
+<script type="text/javascript" src="./js/enter-otp.js"></script>
+
+</head>
+<body>
+    <div class="container">
+        <div id="content" class="col-md-4 offset-md-4">
+            <h1 class="text-center">Enter OTP</h1>
+            <form id="otpForm" class="mt-4" action="confirmPass" method="post">
+                <div class="form-group">
+                    <label for="otp">OTP</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="digit1" maxlength="1" pattern="[0-9]" required oninput="moveToNextInput(1)" name="digit1">
+                        <input type="text" class="form-control" id="digit2" maxlength="1" pattern="[0-9]" required oninput="moveToNextInput(2)" name="digit2">
+                        <input type="text" class="form-control" id="digit3" maxlength="1" pattern="[0-9]" required oninput="moveToNextInput(3)" name="digit3">
+                        <input type="text" class="form-control" id="digit4" maxlength="1" pattern="[0-9]" required oninput="moveToNextInput(4)" name="digit4">
+                        <input type="text" class="form-control" id="digit5" maxlength="1" pattern="[0-9]" required oninput="moveToNextInput(5)" name="digit5">
+                        <input type="text" class="form-control" id="digit6" maxlength="1" pattern="[0-9]" required name="digit6">
+                    </div>
+                    <small class="form-text text-muted">Enter each digit of the OTP separately.</small>
+                </div>
+                <input type="hidden" id="otp" name="otp">
+                <input type="submit" class="btn btn-primary btn-block" value="Submit" onclick="performActions(event)">
+            </form>
+            <div id="timer">30 seconds remaining to resend otp</div>
+            <div id="resendButton">
+                <button class="btn btn-link  text-white" onclick="resendOTP()">Resend OTP</button>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

@@ -71,10 +71,7 @@
 	margin: 0 auto;
 }
 
-.form-container input[type="submit"]:hover {
-	background-color: #003366;
-	color: #333;
-}
+
 
 #successMessage {
 	text-align: center;

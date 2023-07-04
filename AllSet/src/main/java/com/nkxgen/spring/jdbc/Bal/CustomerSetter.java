@@ -148,8 +148,8 @@ public class CustomerSetter {
 
 			String s1 = typee;
 			String s2 = "Personal";
-			if (s1.equals(s2) || s1.equals(s1)) {
-				double value1 = ((lamount * duration * ir) / 1200);
+			if (s1.equals(s2)) {
+				double value1 = ((lamount * duration * ir) / (100 * 12 * duration));
 				return value1;
 			} else {
 				int n = (12 * duration);
@@ -237,8 +237,6 @@ public class CustomerSetter {
 
 		System.out.println("the processed date is :" + Application.getCreatedDate());
 
-		System.out.println("++++++-------------------------");
-
 		String startDateString = (String) Application.getProcessDate();
 
 		LocalDate endDate = LocalDate.now();
@@ -270,11 +268,11 @@ public class CustomerSetter {
 
 	public static int complete(int duration, double damount, double lamount, double ir, String typee, int noi) {
 		String s1 = typee;
-		String s2 = "PL";
+		String s2 = "Personal";
 		if (s1.equals(s2)) {
 
-			double value1 = ((((lamount * duration * ir) / 100) + lamount) / 12)
-					* (noi - calPM(damount, lamount, duration));
+			double value1 = (double) ((((lamount * duration * ir) / 100) + lamount) / (12 * duration))
+					* (double) (noi - calPM(damount, lamount, duration));
 
 			int x = (int) Math.ceil(value1);
 			return x;

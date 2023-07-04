@@ -55,11 +55,11 @@ function toggleAllBoxes() {
 <body>
 <h2 align='center'>Default test</h2><table border='1' align="center">
 <tr>
-<td>Tests passed/Failed/Skipped:</td><td>5/1/0</td>
+<td>Tests passed/Failed/Skipped:</td><td>0/1/0</td>
 </tr><tr>
-<td>Started on:</td><td>Mon Jul 03 17:32:31 IST 2023</td>
+<td>Started on:</td><td>Tue Jul 04 16:42:41 IST 2023</td>
 </tr>
-<tr><td>Total time:</td><td>0 seconds (784 ms)</td>
+<tr><td>Total time:</td><td>0 seconds (654 ms)</td>
 </tr><tr>
 <td>Included groups:</td><td></td>
 </tr><tr>
@@ -76,15 +76,10 @@ function toggleAllBoxes() {
 <td><b>Instance</b></td>
 </tr>
 <tr>
-<td title='com.nkxgen.spring.jdbc.Test.TransactionControllerTest.testGetDepositMoney_Success()'><b>testGetDepositMoney_Success</b><br>Test class: com.nkxgen.spring.jdbc.Test.TransactionControllerTest</td>
-<td><div><pre>java.lang.AssertionError: expected [deposit successfully] but found [Failed to deposit money: Cannot invoke &quot;org.springframework.context.ApplicationEventPublisher.publishEvent(Object)&quot; because &quot;this.applicationEventPublisher&quot; is null]
-	at org.testng.Assert.fail(Assert.java:111)
-	at org.testng.Assert.failNotEquals(Assert.java:1578)
-	at org.testng.Assert.assertEqualsImpl(Assert.java:150)
-	at org.testng.Assert.assertEquals(Assert.java:132)
-	at org.testng.Assert.assertEquals(Assert.java:656)
-	at org.testng.Assert.assertEquals(Assert.java:666)
-	at com.nkxgen.spring.jdbc.Test.TransactionControllerTest.testGetDepositMoney_Success(TransactionControllerTest.java:136)
+<td title='com.nkxgen.spring.jdbc.Test.CustomerControllerTest.testCustomerDataSaveToDb()'><b>testCustomerDataSaveToDb</b><br>Test class: com.nkxgen.spring.jdbc.Test.CustomerControllerTest</td>
+<td><div><pre>java.lang.NullPointerException: Cannot invoke &quot;com.nkxgen.spring.jdbc.ViewModels.CustomerViewModel.getId()&quot; because &quot;customertrail&quot; is null
+	at com.nkxgen.spring.jdbc.Bal.CustomerSetter.dotheservice2(CustomerSetter.java:64)
+	at com.nkxgen.spring.jdbc.Test.CustomerControllerTest.testCustomerDataSaveToDb(CustomerControllerTest.java:53)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -113,15 +108,10 @@ function toggleAllBoxes() {
 	at org.testng.remote.AbstractRemoteTestNG.run(AbstractRemoteTestNG.java:115)
 	at org.testng.remote.RemoteTestNG.initAndRun(RemoteTestNG.java:251)
 	at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:77)
-</pre></div><a href='#' onClick='toggleBox("stack-trace442465916", this, "Click to show all stack frames", "Click to hide stack frames")'>Click to show all stack frames</a>
-<div class='stack-trace' id='stack-trace442465916'><pre>java.lang.AssertionError: expected [deposit successfully] but found [Failed to deposit money: Cannot invoke &quot;org.springframework.context.ApplicationEventPublisher.publishEvent(Object)&quot; because &quot;this.applicationEventPublisher&quot; is null]
-	at org.testng.Assert.fail(Assert.java:111)
-	at org.testng.Assert.failNotEquals(Assert.java:1578)
-	at org.testng.Assert.assertEqualsImpl(Assert.java:150)
-	at org.testng.Assert.assertEquals(Assert.java:132)
-	at org.testng.Assert.assertEquals(Assert.java:656)
-	at org.testng.Assert.assertEquals(Assert.java:666)
-	at com.nkxgen.spring.jdbc.Test.TransactionControllerTest.testGetDepositMoney_Success(TransactionControllerTest.java:136)
+</pre></div><a href='#' onClick='toggleBox("stack-trace423711439", this, "Click to show all stack frames", "Click to hide stack frames")'>Click to show all stack frames</a>
+<div class='stack-trace' id='stack-trace423711439'><pre>java.lang.NullPointerException: Cannot invoke &quot;com.nkxgen.spring.jdbc.ViewModels.CustomerViewModel.getId()&quot; because &quot;customertrail&quot; is null
+	at com.nkxgen.spring.jdbc.Bal.CustomerSetter.dotheservice2(CustomerSetter.java:64)
+	at com.nkxgen.spring.jdbc.Test.CustomerControllerTest.testCustomerDataSaveToDb(CustomerControllerTest.java:53)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -152,41 +142,7 @@ function toggleAllBoxes() {
 	at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:77)
 </pre></div></td>
 <td>0</td>
-<td>com.nkxgen.spring.jdbc.Test.TransactionControllerTest@68567e20</td></tr>
-</table><p>
-<table width='100%' border='1' class='invocation-passed'>
-<tr><td colspan='4' align='center'><b>PASSED TESTS</b></td></tr>
-<tr><td><b>Test method</b></td>
-<td><b>Attribute(s)</b></td>
-<td width="30%"><b>Exception</b></td>
-<td width="10%"><b>Time (seconds)</b></td>
-<td><b>Instance</b></td>
-</tr>
-<tr>
-<td title='com.nkxgen.spring.jdbc.Test.TransactionControllerTest.loanRepaymentForm_ValidModel_ReturnsLoanRepaymentView()'><b>loanRepaymentForm_ValidModel_ReturnsLoanRepaymentView</b><br>Test class: com.nkxgen.spring.jdbc.Test.TransactionControllerTest</td>
-<td></td>
-<td>0</td>
-<td>com.nkxgen.spring.jdbc.Test.TransactionControllerTest@68567e20</td></tr>
-<tr>
-<td title='com.nkxgen.spring.jdbc.Test.TransactionControllerTest.loWithdrawlForm_ValidModel_ReturnsLoanWithdrawlFormView()'><b>loWithdrawlForm_ValidModel_ReturnsLoanWithdrawlFormView</b><br>Test class: com.nkxgen.spring.jdbc.Test.TransactionControllerTest</td>
-<td></td>
-<td>0</td>
-<td>com.nkxgen.spring.jdbc.Test.TransactionControllerTest@68567e20</td></tr>
-<tr>
-<td title='com.nkxgen.spring.jdbc.Test.TransactionControllerTest.moneyWithdrawlForm_ValidModel_ReturnsMoneyWithdrawlFormView()'><b>moneyWithdrawlForm_ValidModel_ReturnsMoneyWithdrawlFormView</b><br>Test class: com.nkxgen.spring.jdbc.Test.TransactionControllerTest</td>
-<td></td>
-<td>0</td>
-<td>com.nkxgen.spring.jdbc.Test.TransactionControllerTest@68567e20</td></tr>
-<tr>
-<td title='com.nkxgen.spring.jdbc.Test.TransactionControllerTest.moneyDepositeForm_ValidModel_ReturnsMoneyDepositView()'><b>moneyDepositeForm_ValidModel_ReturnsMoneyDepositView</b><br>Test class: com.nkxgen.spring.jdbc.Test.TransactionControllerTest</td>
-<td></td>
-<td>0</td>
-<td>com.nkxgen.spring.jdbc.Test.TransactionControllerTest@68567e20</td></tr>
-<tr>
-<td title='com.nkxgen.spring.jdbc.Test.TransactionControllerTest.getAccountDetails_ValidAccount_ReturnsSubMoneyDepositView()'><b>getAccountDetails_ValidAccount_ReturnsSubMoneyDepositView</b><br>Test class: com.nkxgen.spring.jdbc.Test.TransactionControllerTest</td>
-<td></td>
-<td>0</td>
-<td>com.nkxgen.spring.jdbc.Test.TransactionControllerTest@68567e20</td></tr>
+<td>com.nkxgen.spring.jdbc.Test.CustomerControllerTest@11fc564b</td></tr>
 </table><p>
 </body>
 </html>

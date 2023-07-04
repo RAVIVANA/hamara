@@ -208,8 +208,9 @@ public class TransactionsDAO implements TransactionsInterface {
 
 	@Override
 	public EMIpay changeToEMI(LoanAccount account) throws EMIpayConversionException {
-		EMIpay obj = s.changeToEmiObj(account,ti); // Create a new EMIpay object by calling a method 'changeToEmiObj' from
-												// another class or service, passing the loan account object
+		EMIpay obj = s.changeToEmiObj(account, ti); // Create a new EMIpay object by calling a method 'changeToEmiObj'
+													// from
+													// another class or service, passing the loan account object
 		if (obj == null) {
 			throw new EMIpayConversionException("Failed to convert LoanAccount to EMIpay");
 		}

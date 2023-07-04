@@ -9,18 +9,13 @@
 <table>
 <tr><th>Test</th><th># Passed</th><th># Skipped</th><th># Retried</th><th># Failed</th><th>Time (ms)</th><th>Included Groups</th><th>Excluded Groups</th></tr>
 <tr><th colspan="8">Default suite</th></tr>
-<tr><td><a href="#t0">Default test</a></td><td class="num">5</td><td class="num">0</td><td class="num">0</td><td class="num attn">1</td><td class="num">784</td><td></td><td></td></tr>
+<tr><td><a href="#t0">Default test</a></td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num attn">1</td><td class="num">654</td><td></td><td></td></tr>
 </table>
-<table id='summary'><thead><tr><th>Class</th><th>Method</th><th>Start</th><th>Time (ms)</th></tr></thead><tbody><tr><th colspan="4">Default suite</th></tr></tbody><tbody id="t0"><tr><th colspan="4">Default test &#8212; failed</th></tr><tr class="failedeven"><td rowspan="1">com.nkxgen.spring.jdbc.Test.TransactionControllerTest</td><td><a href="#m0">testGetDepositMoney_Success</a></td><td rowspan="1">1688385751988</td><td rowspan="1">22</td></tr><tr><th colspan="4">Default test &#8212; passed</th></tr><tr class="passedeven"><td rowspan="5">com.nkxgen.spring.jdbc.Test.TransactionControllerTest</td><td><a href="#m1">getAccountDetails_ValidAccount_ReturnsSubMoneyDepositView</a></td><td rowspan="1">1688385751931</td><td rowspan="1">25</td></tr><tr class="passedeven"><td><a href="#m2">loWithdrawlForm_ValidModel_ReturnsLoanWithdrawlFormView</a></td><td rowspan="1">1688385751961</td><td rowspan="1">2</td></tr><tr class="passedeven"><td><a href="#m3">loanRepaymentForm_ValidModel_ReturnsLoanRepaymentView</a></td><td rowspan="1">1688385751966</td><td rowspan="1">1</td></tr><tr class="passedeven"><td><a href="#m4">moneyDepositeForm_ValidModel_ReturnsMoneyDepositView</a></td><td rowspan="1">1688385751973</td><td rowspan="1">4</td></tr><tr class="passedeven"><td><a href="#m5">moneyWithdrawlForm_ValidModel_ReturnsMoneyWithdrawlFormView</a></td><td rowspan="1">1688385751983</td><td rowspan="1">1</td></tr></tbody>
+<table id='summary'><thead><tr><th>Class</th><th>Method</th><th>Start</th><th>Time (ms)</th></tr></thead><tbody><tr><th colspan="4">Default suite</th></tr></tbody><tbody id="t0"><tr><th colspan="4">Default test &#8212; failed</th></tr><tr class="failedeven"><td rowspan="1">com.nkxgen.spring.jdbc.Test.CustomerControllerTest</td><td><a href="#m0">testCustomerDataSaveToDb</a></td><td rowspan="1">1688469161722</td><td rowspan="1">6</td></tr></tbody>
 </table>
-<h2>Default test</h2><h3 id="m0">com.nkxgen.spring.jdbc.Test.TransactionControllerTest#testGetDepositMoney_Success</h3><table class="result"><tr><th>Exception</th></tr><tr><td><div class="stacktrace">java.lang.AssertionError: expected [deposit successfully] but found [Failed to deposit money: Cannot invoke &quot;org.springframework.context.ApplicationEventPublisher.publishEvent(Object)&quot; because &quot;this.applicationEventPublisher&quot; is null]
-	at org.testng.Assert.fail(Assert.java:111)
-	at org.testng.Assert.failNotEquals(Assert.java:1578)
-	at org.testng.Assert.assertEqualsImpl(Assert.java:150)
-	at org.testng.Assert.assertEquals(Assert.java:132)
-	at org.testng.Assert.assertEquals(Assert.java:656)
-	at org.testng.Assert.assertEquals(Assert.java:666)
-	at com.nkxgen.spring.jdbc.Test.TransactionControllerTest.testGetDepositMoney_Success(TransactionControllerTest.java:136)
+<h2>Default test</h2><h3 id="m0">com.nkxgen.spring.jdbc.Test.CustomerControllerTest#testCustomerDataSaveToDb</h3><table class="result"><tr><th>Exception</th></tr><tr><td><div class="stacktrace">java.lang.NullPointerException: Cannot invoke &quot;com.nkxgen.spring.jdbc.ViewModels.CustomerViewModel.getId()&quot; because &quot;customertrail&quot; is null
+	at com.nkxgen.spring.jdbc.Bal.CustomerSetter.dotheservice2(CustomerSetter.java:64)
+	at com.nkxgen.spring.jdbc.Test.CustomerControllerTest.testCustomerDataSaveToDb(CustomerControllerTest.java:53)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -50,10 +45,5 @@
 	at org.testng.remote.RemoteTestNG.initAndRun(RemoteTestNG.java:251)
 	at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:77)
 </div></td></tr></table><p class="totop"><a href="#summary">back to summary</a></p>
-<h3 id="m1">com.nkxgen.spring.jdbc.Test.TransactionControllerTest#getAccountDetails_ValidAccount_ReturnsSubMoneyDepositView</h3><table class="result"><tr><th class="invisible"/></tr></table><p class="totop"><a href="#summary">back to summary</a></p>
-<h3 id="m2">com.nkxgen.spring.jdbc.Test.TransactionControllerTest#loWithdrawlForm_ValidModel_ReturnsLoanWithdrawlFormView</h3><table class="result"><tr><th class="invisible"/></tr></table><p class="totop"><a href="#summary">back to summary</a></p>
-<h3 id="m3">com.nkxgen.spring.jdbc.Test.TransactionControllerTest#loanRepaymentForm_ValidModel_ReturnsLoanRepaymentView</h3><table class="result"><tr><th class="invisible"/></tr></table><p class="totop"><a href="#summary">back to summary</a></p>
-<h3 id="m4">com.nkxgen.spring.jdbc.Test.TransactionControllerTest#moneyDepositeForm_ValidModel_ReturnsMoneyDepositView</h3><table class="result"><tr><th class="invisible"/></tr></table><p class="totop"><a href="#summary">back to summary</a></p>
-<h3 id="m5">com.nkxgen.spring.jdbc.Test.TransactionControllerTest#moneyWithdrawlForm_ValidModel_ReturnsMoneyWithdrawlFormView</h3><table class="result"><tr><th class="invisible"/></tr></table><p class="totop"><a href="#summary">back to summary</a></p>
 </body>
 </html>

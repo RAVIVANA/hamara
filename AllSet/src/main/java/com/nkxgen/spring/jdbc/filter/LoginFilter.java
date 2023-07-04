@@ -13,11 +13,11 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import com.nkxgen.spring.jdbc.DaoInterfaces.UserCredentialsDAO;
+import com.nkxgen.spring.jdbc.Exception.UsernameNotFoundException;
+import com.nkxgen.spring.jdbc.Exception.WrongPasswordException;
 
-@Component
 public class LoginFilter implements Filter {
 
 	@Autowired
@@ -34,23 +34,36 @@ public class LoginFilter implements Filter {
 		String username = httpRequest.getParameter("username");
 		String password = httpRequest.getParameter("password");
 
-		System.out.println(username + " " + password);
+		try {
+			// Perform your login verification logic here
+			boolean isValidCredentials = userCredentialsDAO.userCredentialsCheck(username, password);
 
-		// Perform your login verification logic here
-		System.out.println(userCredentialsDAO.userCredentialsCheck(username, password));
-		boolean isValidCredentials = userCredentialsDAO.userCredentialsCheck(username, password);
+			if (isValidCredentials) {
+				// Create a session and set an attribute to store the logged-in user information
+				HttpSession session = httpRequest.getSession(true);
+				session.setAttribute("username", username);
 
-		if (isValidCredentials) {
-			// Create a session and set an attribute to store the logged-in user information
-			HttpSession session = httpRequest.getSession(true);
-			session.setAttribute("username", username);
+				// Continue the request processing
+				chain.doFilter(request, response);
+			}
+		} catch (UsernameNotFoundException e) {
+			// Set the error message as a session attribute
+			String errorMessage = e.getMessage();
+			HttpSession session = httpRequest.getSession();
+			session.setAttribute("errorMessage", errorMessage);
+			System.out.println(session.getAttribute("errorMessage"));
+			// Redirect the request to the login page
+			httpResponse.sendRedirect(httpRequest.getContextPath() + "/");
 
-			// Continue the request processing
-			chain.doFilter(request, response);
-		} else {
-			// Invalid credentials, return an error message
-			String errorMessage = "Bad credentials";
-			httpResponse.getWriter().write(errorMessage);
+		} catch (WrongPasswordException e) {
+			// Set the error message as a session attribute
+			String errorMessage = e.getMessage();
+			HttpSession session = httpRequest.getSession();
+			session.setAttribute("errorMessage", errorMessage);
+			System.out.println(session.getAttribute("errorMessage"));
+			// Redirect the request to the login page
+			httpResponse.sendRedirect(httpRequest.getContextPath() + "/");
+
 		}
 	}
 

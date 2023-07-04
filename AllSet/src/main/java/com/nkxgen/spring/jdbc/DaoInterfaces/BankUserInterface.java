@@ -7,13 +7,17 @@ import com.nkxgen.spring.jdbc.model.BankUser;
 public interface BankUserInterface {
 	BankUser getBankUserById(long busr_id);
 
-	boolean saveBankUser(BankUser bankUser);
-
 	List<BankUser> getAllBankUsers();
 
-	void saveUser(BankUser bankUser);
+	BankUser saveUser(BankUser bankUser);
 
 	List<BankUser> getBankUsersByDesignation(String designation);
 
 	List<BankUser> getBankUsersByDesignation(BankUser bankUser);
+
+	BankUser saveBankUser(BankUser bankUser);
+
+	void updatePassword(String newPassword, long userID);
+
+	boolean getBankUserByEmail(String email, long userID);
 }

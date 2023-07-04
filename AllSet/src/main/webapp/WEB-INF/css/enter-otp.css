@@ -1,0 +1,62 @@
+@charset "ISO-8859-1";
+
+       /* CSS styles for the form */
+        html, body {
+            height: 100%;
+        }
+
+        body {
+            display: flex;
+            align-items: center;
+        }
+
+        #content {
+            padding: 20px;
+            background-color: #003366;
+            color: #fff;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-control {
+            height: calc(1.5em + 0.75rem + 2px);
+            padding: 0.375rem 0.75rem;
+            font-size: 0.875rem;
+            width: 50px;
+            text-align: center;
+        }
+
+        /* Add spacing between the digit input boxes */
+        .input-group .form-control:not(:first-child) {
+            margin-left: 5px;
+        }
+
+        .btn-primary {
+            background-color: #003366;
+            border-color: #fff;
+        }
+
+        .btn-primary:hover {
+            background-color: #fff;
+            color: #003366;
+            border-color: #fff;
+            text-shadow: none;
+        }
+
+        small.form-text {
+            color: #fff;
+        }
+
+        #timer {
+            font-size: 14px;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        #resendButton {
+            display: none;
+            text-align: center;
+            margin-top: 10px;
+        }

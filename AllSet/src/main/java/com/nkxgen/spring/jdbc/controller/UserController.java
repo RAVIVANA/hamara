@@ -23,43 +23,47 @@ import com.nkxgen.spring.jdbc.ViewModels.BankUserViewModel;
 import com.nkxgen.spring.jdbc.events.BankUserCreationEvent;
 import com.nkxgen.spring.jdbc.events.BankUserDetailsModificationEvent;
 import com.nkxgen.spring.jdbc.model.BankUser;
+import com.nkxgen.spring.jdbc.validation.MailSender;
 
 @Controller
 public class UserController {
 
-	@Autowired
 	private ApplicationEventPublisher applicationEventPublisher;
+	private BankUserInterface bankUserService;
+	private MailSender mailSender;
+	private ViewInterface v;
+
+	@Autowired
+	public UserController(BankUserInterface bankUserService, ApplicationEventPublisher applicationEventPublisher,
+			ViewInterface v, MailSender mailSender) {
+		this.v = v;
+		this.bankUserService = bankUserService;
+		this.applicationEventPublisher = applicationEventPublisher;
+		this.mailSender = mailSender;
+	}
 
 	@RequestMapping(value = "/addUser", method = RequestMethod.POST)
 	public String addUser() {
 		return "add-user";
 	}
 
-	private final BankUserInterface bankUserService;
-	@Autowired
-	public
-	ViewInterface v;
-
-	@Autowired
-	public UserController(BankUserInterface bankUserService) {
-		this.bankUserService = bankUserService;
-	}
-
 	@RequestMapping(value = "/submitForm", method = RequestMethod.POST)
 	public ResponseEntity<String> submitForm(BankUserInput bankUser, HttpServletRequest request) {
 
-		BankUser b = new BankUser();
-		b.setInputModelValues(bankUser); // Set the input model values from the bankUser object
-		bankUserService.saveBankUser(b); // Save the bank user details
-		System.out.println("Submitted Form"); // Print a message indicating that the form has been submitted
+		BankUser user = new BankUser();
+		user.setInputModelValues(bankUser); // Set the input model values from the bankUser object
+		user = bankUserService.saveBankUser(user); // Save the bank user details
+		System.out.println("Submitted Form" + user); // Print a message indicating that the form has been submitted
+		mailSender.userAdded(user);
 		HttpSession session = request.getSession();
 		String username = (String) session.getAttribute("username"); // Get the username from the session attribute
 		applicationEventPublisher.publishEvent(new BankUserCreationEvent("Bank User Created ", username)); // Publish a
 																											// Bank User
 																											// Creation
 																											// event
-		return ResponseEntity.ok("Data saved successfully!"); // Return a response entity indicating successful data
-																// submission
+		return ResponseEntity.ok("User Added successfully and Mail is sent"); // Return a response entity indicating
+																				// successful data
+		// submission
 	}
 
 	@RequestMapping(value = "/mainUser", method = RequestMethod.GET)
@@ -70,7 +74,7 @@ public class UserController {
 		return "bank-users"; // Return the view name "mainUser"
 	}
 
-	@RequestMapping("/saveUserData")
+	@RequestMapping(value = "/saveUserData")
 	@ResponseBody
 	public String saveUserData(BankUserInput bankUser, HttpServletRequest request) {
 		BankUser b = new BankUser(); // Create a new BankUser object
@@ -86,6 +90,7 @@ public class UserController {
 																												// BankUserDetailsModificationEvent
 		return "User data updated successfully"; // Return a success message
 	}
+
 	@RequestMapping(value = "/fetchData", method = RequestMethod.POST)
 	public String getBankUserByDesignation(@ModelAttribute("BankUser") BankUserInput bankUser, Model model) {
 		BankUser b = new BankUser(); // Create a new BankUser object

@@ -55,7 +55,7 @@ public class PdfGenerator implements Generator {
 			headingCell.setPadding(cellPadding);
 			table.addCell(headingCell);
 
-			headingCell = new PdfPCell(new Paragraph("Username", headingFont));
+			headingCell = new PdfPCell(new Paragraph("UserID", headingFont));
 			headingCell.setBackgroundColor(new BaseColor(0, 51, 102));
 			headingCell.setPadding(cellPadding);
 			table.addCell(headingCell);

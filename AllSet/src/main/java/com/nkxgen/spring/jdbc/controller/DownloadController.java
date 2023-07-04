@@ -24,13 +24,13 @@ public class DownloadController {
 
 	private AuditLogDAO auditLogDAO;
 	private Generator generator;
-	@Autowired
 	private AccountProcessingDAO interestCalDao;
 
 	@Autowired
-	public DownloadController(AuditLogDAO auditLogDAO, PdfGenerator generator) {
+	public DownloadController(AuditLogDAO auditLogDAO, PdfGenerator generator, AccountProcessingDAO interestCalDao) {
 		this.auditLogDAO = auditLogDAO;
 		this.generator = generator;
+		this.interestCalDao = interestCalDao;
 	}
 
 	@RequestMapping(value = "auditDownloads")
@@ -52,7 +52,7 @@ public class DownloadController {
 		try (OutputStream outputStream = response.getOutputStream()) {
 
 			response.setContentType("application/pdf");
-			response.setHeader("Content-Disposition", "attachment; filename=accounts_transaction_list.pdf");
+			response.setHeader("Content-Disposition", "attachment; filename=transaction_list.pdf");
 			int accountId = Integer.parseInt(accountid);
 			System.out.println(accountId);
 			List<Transaction> transactionList = interestCalDao.AccountTransactionStatementGeneration(accountId);
@@ -68,7 +68,7 @@ public class DownloadController {
 		try (OutputStream outputStream = response.getOutputStream()) {
 
 			response.setContentType("application/pdf");
-			response.setHeader("Content-Disposition", "attachment; filename=loans_transaction_list.pdf");
+			response.setHeader("Content-Disposition", "attachment; filename=transaction_list.pdf");
 			int accountId = Integer.parseInt(accountid);
 			System.out.println(accountId);
 			List<LoanTransactions> transactionList = interestCalDao.LoanTransactionStatementGeneration(accountId);
