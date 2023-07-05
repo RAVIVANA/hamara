@@ -28,7 +28,6 @@ public class customercontroller {
 	@RequestMapping(value = "/customer_data_trail_save", method = RequestMethod.POST)
 	public String customerDataSaveToDb(@Validated CustomerViewModel customer, Model model) {
 		// Print the new customer ID
-		System.out.println("this is my new customer id : " + customer.getId());
 
 		// Perform service operations on the customer view model to generate the customer trail
 		Customertrail cus = CustomerSetter.dotheservice2(customer);

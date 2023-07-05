@@ -1,7 +1,8 @@
 // JavaScript to handle page load on Neeraj dropdown click
+
 $(document).ready(function() {
-	
-		var mainContent = $('#main-content');
+
+	var mainContent = $('#main-content');
 
 	function graphs() {
 		console.log("graphs function called");
@@ -25,7 +26,24 @@ $(document).ready(function() {
 
 
 	graphs(); // Call the function on page load
+//-------------------------permission management--------------------------------------------------
+	var permissions = $('#permissions');
+	var mainContent = $('#main-content');
 
+	permissions.on('click', function(event) {
+		// Prevent the default behavior of the anchor tag
+		$.ajax({
+			url: 'permission',
+			method: 'get',
+			success: function(resultText) {
+				$('#r1').html(resultText);
+			},
+			error: function(jqXHR, exception) {
+				console.log('Error occurred!');
+			}
+		})
+	});
+//-------------------------add user--------------------------------------------------
 	var adduser = $('#adduser');
 	var mainContent = $('#main-content');
 
@@ -121,7 +139,7 @@ $(document).ready(function() {
 		});
 	});
 	//--------------------------- Account New Application------------------------
-	
+
 	//------------------------------------ Loans New Application -------------------
 	var newloan = $('#newloan');
 	var mainContent = $('#main-content');
@@ -529,7 +547,7 @@ $(document).ready(function() {
 	var mainContent = $('#main-content');
 
 	account.on('click', function(event) {
-		
+
 		$.ajax({
 			url: 'accountNewApplicationForm',
 			type: 'GET',

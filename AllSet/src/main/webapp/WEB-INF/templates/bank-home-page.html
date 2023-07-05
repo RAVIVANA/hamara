@@ -4,7 +4,7 @@
 <title>Hamara Bank Website</title>
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <link rel="stylesheet" type="text/css" href="./css/bank-home-page.css">
 <script type="text/javascript" src="./js/bank-home-page.js"></script>
@@ -245,4 +245,26 @@
 		<footer> &copy; 2023 HamaraBank. All rights reserved. </footer>
 
 	</div>
+	<script>
+	
+	$(document).ready(function() {
+
+		var permissions = $('#permissions');
+		var mainContent = $('#main-content');
+
+		permissions.on('click', function(event) {
+			// Prevent the default behavior of the anchor tag
+			$.ajax({
+				url: 'permission',
+				method: 'get',
+				success: function(resultText) {
+					mainContent.html(resultText);
+				},
+				error: function(jqXHR, exception) {
+					console.log('Error occurred!');
+				}
+			})
+		});
+	});
+	</script>
 </div>

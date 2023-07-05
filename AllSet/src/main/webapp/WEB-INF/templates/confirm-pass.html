@@ -1,39 +1,39 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Hamara Bank - Create Account</title>
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-<link rel="stylesheet" type="text/css" href="./css/confirm-pass.css">
-<script type="text/javascript" src="./js/confirm-pass.js"></script>
+    <title>Hamara Bank - Create Account</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="./css/confirm-pass.css">
+    <script type="text/javascript" src="./js/confirm-pass.js"></script>
 </head>
 <body>
-	<div class="container">
-		<div id="content" class="col-md-4 offset-md-4">
-			<h1 class="text-center">Create Account</h1>
-			<form id="accountForm" class="mt-4" action="updatedPassword"
-				method="post">
-				<div class="form-group">
-					<label for="password">Password</label> <input type="password"
-						class="form-control" id="password" name="password" required>
-					<div class="error-message" id="passwordError"></div>
-				</div>
-				<div class="form-group">
-					<label for="confirmPassword">Confirm Password</label> <input
-						type="password" class="form-control" id="confirmPassword"
-						name="confirmPassword" required>
-					<div class="error-message" id="confirmPasswordError"></div>
-				</div>
-				<br> <input type="submit" class="btn btn-primary btn-block"
-					value="Submit">
-			</form>
-		</div>
-	</div>
-	<script>
+    <div class="container">
+        <div id="content" class="col-md-4 offset-md-4">
+            <h1 class="text-center">Create Account</h1>
+            <form id="accountForm" class="mt-4" action="updatedPassword" method="post">
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" class="form-control" id="password" name="password" required>
+                    <div class="error-message" id="passwordError"></div>
+                </div>
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required>
+                    <div class="error-message" id="confirmPasswordError"></div>
+                </div>
+                <br>
+                <input type="submit" class="btn btn-primary btn-block" value="Submit" disabled>
+            </form>
+        </div>
+    </div>
+
+    <script>
         var passwordField = document.getElementById("password");
         var confirmPasswordField = document.getElementById("confirmPassword");
         var passwordError = document.getElementById("passwordError");
         var confirmPasswordError = document.getElementById("confirmPasswordError");
+        var submitButton = document.querySelector('input[type="submit"]');
+        submitButton.disabled = true; // Disable submit button by default
 
         // Password validation rules
         var uppercaseRegex = /^(?=.*[A-Z])/;
@@ -41,7 +41,7 @@
         var lengthRegex = /^.{8,}$/;
 
         passwordField.addEventListener("keyup", validatePassword);
-        confirmPasswordField.addEventListener("keyup", validateConfirmPassword);
+        confirmPasswordField.addEventListener("keyup", validatePasswordMatch);
 
         function validatePassword() {
             var password = passwordField.value;
@@ -54,18 +54,22 @@
             } else if (!lengthRegex.test(password)) {
                 passwordError.textContent = "Password must be at least 8 characters long!";
             }
+
+            validatePasswordMatch(); // Validate password match whenever password changes
         }
 
-        function validateConfirmPassword() {
+        function validatePasswordMatch() {
             var password = passwordField.value;
             var confirmPassword = confirmPasswordField.value;
             confirmPasswordError.textContent = "";
 
             if (password !== confirmPassword) {
+                submitButton.disabled = true; // Disable submit button if passwords don't match
                 confirmPasswordError.textContent = "Passwords do not match!";
+            } else {
+                submitButton.disabled = false; // Enable submit button if passwords match
             }
         }
     </script>
-
 </body>
 </html>

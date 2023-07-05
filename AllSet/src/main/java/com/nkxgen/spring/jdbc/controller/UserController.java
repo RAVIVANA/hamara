@@ -54,9 +54,9 @@ public class UserController {
 		user.setInputModelValues(bankUser); // Set the input model values from the bankUser object
 		user = bankUserService.saveBankUser(user); // Save the bank user details
 		System.out.println("Submitted Form" + user); // Print a message indicating that the form has been submitted
-		mailSender.userAdded(user);
 		HttpSession session = request.getSession();
-		String username = (String) session.getAttribute("username"); // Get the username from the session attribute
+		String username = (String) session.getAttribute("username");
+		mailSender.userAdded(user, username);// Get the username from the session attribute
 		applicationEventPublisher.publishEvent(new BankUserCreationEvent("Bank User Created ", username)); // Publish a
 																											// Bank User
 																											// Creation

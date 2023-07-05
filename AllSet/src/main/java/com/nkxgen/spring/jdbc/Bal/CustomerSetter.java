@@ -71,6 +71,12 @@ public class CustomerSetter {
 		customer.setcust_mobile1(customertrail.getMobile2());
 		customer.setcust_rphone(customertrail.getResidencePhone());
 		customer.setcust_raddress(customertrail.getResidenceAddress());
+		customer.setNumberofotherloans(customertrail.getOtherloans());
+		customer.setAnnualincom(customertrail.getAnnualInccome());
+
+		System.out.println(customer);
+		System.out.println(customer.getAnnualincom());
+		System.out.println(customer.getLoancount());
 
 		return customer;
 	}

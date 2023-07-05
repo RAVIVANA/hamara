@@ -52,6 +52,28 @@ public class Customertrail {
 	@OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private List<LoanApplication> loanApplications;
 
+	@Column(name = "Otherloans")
+	private String Otherloans;
+
+	@Column(name = "AnnualInccome")
+	private String AnnualInccome;
+
+	// Setters and Getters
+	public void setAnnualincom(String income) {
+		this.AnnualInccome = income;
+	}
+
+	public void setNumberofotherloans(String loancount) {
+		this.Otherloans = loancount;
+	}
+
+	public String getAnnualincom() {
+		return AnnualInccome;
+	}
+
+	public String getLoancount() {
+		return Otherloans;
+	}
 	// Setters and Getters
 
 	public Long getId() {
@@ -154,6 +176,8 @@ public class Customertrail {
 		customer.setcust_mobile2(customertrail.getMobile2());
 		customer.setcust_rphone(customertrail.getResidencePhone());
 		customer.setcust_raddress(customertrail.getResidenceAddress());
+		customer.setAnnualincom(customertrail.getAnnualInccome());
+		customer.setNumberofotherloans(customertrail.getOtherloans());
 
 		return customer;
 	}

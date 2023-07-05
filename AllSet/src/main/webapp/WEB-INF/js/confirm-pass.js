@@ -1,35 +1,44 @@
-var passwordField = document.getElementById("password");
-var confirmPasswordField = document.getElementById("confirmPassword");
-var passwordError = document.getElementById("passwordError");
-var confirmPasswordError = document.getElementById("confirmPasswordError");
 
-// Password validation rules
-var uppercaseRegex = /^(?=.*[A-Z])/;
-var specialCharRegex = /^(?=.*[!@#$%^&*])/;
-var lengthRegex = /^.{8,}$/;
+        var passwordField = document.getElementById("password");
+        var confirmPasswordField = document.getElementById("confirmPassword");
+        var passwordError = document.getElementById("passwordError");
+        var confirmPasswordError = document.getElementById("confirmPasswordError");
+        var submitButton = document.querySelector('input[type="submit"]');
+        submitButton.disabled = true; // Disable submit button by default
 
-passwordField.addEventListener("keyup", validatePassword);
-confirmPasswordField.addEventListener("keyup", validateConfirmPassword);
+        // Password validation rules
+        var uppercaseRegex = /^(?=.*[A-Z])/;
+        var specialCharRegex = /^(?=.*[!@#$%^&*])/;
+        var lengthRegex = /^.{8,}$/;
 
-function validatePassword() {
-	var password = passwordField.value;
-	passwordError.textContent = "";
+        passwordField.addEventListener("keyup", validatePassword);
+        confirmPasswordField.addEventListener("keyup", validatePasswordMatch);
 
-	if (!uppercaseRegex.test(password)) {
-		passwordError.textContent = "Password must contain at least one uppercase letter!";
-	} else if (!specialCharRegex.test(password)) {
-		passwordError.textContent = "Password must contain at least one special character!";
-	} else if (!lengthRegex.test(password)) {
-		passwordError.textContent = "Password must be at least 8 characters long!";
-	}
-}
+        function validatePassword() {
+            var password = passwordField.value;
+            passwordError.textContent = "";
 
-function validateConfirmPassword() {
-	var password = passwordField.value;
-	var confirmPassword = confirmPasswordField.value;
-	confirmPasswordError.textContent = "";
+            if (!uppercaseRegex.test(password)) {
+                passwordError.textContent = "Password must contain at least one uppercase letter!";
+            } else if (!specialCharRegex.test(password)) {
+                passwordError.textContent = "Password must contain at least one special character!";
+            } else if (!lengthRegex.test(password)) {
+                passwordError.textContent = "Password must be at least 8 characters long!";
+            }
 
-	if (password !== confirmPassword) {
-		confirmPasswordError.textContent = "Passwords do not match!";
-	}
-}
+            validatePasswordMatch(); // Validate password match whenever password changes
+        }
+
+        function validatePasswordMatch() {
+            var password = passwordField.value;
+            var confirmPassword = confirmPasswordField.value;
+            confirmPasswordError.textContent = "";
+
+            if (password !== confirmPassword) {
+                submitButton.disabled = true; // Disable submit button if passwords don't match
+                confirmPasswordError.textContent = "Passwords do not match!";
+            } else {
+                submitButton.disabled = false; // Enable submit button if passwords match
+            }
+        }
+

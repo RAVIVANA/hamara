@@ -1,84 +1,343 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-<title>Manage Permissions Form</title>
-<link rel="stylesheet" type="text/css"
-	href="./css/permission-management.css">
-<script type="text/javascript" src="./js/permission-management.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <style>
+     /* Add custom styles for alignment and centering */
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    .dropdown-menu {
+      width: 300px;
+    }
+
+    .form-check {
+      margin-bottom: 10px;
+    }
+
+    /* Rest of your styles */
+    .dropdown-item:hover {
+      color: #f1f1f1 !important;
+      background-color: #333 !important;
+    }
+
+    .dropdown-menu li {
+      position: relative;
+    }
+
+    .dropdown-menu .dropdown-submenu {
+      display: none;
+      position: absolute;
+      left: 100%;
+      top: -7px;
+    }
+
+    .dropdown-menu .dropdown-submenu-left {
+      right: 100%;
+      left: auto;
+    }
+
+    .dropdown-menu>li:hover>.dropdown-submenu {
+      display: block;
+    }
+
+    .btn-primary {
+      color: #818181;
+      background-color: transparent;
+      border-color: transparent;
+    }
+  </style>
 </head>
 <body>
-	<h1>Manage Permissions Form</h1>
+<form>
+  <div class="dropdown">
+    <div class="btn btn-primary dropdown-toggle" role="button" id="UserDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      Select User
+    </div>
+    <ul class="dropdown-menu" aria-labelledby="UserDropdown">
+      <li>
+        <a class="dropdown-item" href="#Clerk">Clerk</a>
+        <ul class="dropdown-menu dropdown-submenu">
+          <li>
+            <a class="dropdown-item" href="#singleuser" th:attr="data-role-value='Clerk'">Single User</a>
+          </li>
+          <li>
+            <a class="dropdown-item" href="#allusers" th:attr="data-role-value='Clerk'">All Users</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a class="dropdown-item" href="#bankofficer">Bank Officer</a>
+        <ul class="dropdown-menu dropdown-submenu">
+          <li>
+            <a class="dropdown-item" href="#singleuser" th:attr="data-role-value='Bank Officer'">Single User</a>
+          </li>
+          <li>
+            <a class="dropdown-item" href="#allusers" th:attr="data-role-value='Bank Officer'">All Users</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a class="dropdown-item" href="#">Account Processing Officer</a>
+        <ul class="dropdown-menu dropdown-submenu">
+          <li>
+            <a class="dropdown-item" href="#singleuser" th:attr="data-role-value='Account Processing'">Single User</a>
+          </li>
+          <li>
+            <a class="dropdown-item" href="#allusers" th:attr="data-role-value='Account Processing'">All Users</a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </div>
 
-	<div class="form-container">
-		<form>
-			<label for="userRole">User Role:</label> <select id="userRole"
-				name="userRole">
-				<option value="">Select Role</option>
-				<option value="clerk">Clerk</option>
-				<option value="bankOfficer">Bank Officer</option>
-				<option value="accountProcessingOfficer">Account Processing
-					Officer</option>
-			</select> <input type="submit" value="Permissions" />
-			<button type="button" onclick="resetForm()">Reset</button>
+  <!-- Div to display when Single User is selected -->
+ <div id="div1" th:style="'display: ' + (${selectedOption == '#singleuser'} ? 'block' : 'none')">
+  <label for="userId">Enter User ID:</label>
+  <input type="text" id="userId" name="userId">
+ </div>
 
-		</form>
-	</div>
+  <!-- Div to display when All Users is selected -->
+   <div id="div2" th:style="'display: ' + (${selectedOption == '#allusers'} ? 'block' : 'none')">
+   
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" id="allUsersDashboardCheckbox" name="dashboard" value="true">
+      <label class="form-check-label" for="allUsersDashboardCheckbox">Dashboard</label>
+    </div>
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" id="allUsersAccountsCheckbox" name="accounts" value="true">
+      <label class="form-check-label" for="allUsersAccountsCheckbox">Accounts</label>
+    </div>
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" id="allUsersLoansCheckbox" name="loans" value="true">
+      <label class="form-check-label" for="allUsersLoansCheckbox">Loans</label>
+    </div>
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" id="allUsersTransactionsCheckbox" name="transactions" value="true">
+      <label class="form-check-label" for="allUsersTransactionsCheckbox">Transactions</label>
+    </div>
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" id="allUsersApplicationCheckbox" name="application" value="true">
+      <label class="form-check-label" for="allUsersApplicationCheckbox">Application</label>
+    </div>
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" id="allUsersUsersCheckbox" name="users" value="true">
+      <label class="form-check-label" for="allUsersUsersCheckbox">Users</label>
+    </div>
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" id="allUsersCustomersCheckbox" name="customers" value="true">
+      <label class="form-check-label" for="allUsersCustomersCheckbox">Customers</label>
+    </div>
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" id="allUsersAccountProcessingCheckbox" name="accountProcessing" value="true">
+      <label class="form-check-label" for="allUsersAccountProcessingCheckbox">Account Processing</label>
+    </div>
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" id="allUsersAuditLogCheckbox" name="auditLog" value="true">
+      <label class="form-check-label" for="allUsersAuditLogCheckbox">Audit Log</label>
+    </div>
+    <button id="updateAllUsersButton" class="btn btn-primary">Update</button>
 
-	<div id="all" class="row">
-		<div class="checkbox-group" id="clerkCheckboxGroup">
-			<label><input type="checkbox" name="clerkPermissions"
-				value="dashboard"> Dashboard</label> <label><input
-				type="checkbox" name="clerkPermissions" value="accounts">
-				Accounts</label> <label><input type="checkbox"
-				name="bankOfficerPermissions" value="loans"> Loans</label> <label><input
-				type="checkbox" name="bankOfficerPermissions" value="transactions">
-				Transactions</label> <label><input type="checkbox"
-				name="accountProcessingOfficerPermissions" value="application">
-				Application</label> <label><input type="checkbox"
-				name="accountProcessingOfficerPermissions" value="users">
-				Users</label> <label><input type="checkbox"
-				name="managerPermissions" value="customers"> Customers</label> <label><input
-				type="checkbox" name="managerPermissions" value="accountProcessing">
-				Account Processing</label> <label><input type="checkbox"
-				name="managerPermissions" value="auditLog"> Audit Log</label>
-		</div>
+  </div>
+  
+ 
+   <div id="div3" th:style="'display: ' + (${selectedOption == '#allusers'} ? 'block' : 'none')">
+   
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" id="forallUsersDashboardCheckbox" name="dashboard" value="true">
+      <label class="form-check-label" for="allUsersDashboardCheckbox">Dashboard</label>
+    </div>
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" id="forallUsersAccountsCheckbox" name="accounts" value="true">
+      <label class="form-check-label" for="allUsersAccountsCheckbox">Accounts</label>
+    </div>
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" id="forallUsersLoansCheckbox" name="loans" value="true">
+      <label class="form-check-label" for="allUsersLoansCheckbox">Loans</label>
+    </div>
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" id="forallUsersTransactionsCheckbox" name="transactions" value="true">
+      <label class="form-check-label" for="allUsersTransactionsCheckbox">Transactions</label>
+    </div>
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" id="forallUsersApplicationCheckbox" name="application" value="true">
+      <label class="form-check-label" for="allUsersApplicationCheckbox">Application</label>
+    </div>
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" id="forallUsersUsersCheckbox" name="users" value="true">
+      <label class="form-check-label" for="allUsersUsersCheckbox">Users</label>
+    </div>
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" id="forallUsersCustomersCheckbox" name="customers" value="true">
+      <label class="form-check-label" for="allUsersCustomersCheckbox">Customers</label>
+    </div>
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" id="forallUsersAccountProcessingCheckbox" name="accountProcessing" value="true">
+      <label class="form-check-label" for="allUsersAccountProcessingCheckbox">Account Processing</label>
+    </div>
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" id="forallUsersAuditLogCheckbox" name="auditLog" value="true">
+      <label class="form-check-label" for="allUsersAuditLogCheckbox">Audit Log</label>
+    </div>
+    <button id="AllUsersButton" class="btn btn-primary">Update</button>
+    
+  </div>
+ </form>
+  <script th:inline="javascript">
+    /*<![CDATA[*/
+    $(document).ready(function() {
+    	var parentLabel;
+      // Event handler for User dropdown selection
+      $(".dropdown-item").click(function() {
+    	 
+        var selectedOption = $(this).attr("href");
+         parentLabel = $(this).attr("data-role-value");
+       
+      
+        if (selectedOption === "#singleuser") {
+          $("#div1").show();
+          $("#div2").show();
+          $("#div3").hide();
+          
+        } else if (selectedOption === "#allusers") { 
+          $("#div3").show();
+          $("#div1").hide();
+          $("#div2").hide();
+          
+        } else {
+          $("#div1").hide();
+          $("#div2").hide();
+        }
+      });
 
-		<div class="checkbox-group" id="bankOfficerCheckboxGroup">
-			<label><input type="checkbox" name="clerkPermissions"
-				value="dashboard"> Dashboard</label> <label><input
-				type="checkbox" name="clerkPermissions" value="accounts">
-				Accounts</label> <label><input type="checkbox"
-				name="bankOfficerPermissions" value="loans"> Loans</label> <label><input
-				type="checkbox" name="bankOfficerPermissions" value="transactions">
-				Transactions</label> <label><input type="checkbox"
-				name="accountProcessingOfficerPermissions" value="application">
-				Application</label> <label><input type="checkbox"
-				name="accountProcessingOfficerPermissions" value="users">
-				Users</label> <label><input type="checkbox"
-				name="managerPermissions" value="customers"> Customers</label> <label><input
-				type="checkbox" name="managerPermissions" value="accountProcessing">
-				Account Processing</label> <label><input type="checkbox"
-				name="managerPermissions" value="auditLog"> Audit Log</label>
-		</div>
+      // Event handler for Update button in div1
+      $('#updateAllUsersButton').on('click', function() {
+       
+    	  console.log(parentLabel);
+    	  var userId = $('#userId').val();
+       
+        var dashboard = $('#allUsersDashboardCheckbox').is(':checked');
+        var accounts = $('#allUsersAccountsCheckbox').is(':checked');
+        var loans = $('#allUsersLoansCheckbox').is(':checked');
+        var transactions = $('#allUsersTransactionsCheckbox').is(':checked');
+        var application = $('#allUsersApplicationCheckbox').is(':checked');
+        var users = $('#allUsersCustomersCheckbox').is(':checked');
+        var customers = $('#allUsersCustomersCheckbox').is(':checked');
+        var accountProcessing = $('#allUsersAccountProcessingCheckbox').is(':checked');
+        var auditLog = $('#allUsersAuditLogCheckbox').is(':checked');
 
-		<div class="checkbox-group" id="accountProcessingOfficerCheckboxGroup">
-			<label><input type="checkbox" name="clerkPermissions"
-				value="dashboard"> Dashboard</label> <label><input
-				type="checkbox" name="clerkPermissions" value="accounts">
-				Accounts</label> <label><input type="checkbox"
-				name="bankOfficerPermissions" value="loans"> Loans</label> <label><input
-				type="checkbox" name="bankOfficerPermissions" value="transactions">
-				Transactions</label> <label><input type="checkbox"
-				name="accountProcessingOfficerPermissions" value="application">
-				Application</label> <label><input type="checkbox"
-				name="accountProcessingOfficerPermissions" value="users">
-				Users</label> <label><input type="checkbox"
-				name="managerPermissions" value="customers"> Customers</label> <label><input
-				type="checkbox" name="managerPermissions" value="accountProcessing">
-				Account Processing</label> <label><input type="checkbox"
-				name="managerPermissions" value="auditLog"> Audit Log</label>
-		</div>
-	</div>
+        // Make AJAX request to update the database
+        $.ajax({
+          type: 'POST',
+          url: 'permissionurl', // Replace {userId} with the actual user ID
+          data: {
+            userId: userId,
+            Role: parentLabel,
+            dashboard: dashboard,
+            accounts: accounts,
+            loans: loans,
+            transactions: transactions,
+            application: application,
+            users: users,
+            customers: customers,
+            accountProcessing: accountProcessing,
+            auditLog: auditLog
+          },
+          success: function(response) {
+            console.log(response);
+            alert('Permissions updated successfully!');
+          },
+          error: function(error) {
+            console.log(error);
+            alert('Failed to update permissions.');
+          }
+        });
 
+      });
+      
+      $('#AllUsersButton').on('click', function() {
+          
+    	  console.log(parentLabel);
+    	  var userId = $('#userId').val();
+       
+        var dashboard = $('#forallUsersDashboardCheckbox').is(':checked');
+        var accounts = $('#forallUsersAccountsCheckbox').is(':checked');
+        var loans = $('#forallUsersLoansCheckbox').is(':checked');
+        var transactions = $('#forallUsersTransactionsCheckbox').is(':checked');
+        var application = $('#forallUsersApplicationCheckbox').is(':checked');
+        var users = $('#forallUsersCustomersCheckbox').is(':checked');
+        var customers = $('#forallUsersCustomersCheckbox').is(':checked');
+        var accountProcessing = $('#forallUsersAccountProcessingCheckbox').is(':checked');
+        var auditLog = $('#forallUsersAuditLogCheckbox').is(':checked');
+		
+        // Make AJAX request to update the database
+        $.ajax({
+          type: 'POST',
+          url: 'allpermissionurl', // Replace {userId} with the actual user ID
+          data: {
+            userId: userId,
+            Role: parentLabel,
+            dashboard: dashboard,
+            accounts: accounts,
+            loans: loans,
+            transactions: transactions,
+            application: application,
+            users: users,
+            customers: customers,
+            accountProcessing: accountProcessing,
+            auditLog: auditLog
+          },
+          success: function(response) {
+            console.log(response);
+            console.log("hello");
+            alert('Permissions updated successfully!');
+          },
+          error: function(error) {
+            console.log(error);
+            alert('Failed to update permissions.');
+          }
+        });
+
+      });
+
+      // Event handler for Update button in div2
+      // $('#updateAllUsersButton').on('click', function() {
+      //var permissions = {
+      //dashboard: $('#allUsersDashboardCheckbox').is(':checked'),
+      //   accounts: $('#allUsersAccountsCheckbox').is(':checked'),
+      //  loans: $('#allUsersLoansCheckbox').is(':checked'),
+      //  transactions: $('#allUsersTransactionsCheckbox').is(':checked'),
+      //  application: $('#allUsersApplicationCheckbox').is(':checked'),
+      //  users: $('#allUsersUsersCheckbox').is(':checked'),
+      //  customers: $('#allUsersCustomersCheckbox').is(':checked'),
+      //  accountProcessing: $('#allUsersAccountProcessingCheckbox').is(':checked'),
+      //  auditLog: $('#allUsersAuditLogCheckbox').is(':checked')
+      // };
+
+      // Make AJAX request to update the database
+      //  $.ajax({
+      // type: 'POST',
+      //  url: '/updateAllUsersPermissions',
+      //  data: { permissions: permissions },
+      //  success: function(response) {
+      //     console.log(response);
+      //    alert('Permissions updated for all users!');
+      // },
+      //  error: function(error) {
+      //   console.log(error);
+      //   alert('Failed to update permissions for all users.');
+      // }
+      //  });
+      // });
+    });
+
+    /*]]>*/
+  </script>
 </body>
 </html>

@@ -21,6 +21,61 @@ public class CustomerViewModel {
 	private String residencePhone;
 
 	private String residenceAddress;
+	private String Otherloans;
+
+	private String AnnualInccome;
+
+	public String getOtherloans() {
+		return Otherloans;
+	}
+
+	public void setOtherloans(String otherloans) {
+		this.Otherloans = otherloans;
+	}
+
+	public String getAnnualInccome() {
+		return AnnualInccome;
+	}
+
+	public void setAnnualInccome(String annualInccome) {
+		this.AnnualInccome = annualInccome;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public void setCurrentAddress(String currentAddress) {
+		this.currentAddress = currentAddress;
+	}
+
+	public void setCurrentPINCode(String currentPINCode) {
+		this.currentPINCode = currentPINCode;
+	}
+
+	public void setDateOfBirth(String dateOfBirth) {
+		this.dateOfBirth = dateOfBirth;
+	}
+
+	public void setMobile1(String mobile1) {
+		this.mobile1 = mobile1;
+	}
+
+	public void setMobile2(String mobile2) {
+		this.mobile2 = mobile2;
+	}
+
+	public void setResidencePhone(String residencePhone) {
+		this.residencePhone = residencePhone;
+	}
+
+	public void setResidenceAddress(String residenceAddress) {
+		this.residenceAddress = residenceAddress;
+	}
 
 	// Setters and Getters
 

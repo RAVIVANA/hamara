@@ -11,10 +11,10 @@ console.log("loanData:", loanData);
 console.log("accountLabels:", accountLabels);
 console.log("loanLabels:", loanLabels);
 
-// Create a bar graph for account categories
+// Create a polarArea graph for account categories
 var accountCtx = document.getElementById('accountChart').getContext('2d');
 var accountChart = new Chart(accountCtx, {
-	type: 'pie',
+	type: 'polarArea',
 	data: {
 		labels: accountLabels,
 		datasets: [{

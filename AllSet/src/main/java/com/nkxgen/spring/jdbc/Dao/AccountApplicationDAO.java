@@ -29,26 +29,6 @@ public class AccountApplicationDAO implements AccountApplicationDaoInterface {
 		entityManager.persist(accountApplication); // Persist the AccountApplication object to the database
 	}
 
-	/*
-	 * public List<AccountApplication> getAccountsappByType(String value) {
-	 * System.out.println("neeraj function loki vacahav repository lo : " + value);
-	 * 
-	 * // Create a JPQL query to select AccountApplication objects based on the given type value String jpql =
-	 * "SELECT la FROM AccountApplication la WHERE la.acap_acty_id = :value"; TypedQuery<AccountApplication> query =
-	 * entityManager.createQuery(jpql, AccountApplication.class);
-	 * 
-	 * // Set the value parameter in the query query.setParameter("value", value);
-	 * 
-	 * // Execute the query and retrieve the list of AccountApplication objects List<AccountApplication> list1 =
-	 * query.getResultList();
-	 * 
-	 * if (!list1.isEmpty()) { // If the list is not empty, retrieve the acap_acty_id of the first object for testing
-	 * AccountApplication firstAccount = list1.get(0); String acapActyId = firstAccount.getAcap_acty_id();
-	 * System.out.println("acap_acty_id of first object: " + acapActyId); }
-	 * 
-	 * return list1; }
-	 */
-
 	public List<AccountApplication> getAccountsappByType(String value) {
 		System.out.println("neeraj function loki vacahav repository lo : " + value);
 
@@ -129,12 +109,6 @@ public class AccountApplicationDAO implements AccountApplicationDaoInterface {
 	public Account mergeAccount(Account account) {
 		return entityManager.merge(account);
 	}
-	// public String gettheid(String inputValue) {
-	// String jpql = "SELECT e.id FROM AccountType e WHERE e.value = :inputValue";
-	// TypedQuery<String> query = entityManager.createQuery(jpql, String.class);
-	// query.setParameter("inputValue", inputValue);
-	// return query.getSingleResult();
-	// }
 
 	@Override
 	public AccountApplication getAccountApplicationById(Long applicationId) {
@@ -154,6 +128,7 @@ public class AccountApplicationDAO implements AccountApplicationDaoInterface {
 
 		return Account;
 	}
+
 	@Override
 	public AccountApplication getAccountsappById(long value) {
 

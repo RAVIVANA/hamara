@@ -24,7 +24,6 @@ function submit() {
 	var remarks = document.getElementById("remarks").value;
 	var attachment = document.getElementById("attachment").value;
 
-	console.log(attachment);
 	$.ajax({
 		url: 'newLoanApplication',
 		type: 'post',
@@ -47,7 +46,8 @@ function submit() {
 			LastUpdatedUser: lastUpdatedUser,
 			status: status,
 			remarks: remarks,
-			Attachment: attachment
+			Attachment: attachment,
+
 		},
 		success: function(resultText) {
 			
@@ -77,7 +77,12 @@ function submit2() {
 	var custMobile2 = document.getElementById("cust_mobile2").value;
 	var custRPhone = document.getElementById("cust_rphone").value;
 	var custRAddress = document.getElementById("cust_raddress").value;
-
+    var LoanCount = document.getElementById("otherloans").value;
+    var Annualincom = document.getElementById("annualincome").value;
+	
+     console.log(Annualincom);
+     console.log(LoanCount);
+	
 
 
 
@@ -96,10 +101,13 @@ function submit2() {
 			cust_mobile1: custMobile1,
 			cust_mobile2: custMobile2,
 			cust_rphone: custRPhone,
-			cust_raddress: custRAddress
+			cust_raddress: custRAddress,
+			AnnualInccome:Annualincom,
+			Otherloans:LoanCount
 		},
 		success: function(response) {
 			// Handle success response
+			
 			console.log("Form data saved successfully");
 		},
 		error: function(xhr, status, error) {

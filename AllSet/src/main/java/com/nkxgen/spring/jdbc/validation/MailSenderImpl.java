@@ -27,7 +27,7 @@ public class MailSenderImpl implements MailSender {
 		return otp; // Return the generated OTP
 	}
 
-	public void userAdded(BankUser bankUser) {
+	public void userAdded(BankUser bankUser, String userID) {
 		String to = bankUser.getBusr_email(); // Assign the value of the 'to_user' parameter to the 'to' variable
 		String subject = "Greetings From HAMARA BANK"; // Set the email subject
 
@@ -38,7 +38,7 @@ public class MailSenderImpl implements MailSender {
 				+ "Please take the time to familiarize yourself with our organization's values, goals, and the services we offer. We believe that together, we can make a significant impact in the lives of our customers and the communities we serve.\n\n"
 				+ "Once again, welcome to Hamara Bank!\n\n" + "Here are your login details:\n" + "Username: "
 				+ bankUser.getBusr_id() + "\n" + "Password: " + bankUser.getBusr_pwd() + "\n\n" + "Best regards,\n"
-				+ bankUser.getBusr_title() + "\n" + bankUser.getBusr_desg() + "\n" + "Hamara Bank";
+				+ userID + "\n" + bankUser.getBusr_desg() + "\n" + "Hamara Bank";
 
 		sendEmail(to, subject, body); // Invoke the sendEmail method to send the email
 	}
