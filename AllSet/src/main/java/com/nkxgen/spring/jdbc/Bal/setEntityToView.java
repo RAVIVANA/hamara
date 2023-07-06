@@ -130,21 +130,26 @@ public class setEntityToView implements ViewInterface {
 
 	@Override
 	public List<LoanApplicationViewModel> getLoanApplicationByValue(String typee) {
-		viewlist1.clear(); // Clear the existing contents of the viewlist1 list
+	    viewlist1.clear(); // Clear the existing contents of the viewlist1 list
 
-		List<LoanApplication> list = ll.getLoanApplicationByValue(typee); // Retrieve the list of LoanApplication
-																			// objects by value
+	    List<LoanApplication> list = ll.getLoanApplicationByValue(typee); // Retrieve the list of LoanApplication objects by value
 
-		for (LoanApplication l : list) {
-			LoanApplicationViewModel la = new LoanApplicationViewModel(); // Create a new LoanApplicationViewModel
-																			// object
-			la.copyFromEntity(l); // Copy the values from the LoanApplication object to the LoanApplicationViewModel
-									// object
-			viewlist1.add(la); // Add the LoanApplicationViewModel object to the viewlist1 list
-		}
+	    for (LoanApplication l : list) {
+	        LoanApplicationViewModel la = new LoanApplicationViewModel(); // Create a new LoanApplicationViewModel object
+	        // Fetch the Customertrail association eagerly
+	        Customertrail c=cd.getCustomerById(l.getCustId().getId());
+	        la.setAnnualincome(c.getAnnualincom());
+	        la.setLoancount(c.getLoancount());
+	        // Access the required properties without triggering lazy loading
 
-		return viewlist1; // Return the list of LoanApplicationViewModel objects
+	        la.copyFromEntity(l); // Copy the values from the LoanApplication object to the LoanApplicationViewModel object
+	        viewlist1.add(la); // Add the LoanApplicationViewModel object to the viewlist1 list
+	    }
+	    return viewlist1;
 	}
+
+
+
 
 	@Override
 	public List<AccountViewModel> getAccountsByType(String typee) {
@@ -366,7 +371,7 @@ public class setEntityToView implements ViewInterface {
 	@Override
 	public LoanApplicationViewModel getLoanApplicationById(int typee) throws ApplicationNotFound {
 		LoanApplicationViewModel la = new LoanApplicationViewModel();
-		LoanApplication list = ll.getLoanApplicationById(typee); // Retrieve the list of LoanApplication
+		LoanApplication list = ll.getLoanApplicationById((long)typee); // Retrieve the list of LoanApplication
 																	// objects by value
 		if (list == null) {
 			throw new ApplicationNotFound("Application not found");

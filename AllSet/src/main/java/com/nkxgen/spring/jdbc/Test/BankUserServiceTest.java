@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.mockito.Mockito.*;
+import static org.testng.Assert.assertEquals;
 
 public class BankUserServiceTest {
 
@@ -35,10 +36,10 @@ public class BankUserServiceTest {
     public void testSaveBankUser() {
         BankUser bankUser = new BankUser();
 
-        boolean result = bankUserService.saveBankUser(bankUser);
+        BankUser result = bankUserService.saveBankUser(bankUser);
 
         verify(entityManager).persist(bankUser);
-        assert result;
+        assert result==bankUser;
     }
 
     @Test

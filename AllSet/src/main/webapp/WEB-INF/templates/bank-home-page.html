@@ -21,7 +21,7 @@
 					<p>&nbsp India's Largest Banking Platform</p>
 				</div>
 				<div id="user-info">
-					<span th:text="'Hey ' + ${username}+', '"></span> <a href="logOut"
+					<span th:text="'Hey ' + ${username}+', '" ></span> <a href="logOut"
 						id="logout-link">&nbsp Logout</a>
 				</div>
 			</header>
@@ -30,8 +30,8 @@
 					<!-- Main List -->
 					<ul>
 						<!-- DashBoard List -->
-						<li>
-							<button class="btn">DashBoard</button>
+						<li th:if="${checkUserAccess('dashboard')}">
+							<button id="btn" class="btn">DashBoard</button>
 							<ul>
 								<li id="accounts"><button class="btn">Accounts</button></li>
 								<li id="loans"><button class="btn">Loans</button></li>
@@ -42,7 +42,7 @@
 						<!-- DashBoard List Ending-->
 
 						<!-- Accounts List -->
-						<li>
+						<li th:if="${checkUserAccess('accounts')}">
 							<button class="btn">Accounts</button>
 							<ul>
 								<!-- Savings -->
@@ -57,7 +57,7 @@
 								</li>
 
 								<!-- Current -->
-								<li>
+								<li >
 									<button class="btn">Current</button>
 									<ul>
 										<li id="currentacc" data-value="current"><button
@@ -68,7 +68,7 @@
 								</li>
 
 								<!-- Recurrent -->
-								<li>
+								<li >
 									<button class="btn">Recurrent</button>
 									<ul>
 										<li id="recurrentacc" data-value="recurrent"><button
@@ -79,7 +79,7 @@
 								</li>
 
 								<!-- Fixed Deposit -->
-								<li>
+								<li >
 									<button class="btn">Fixed Deposit</button>
 									<ul>
 										<li id="FDacc" data-value="fixed"><button class="btn">View
@@ -93,7 +93,7 @@
 						<!-- Accounts List Closed -->
 
 						<!-- Loans List -->
-						<li>
+						<li th:if="${checkUserAccess('loans')}" >
 							<button class="btn">Loans</button>
 							<ul>
 								<!-- Personal -->
@@ -146,7 +146,7 @@
 						<!-- Loans List Closed -->
 
 						<!-- Transactions List -->
-						<li>
+						<li th:if="${checkUserAccess('transactions')}">
 							<button class="btn">Transactions</button>
 							<ul>
 								<li>
@@ -171,13 +171,13 @@
 						</li>
 						<!-- Transactions Closed -->
 
-						<li><button class="btn">Application Forms</button>
+						<li th:if="${checkUserAccess('application')}"><button class="btn">Application Forms</button>
 							<ul>
 								<li id="newaccount"><button class="btn">AccountForm</button></li>
 								<li id="newloan"><button class="btn">Loan Form</button></li>
 							</ul></li>
 						<!-- intrest-calculatioons -->
-						<li>
+						<li th:if="${checkUserAccess('account_processing')}">
 							<button class="btn">Account Processing</button>
 							<ul>
 								<li id="intrest_caluclation"><button class="btn">Interest
@@ -188,10 +188,10 @@
 						</li>
 
 						<!-- Customers -->
-						<li id="customers"><button class="btn">Customers</button></li>
+						<li id="customers" th:if="${checkUserAccess('customers')}"><button class="btn">Customers</button></li>
 
 						<!-- auditlogs -->
-						<li>
+						<li th:if="${checkUserAccess('audit_log')}">
 							<button class="btn">Audit Logs</button>
 							<ul>
 								<li id="viewAudits"><button class="btn">View</button></li>
@@ -200,10 +200,10 @@
 						</li>
 						
 						<!-- Users -->
-						<li>
+						<li th:if="${checkUserAccess('Users')}">
 							<button class="btn">Users</button>
 							<ul>
-								<li id="adduser"><button class="btn">Add User</button></li>
+								<li id="adduser"><button class="btn">users</button></li>
 								<li id="listusers"><button class="btn">List Users</button></li>
 							</ul>
 						</li>
@@ -246,7 +246,28 @@
 
 	</div>
 	<script>
-	
+	function checkUserAccess(option) {
+		  var username = /*[[${username}]]*/ '';
+
+		  $.ajax({
+		    url: "/checkUserAccess", // Replace with your server-side endpoint
+		    method: "POST",
+		    data: { option: option,id: username},
+		    success: function(response) {
+		      // Handle the response from the server
+		      if (response === true) {
+		        
+		      } else {
+		    	  $('#btn').hide();
+		      }
+		    },
+		    error: function(xhr, status, error) {
+		      // Handle the error case
+		      console.error("AJAX Error: " + error);
+		    }
+		  });
+		}
+
 	$(document).ready(function() {
 
 		var permissions = $('#permissions');

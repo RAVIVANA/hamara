@@ -22,7 +22,8 @@ public class LoanApplicationViewModel {
 	private String status;
 	private String remarks;
 	private String attachment;
-
+    private String loancount;
+    private String Annualincome;
 	private long intrest;
 
 	// Setters
@@ -185,7 +186,18 @@ public class LoanApplicationViewModel {
 	public String getAttachment() {
 		return attachment;
 	}
-
+  public void setLoancount(String s) {
+	  this.loancount=loancount;
+  }
+  public void setAnnualincome(String s) {
+	  this.Annualincome=Annualincome;
+  }
+  public String getLoancount() {
+	  return loancount;
+  }
+  public String getAnnualincome() {
+	  return Annualincome;
+  }
 	public void copyFromEntity(LoanApplication loanApplication) {
 		setId((int) loanApplication.getId());
 		setCustomerId(loanApplication.getCustId().getId());
@@ -207,5 +219,6 @@ public class LoanApplicationViewModel {
 		setStatus(loanApplication.getStatus());
 		setRemarks(loanApplication.getRemarks());
 		setAttachment(loanApplication.getAttachment());
+	
 	}
 }

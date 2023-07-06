@@ -171,7 +171,7 @@ public class LoanApplicationDao implements LoanApplicationDaoInterface {
 	}
 
 	@Override
-	public LoanApplication getLoanApplicationById(int id) {
+	public LoanApplication getLoanApplicationById(long id) {
 		return entityManager.find(LoanApplication.class, id);
 
 	}

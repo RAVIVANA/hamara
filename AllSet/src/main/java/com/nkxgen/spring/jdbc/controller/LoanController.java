@@ -153,7 +153,7 @@ public class LoanController {
 	public String GetLoanApplication(@RequestParam("Typevalue") String accountType, Model model) {
 		// Get the loan applications based on the value from the Types object
 		List<LoanApplicationViewModel> list = v.getLoanApplicationByValue(accountType);
-
+        
 		// Add the loan applications to the model attribute
 		model.addAttribute("loanApplications", list);
 
@@ -222,9 +222,10 @@ public class LoanController {
 		// Get the loan applications based on the value from the Types object
 		try {
 			LoanApplicationViewModel list = v.getLoanApplicationById(accountType);
-
+           List<LoanApplicationViewModel> list1=new ArrayList<>();
+           list1.add(list);
 			// Add the loan applications to the model attribute
-			model.addAttribute("loanAccounts", list);
+			model.addAttribute("loanAccounts", list1);
 
 			// Change the return to the view name "Application" to render the page
 			return "loan-approval";

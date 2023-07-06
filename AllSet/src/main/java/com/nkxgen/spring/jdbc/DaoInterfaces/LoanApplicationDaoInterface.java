@@ -27,7 +27,7 @@ public interface LoanApplicationDaoInterface {
 
 	void saveTheApprovedLoanApplication(LoanApplication loanapp);
 
-	LoanApplication getLoanApplicationById(int typee);
+	LoanApplication getLoanApplicationById(long typee);
 
 	LoanAccount getLoanAccountById(int accountnumber);
 

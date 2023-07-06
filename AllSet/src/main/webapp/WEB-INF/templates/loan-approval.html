@@ -36,6 +36,8 @@
 				<th>Remarks</th>
 				<th>Document</th>
 				<th>interest</th>
+				<th>Number_of _other_loans</th>
+				<th>Annual_income</th>
 				<th>Actions</th>
 			</tr>
 		</thead>
@@ -61,6 +63,9 @@
 				<td th:text="${loanApp.getRemarks()}"></td>
 				<td th:text="${loanApp.getAttachment()}"></td>
 				<td th:text="${loanApp.getIntrest()}"></td>
+				<td th:text="${loanApp. getLoancount()}"></td>
+			   <td th:text="${loanApp.getAnnualincome()}"></td>
+				
 				<td>
 					<button onclick="editRow(this)">Edit</button>
 					<button type="button" id="approveButton" onclick="Approve(this)">Approve</button>

@@ -100,7 +100,7 @@
   <!-- Div to display when Single User is selected -->
  <div id="div1" th:style="'display: ' + (${selectedOption == '#singleuser'} ? 'block' : 'none')">
   <label for="userId">Enter User ID:</label>
-  <input type="text" id="userId" name="userId">
+  <input type="text" id="userId" name="userId" >
  </div>
 
   <!-- Div to display when All Users is selected -->
@@ -336,7 +336,23 @@
       //  });
       // });
     });
+    function check(){
+  	  var id=$('#userId').val();
+        parentLabel = $(this).attr("data-role-value");
 
+  	  $.ajax({
+  		  type:'POST',
+  		  url:'checkuser',
+  		  data:{
+  			  userId:userId,
+  			  role:parentLabel
+  		  },
+  	  success: function(response) {
+
+          }
+  		  
+  	  })
+    }
     /*]]>*/
   </script>
 </body>

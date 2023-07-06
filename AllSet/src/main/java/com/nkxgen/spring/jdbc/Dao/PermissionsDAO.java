@@ -9,7 +9,9 @@ import javax.transaction.Transactional;
 import org.springframework.stereotype.Repository;
 
 import com.nkxgen.spring.jdbc.ViewModels.GetPermissions;
+import com.nkxgen.spring.jdbc.model.BankUser;
 import com.nkxgen.spring.jdbc.model.Permission;
+import com.nkxgen.spring.jdbc.model.User;
 
 @Repository
 public class PermissionsDAO {
@@ -51,11 +53,16 @@ public class PermissionsDAO {
 		// ps.user_id=:a,ps.dashboard=:b,ps.accounts=:c,ps.loans=:d,ps.transactions=:e,ps.application=:f,ps.users=:g,ps.customers=:")
 	}
 
-	public GetPermissions getPermissions(Long id) {
+	public Permission getPermissions(Long id) {
 		String sql = "SELECT * FROM permissions WHERE user_id = :userId";
-		GetPermissions permissions = (GetPermissions) entityManager.createNativeQuery(sql, GetPermissions.class)
+		Permission permissions = (Permission) entityManager.createNativeQuery(sql, Permission.class)
 				.setParameter("userId", id).getSingleResult();
 		return permissions;
+	}
+
+	public BankUser  getUserById(int id) {
+		return entityManager.find(BankUser.class, id);
+		
 	}
 
 }
