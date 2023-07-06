@@ -21,7 +21,7 @@
 					<p>&nbsp India's Largest Banking Platform</p>
 				</div>
 				<div id="user-info">
-					<span th:text="'Hey ' + ${username}+', '" ></span> <a href="logOut"
+					<span th:text="'Hey ' + ${username}+', '" id="id"></span> <a href="logOut"
 						id="logout-link">&nbsp Logout</a>
 				</div>
 			</header>
@@ -30,7 +30,7 @@
 					<!-- Main List -->
 					<ul>
 						<!-- DashBoard List -->
-						<li th:if="${checkUserAccess('dashboard')}">
+						<li  >
 							<button id="btn" class="btn">DashBoard</button>
 							<ul>
 								<li id="accounts"><button class="btn">Accounts</button></li>
@@ -42,7 +42,7 @@
 						<!-- DashBoard List Ending-->
 
 						<!-- Accounts List -->
-						<li th:if="${checkUserAccess('accounts')}">
+						<li >
 							<button class="btn">Accounts</button>
 							<ul>
 								<!-- Savings -->
@@ -93,7 +93,7 @@
 						<!-- Accounts List Closed -->
 
 						<!-- Loans List -->
-						<li th:if="${checkUserAccess('loans')}" >
+						<li  >
 							<button class="btn">Loans</button>
 							<ul>
 								<!-- Personal -->
@@ -146,7 +146,7 @@
 						<!-- Loans List Closed -->
 
 						<!-- Transactions List -->
-						<li th:if="${checkUserAccess('transactions')}">
+						<li>
 							<button class="btn">Transactions</button>
 							<ul>
 								<li>
@@ -171,13 +171,13 @@
 						</li>
 						<!-- Transactions Closed -->
 
-						<li th:if="${checkUserAccess('application')}"><button class="btn">Application Forms</button>
+						<li><button class="btn">Application Forms</button>
 							<ul>
 								<li id="newaccount"><button class="btn">AccountForm</button></li>
 								<li id="newloan"><button class="btn">Loan Form</button></li>
 							</ul></li>
 						<!-- intrest-calculatioons -->
-						<li th:if="${checkUserAccess('account_processing')}">
+						<li >
 							<button class="btn">Account Processing</button>
 							<ul>
 								<li id="intrest_caluclation"><button class="btn">Interest
@@ -188,10 +188,10 @@
 						</li>
 
 						<!-- Customers -->
-						<li id="customers" th:if="${checkUserAccess('customers')}"><button class="btn">Customers</button></li>
+						<li id="customers"><button class="btn">Customers</button></li>
 
 						<!-- auditlogs -->
-						<li th:if="${checkUserAccess('audit_log')}">
+						<li >
 							<button class="btn">Audit Logs</button>
 							<ul>
 								<li id="viewAudits"><button class="btn">View</button></li>
@@ -200,7 +200,7 @@
 						</li>
 						
 						<!-- Users -->
-						<li th:if="${checkUserAccess('Users')}">
+						<li >
 							<button class="btn">Users</button>
 							<ul>
 								<li id="adduser"><button class="btn">users</button></li>
@@ -246,46 +246,25 @@
 
 	</div>
 	<script>
-	function checkUserAccess(option) {
-		  var username = /*[[${username}]]*/ '';
 
-		  $.ajax({
-		    url: "/checkUserAccess", // Replace with your server-side endpoint
-		    method: "POST",
-		    data: { option: option,id: username},
-		    success: function(response) {
-		      // Handle the response from the server
-		      if (response === true) {
-		        
-		      } else {
-		    	  $('#btn').hide();
-		      }
-		    },
-		    error: function(xhr, status, error) {
-		      // Handle the error case
-		      console.error("AJAX Error: " + error);
-		    }
-		  });
-		}
 
 	$(document).ready(function() {
-
-		var permissions = $('#permissions');
-		var mainContent = $('#main-content');
-
-		permissions.on('click', function(event) {
-			// Prevent the default behavior of the anchor tag
-			$.ajax({
-				url: 'permission',
-				method: 'get',
-				success: function(resultText) {
-					mainContent.html(resultText);
-				},
-				error: function(jqXHR, exception) {
-					console.log('Error occurred!');
-				}
-			})
-		});
+	    var permissions = $('#permissions');
+	    var mainContent = $('#main-content');
+	    permissions.on('click', function(event) {
+	        event.preventDefault(); // Prevent the default behavior of the anchor tag
+	        $.ajax({
+	            url: 'permission',
+	            method: 'GET',
+	            success: function(resultText) {
+	                mainContent.html(resultText);
+	            },
+	            error: function(jqXHR, exception) {
+	                console.log('Error occurred!');
+	            }
+	        });
+	    });
 	});
+
 	</script>
 </div>

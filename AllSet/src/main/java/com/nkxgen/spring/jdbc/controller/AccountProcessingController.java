@@ -2,6 +2,10 @@ package com.nkxgen.spring.jdbc.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,11 +15,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.nkxgen.spring.jdbc.Bal.Accounts;
 import com.nkxgen.spring.jdbc.Bal.ViewInterface;
+import com.nkxgen.spring.jdbc.Dao.PermissionsDAO;
 import com.nkxgen.spring.jdbc.DaoInterfaces.AccountApplicationDaoInterface;
 import com.nkxgen.spring.jdbc.DaoInterfaces.AccountProcessingDAO;
 import com.nkxgen.spring.jdbc.ViewModels.AccountViewModel;
 import com.nkxgen.spring.jdbc.model.Account;
 import com.nkxgen.spring.jdbc.model.LoanTransactions;
+import com.nkxgen.spring.jdbc.model.Permission;
 import com.nkxgen.spring.jdbc.model.Transaction;
 
 @Controller
@@ -28,9 +34,11 @@ public class AccountProcessingController {
 	private Accounts ac1;
 	@Autowired
 	private AccountProcessingDAO interestCalDao;
+	@Autowired
+	private PermissionsDAO permissionsDAO;
 
 	@RequestMapping(value = "/intrest", method = RequestMethod.GET)
-	public String calculateInterest(Model model) {
+	public String calculateInterest(Model model, HttpServletRequest request, HttpServletResponse response) {
 		// Retrieve all accounts from the database
 		List<Account> list = ac.getall();
 
@@ -58,22 +66,32 @@ public class AccountProcessingController {
 	}
 
 	@RequestMapping(value = "/get-accounts", method = RequestMethod.GET)
-	public String getAccounts(@RequestParam("accountType") String accountType, Model model) {
+	public String getAccounts(@RequestParam("accountType") String accountType, Model model, HttpServletRequest request,
+			HttpServletResponse response) {
 		// Retrieve accounts from the database based on the specified accountType
 		List<Account> l = ac.getAccountssByType(accountType);
 
 		// Perform date checking on the retrieved accounts
 		List<Account> l1 = v.checkdate(l);
+		HttpSession session = request.getSession();
 
-		// Add the updated account list as an attribute to the model
-		model.addAttribute("accounts", l1);
+		// Get the username attribute from the session
+		String username = (String) session.getAttribute("username");
+		Permission p = permissionsDAO.getPermissions(Long.parseLong(username));
+		if (p.isAccountProcessing()) {
+			// Add the updated account list as an attribute to the model
+			model.addAttribute("accounts", l1);
 
-		// Return the view name "New2" to render the corresponding page
-		return "account-interest";
+			// Return the view name "New2" to render the corresponding page
+			return "account-interest";
+		} else {
+			return "not-permitted";
+		}
 	}
 
 	@RequestMapping(value = "/getSavings", method = RequestMethod.GET)
-	public String getSavingsAccounts(@RequestParam("accountType") String accountType, Model model) {
+	public String getSavingsAccounts(@RequestParam("accountType") String accountType, Model model,
+			HttpServletRequest request, HttpServletResponse response) {
 		// Retrieve accounts from the database based on the specified accountType
 		List<Account> l = ac.getAccountssByType(accountType);
 
@@ -82,17 +100,32 @@ public class AccountProcessingController {
 
 		// Retrieve account view models from the database based on the specified accountType
 		List<AccountViewModel> l2 = v.getAccountsByType(accountType);
+		HttpSession session = request.getSession();
 
-		// Add the account view models as an attribute to the model
-		model.addAttribute("accounts", l2);
+		// Get the username attribute from the session
+		String username = (String) session.getAttribute("username");
+		Permission p = permissionsDAO.getPermissions(Long.parseLong(username));
+		if (p.isAccountProcessing()) {
 
-		// Return the view name "New2" to render the corresponding page
-		return "account-interest";
+			// Add the account view models as an attribute to the model
+			model.addAttribute("accounts", l2);
+
+			// Return the view name "New2" to render the corresponding page
+			return "account-interest";
+		} else {
+			return "not-permitted";
+		}
 	}
 
 	@RequestMapping(value = "/calculateInterest", method = RequestMethod.GET)
-	public String getAccountsBasedOnDueDates(@RequestParam("accountType") String accountType, Model model) {
+	public String getAccountsBasedOnDueDates(@RequestParam("accountType") String accountType, Model model,
+			HttpServletRequest request, HttpServletResponse response) {
 		// Check if the accountType is "savings"
+		HttpSession session = request.getSession();
+
+		// Get the username attribute from the session
+		String username = (String) session.getAttribute("username");
+		Permission p = permissionsDAO.getPermissions(Long.parseLong(username));
 		if (accountType.equals("savings")) {
 			// Retrieve accounts from the database based on the specified accountType
 			List<Account> l = ac.getAccountssByType(accountType);
@@ -108,6 +141,7 @@ public class AccountProcessingController {
 
 			// Add the account view models as an attribute to the model
 			model.addAttribute("accounts", l3);
+
 		} else {
 			// Retrieve accounts from the database based on the specified accountType
 			List<Account> l = ac.getAccountssByType(accountType);
@@ -129,14 +163,27 @@ public class AccountProcessingController {
 			// Add the accounts as an attribute to the model
 			model.addAttribute("accounts", list3);
 		}
+		if (p.isAccountProcessing()) {
+			// Return the view name "New2" to render the corresponding page
+			return "account-interest";
+		} else {
+			return "not-permitted";
+		}
 
-		// Return the view name "New2" to render the corresponding page
-		return "account-interest";
 	}
 
 	@RequestMapping(value = "/statementPage", method = RequestMethod.POST)
-	public String spage() {
-		return "statement-page";
+	public String spage(HttpServletRequest request, HttpServletResponse response) {
+		HttpSession session = request.getSession();
+
+		// Get the username attribute from the session
+		String username = (String) session.getAttribute("username");
+		Permission p = permissionsDAO.getPermissions(Long.parseLong(username));
+		if (p.isAccountProcessing()) {
+			return "statement-page";
+		} else {
+			return "not-permitted";
+		}
 	}
 
 	@RequestMapping(value = "/statement", method = RequestMethod.GET)

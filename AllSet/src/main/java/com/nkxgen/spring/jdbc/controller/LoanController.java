@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.nkxgen.spring.jdbc.Bal.ViewInterface;
+import com.nkxgen.spring.jdbc.Dao.PermissionsDAO;
 import com.nkxgen.spring.jdbc.DaoInterfaces.CustomerDaoInterface;
 import com.nkxgen.spring.jdbc.DaoInterfaces.LoanApplicationDaoInterface;
 import com.nkxgen.spring.jdbc.Exception.AccountNotFound;
@@ -28,6 +30,7 @@ import com.nkxgen.spring.jdbc.ViewModels.LoanViewModel;
 import com.nkxgen.spring.jdbc.events.LoanAppApprovalEvent;
 import com.nkxgen.spring.jdbc.events.LoanAppRequestEvent;
 import com.nkxgen.spring.jdbc.model.LoanApplication;
+import com.nkxgen.spring.jdbc.model.Permission;
 
 @Controller
 public class LoanController {
@@ -38,7 +41,8 @@ public class LoanController {
 	CustomerDaoInterface cd;
 	@Autowired
 	ViewInterface v;
-
+	@Autowired
+	private PermissionsDAO permissionsDAO;
 	@Autowired
 	private ApplicationEventPublisher applicationEventPublisher;
 
@@ -150,27 +154,47 @@ public class LoanController {
 	}
 
 	@RequestMapping(value = "/getApplications", method = RequestMethod.POST)
-	public String GetLoanApplication(@RequestParam("Typevalue") String accountType, Model model) {
+	public String GetLoanApplication(@RequestParam("Typevalue") String accountType, Model model,
+			HttpServletRequest request, HttpServletResponse response) {
 		// Get the loan applications based on the value from the Types object
 		List<LoanApplicationViewModel> list = v.getLoanApplicationByValue(accountType);
-        
-		// Add the loan applications to the model attribute
-		model.addAttribute("loanApplications", list);
+		HttpSession session = request.getSession();
 
-		// Change the return to the view name "Application" to render the page
-		return "loan-approval";
+		// Get the username attribute from the session
+		String username = (String) session.getAttribute("username");
+		Permission p = permissionsDAO.getPermissions(Long.parseLong(username));
+		if (p.isApplication()) {
+			// Add the loan applications to the model attribute
+			model.addAttribute("loanApplications", list);
+
+			// Change the return to the view name "Application" to render the page
+			return "loan-approval";
+		} else {
+			return "not-permitted";
+
+		}
 	}
 
 	@RequestMapping(value = "/account", method = RequestMethod.POST)
-	public String GetLoanAccounts(@RequestParam("Typevalue") String accountType, Model model) {
+	public String GetLoanAccounts(@RequestParam("Typevalue") String accountType, Model model,
+			HttpServletRequest request, HttpServletResponse response) {
 		// Get the loan accounts based on the loan type value from the Types object
 		List<LoanAccountViewModel> list = v.getLoanAccountsByLoanType(accountType);
+		HttpSession session = request.getSession();
 
-		// Add the loan accounts to the model attribute
-		model.addAttribute("loanAccounts", list);
+		// Get the username attribute from the session
+		String username = (String) session.getAttribute("username");
+		Permission p = permissionsDAO.getPermissions(Long.parseLong(username));
+		if (p.isLoans()) {
+			// Add the loan accounts to the model attribute
+			model.addAttribute("loanAccounts", list);
 
-		// Change the return to the view name "Application3" to render the page
-		return "loan-account-details";
+			// Change the return to the view name "Application3" to render the page
+			return "loan-account-details";
+		} else {
+			return "not-permitted";
+
+		}
 	}
 
 	@RequestMapping(value = "/deleteLoan", method = RequestMethod.POST)
@@ -222,10 +246,10 @@ public class LoanController {
 		// Get the loan applications based on the value from the Types object
 		try {
 			LoanApplicationViewModel list = v.getLoanApplicationById(accountType);
-           List<LoanApplicationViewModel> list1=new ArrayList<>();
-           list1.add(list);
+			List<LoanApplicationViewModel> list1 = new ArrayList<>();
+			list1.add(list);
 			// Add the loan applications to the model attribute
-			model.addAttribute("loanAccounts", list1);
+			model.addAttribute("loanApplications", list1);
 
 			// Change the return to the view name "Application" to render the page
 			return "loan-approval";
@@ -242,7 +266,7 @@ public class LoanController {
 			LoanAccountViewModel l = v.getLoanAccountById(accountType);
 			list.add(l);
 			// Add the loan applications to the model attribute
-			model.addAttribute("loanApplications", list);
+			model.addAttribute("loanAccounts", list);
 
 			// Change the return to the view name "Application" to render the page
 			return "loan-account-details";

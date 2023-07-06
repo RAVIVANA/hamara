@@ -2,6 +2,7 @@ package com.nkxgen.spring.jdbc.controller;
 
 import javax.security.auth.login.AccountNotFoundException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.nkxgen.spring.jdbc.Bal.CustomerSetter;
+import com.nkxgen.spring.jdbc.Dao.PermissionsDAO;
 import com.nkxgen.spring.jdbc.DaoInterfaces.TransactionsInterface;
 import com.nkxgen.spring.jdbc.Exception.InsufficientBalanceException;
 import com.nkxgen.spring.jdbc.Exception.InvalidLoanRepaymentException;
@@ -27,6 +29,7 @@ import com.nkxgen.spring.jdbc.model.Customertrail;
 import com.nkxgen.spring.jdbc.model.EMIpay;
 import com.nkxgen.spring.jdbc.model.LoanAccount;
 import com.nkxgen.spring.jdbc.model.LoanTransactions;
+import com.nkxgen.spring.jdbc.model.Permission;
 import com.nkxgen.spring.jdbc.model.Transaction;
 import com.nkxgen.spring.jdbc.model.tempRepayment;
 import com.nkxgen.spring.jdbc.model.transactioninfo;;
@@ -39,32 +42,69 @@ public class TransactionController {
 
 	@Autowired
 	ApplicationEventPublisher applicationEventPublisher;
-
+	@Autowired
+	private PermissionsDAO permissionsDAO;
 	@Autowired
 	private CustomerSetter s;
 
 	// Mapping for money deposit form
 	@RequestMapping(value = "/moneyDeposit", method = RequestMethod.GET)
-	public String moneyDepositeForm(Model model) {
-		return "money-deposit";
+	public String moneyDepositeForm(Model model, HttpServletRequest request, HttpServletResponse response) {
+		HttpSession session = request.getSession();
+
+		// Get the username attribute from the session
+		String username = (String) session.getAttribute("username");
+		Permission p = permissionsDAO.getPermissions(Long.parseLong(username));
+		if (p.isTransactions()) {
+			return "money-deposit";
+		} else {
+			return "not-permitted";
+		}
 	}
 
 	// Mapping for loan repayment form
 	@RequestMapping(value = "/loanRepay", method = RequestMethod.GET)
-	public String loanRepaymentForm(Model model) {
-		return "loan-repayment";
+	public String loanRepaymentForm(Model model, HttpServletRequest request, HttpServletResponse response) {
+		HttpSession session = request.getSession();
+
+		// Get the username attribute from the session
+		String username = (String) session.getAttribute("username");
+		Permission p = permissionsDAO.getPermissions(Long.parseLong(username));
+		if (p.isTransactions()) {
+			return "loan-repayment";
+		} else {
+			return "not-permitted";
+		}
 	}
 
 	// Mapping for money withdrawal form
 	@RequestMapping(value = "/withdrawl", method = RequestMethod.GET)
-	public String moneyWithdrawlForm(Model model) {
-		return "money-withdrawl-form";
+	public String moneyWithdrawlForm(Model model, HttpServletRequest request, HttpServletResponse response) {
+		HttpSession session = request.getSession();
+
+		// Get the username attribute from the session
+		String username = (String) session.getAttribute("username");
+		Permission p = permissionsDAO.getPermissions(Long.parseLong(username));
+		if (p.isTransactions()) {
+			return "money-withdrawl-form";
+		} else {
+			return "not-permitted";
+		}
 	}
 
 	// Mapping for loan withdrawal form
 	@RequestMapping(value = "/lowid", method = RequestMethod.GET)
-	public String loWithdrawlForm(Model model) {
-		return "loan-withdrawl-form";
+	public String loWithdrawlForm(Model model, HttpServletRequest request, HttpServletResponse response) {
+		HttpSession session = request.getSession();
+
+		// Get the username attribute from the session
+		String username = (String) session.getAttribute("username");
+		Permission p = permissionsDAO.getPermissions(Long.parseLong(username));
+		if (p.isTransactions()) {
+			return "loan-withdrawl-form";
+		} else {
+			return "not-permitted";
+		}
 	}
 
 	// =================================================================================
