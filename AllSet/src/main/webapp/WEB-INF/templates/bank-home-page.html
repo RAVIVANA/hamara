@@ -209,7 +209,7 @@
 						</li>
 						<!-- Users closed -->
 
-						<li><button class="btn">P&amp;L</button></li>
+						<li id="pl"><button class="btn">P&amp;L</button></li>
 
 						<li>
 							<button class="btn">Security</button>
@@ -255,6 +255,23 @@
 	        event.preventDefault(); // Prevent the default behavior of the anchor tag
 	        $.ajax({
 	            url: 'permission',
+	            method: 'GET',
+	            success: function(resultText) {
+	                mainContent.html(resultText);
+	            },
+	            error: function(jqXHR, exception) {
+	                console.log('Error occurred!');
+	            }
+	        });
+	    });
+	});
+	$(document).ready(function() {
+	    var pl = $('#pl');
+	    var mainContent = $('#main-content');
+	    pl.on('click', function(event) {
+	        event.preventDefault(); // Prevent the default behavior of the anchor tag
+	        $.ajax({
+	            url: 'profitLoss',
 	            method: 'GET',
 	            success: function(resultText) {
 	                mainContent.html(resultText);

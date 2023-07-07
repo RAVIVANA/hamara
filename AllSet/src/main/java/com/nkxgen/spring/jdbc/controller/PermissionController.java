@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.nkxgen.spring.jdbc.Dao.PermissionsDAO;
+import com.nkxgen.spring.jdbc.DaoInterfaces.BankUserInterface;
+import com.nkxgen.spring.jdbc.model.BankUser;
 import com.nkxgen.spring.jdbc.model.Permission;
 
 @Controller
@@ -20,6 +22,8 @@ import com.nkxgen.spring.jdbc.model.Permission;
 public class PermissionController {
 
 	private final PermissionsDAO permissionsDAO;
+	@Autowired
+	private BankUserInterface bankUserService;
 
 	@Autowired
 	public PermissionController(PermissionsDAO permissionsDAO) {
@@ -33,9 +37,15 @@ public class PermissionController {
 		// Get the username attribute from the session
 		String username = (String) session.getAttribute("username");
 		Permission p = permissionsDAO.getPermissions(Long.parseLong(username));
-		model.addAttribute("permissions", p);
+		BankUser b = bankUserService.getBankUserById(Long.parseLong(username));
 
-		return "permission-management";
+		if (b.getBusr_desg().equals("Manager")) {
+			model.addAttribute("permissions", p);
+
+			return "permission-management";
+		} else {
+			return "not-permitted";
+		}
 	}
 
 	// @GetMapping("/permissionurl")

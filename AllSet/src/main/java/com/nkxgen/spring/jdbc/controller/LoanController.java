@@ -159,13 +159,19 @@ public class LoanController {
 		// Get the loan applications based on the value from the Types object
 		List<LoanApplicationViewModel> list = v.getLoanApplicationByValue(accountType);
 		HttpSession session = request.getSession();
+		List<LoanApplicationViewModel> list1 = new ArrayList<>();
 
 		// Get the username attribute from the session
 		String username = (String) session.getAttribute("username");
 		Permission p = permissionsDAO.getPermissions(Long.parseLong(username));
 		if (p.isApplication()) {
+			for (LoanApplicationViewModel l : list) {
+				if (l.getProcessedBy() == p.getUserId()) {
+					list1.add(l);
+				}
+			}
 			// Add the loan applications to the model attribute
-			model.addAttribute("loanApplications", list);
+			model.addAttribute("loanApplications", list1);
 
 			// Change the return to the view name "Application" to render the page
 			return "loan-approval";

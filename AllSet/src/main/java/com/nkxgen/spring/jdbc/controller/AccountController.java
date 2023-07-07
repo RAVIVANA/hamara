@@ -70,6 +70,7 @@ public class AccountController {
 
 		List<AccountApplicationViewModel> list1 = v.getAccountsappByType(value);
 		HttpSession session = request.getSession();
+		List<AccountApplicationViewModel> list = new ArrayList<>();
 
 		// Get the username attribute from the session
 		String username = (String) session.getAttribute("username");
@@ -77,7 +78,12 @@ public class AccountController {
 
 		// Check if the list is not empty before accessing the first object
 		if (p.isApplication()) {
-			model.addAttribute("listOfAccountApplications", list1);
+			for (AccountApplicationViewModel l : list1) {
+				if (l.getProcessedBy() == p.getUserId()) {
+					list.add(l);
+				}
+			}
+			model.addAttribute("listOfAccountApplications", list);
 			return "new-account-application";
 		} else {
 			return "not-permitted";

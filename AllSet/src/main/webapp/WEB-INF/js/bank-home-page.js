@@ -27,22 +27,42 @@ $(document).ready(function() {
 
 	graphs(); // Call the function on page load
 //-------------------------permission management--------------------------------------------------
-	var permissions = $('#permissions');
-	var mainContent = $('#main-content');
-
-	permissions.on('click', function(event) {
-		// Prevent the default behavior of the anchor tag
-		$.ajax({
-			url: 'permission',
-			method: 'get',
-			success: function(resultText) {
-				$('#r1').html(resultText);
-			},
-			error: function(jqXHR, exception) {
-				console.log('Error occurred!');
-			}
-		})
+$(document).ready(function() {
+	    var permissions = $('#permissions');
+	    var mainContent = $('#main-content');
+	    permissions.on('click', function(event) {
+	        event.preventDefault(); // Prevent the default behavior of the anchor tag
+	        $.ajax({
+	            url: 'permission',
+	            method: 'GET',
+	            success: function(resultText) {
+	                mainContent.html(resultText);
+	            },
+	            error: function(jqXHR, exception) {
+	                console.log('Error occurred!');
+	            }
+	        });
+	    });
 	});
+
+$(document).ready(function() {
+	    var pl = $('#pl');
+	    var mainContent = $('#main-content');
+	    pl.on('click', function(event) {
+	        event.preventDefault(); // Prevent the default behavior of the anchor tag
+	        $.ajax({
+	            url: 'profitLoss',
+	            method: 'GET',
+	            success: function(resultText) {
+	                mainContent.html(resultText);
+	            },
+	            error: function(jqXHR, exception) {
+	                console.log('Error occurred!');
+	            }
+	        });
+	    });
+	});
+
 //-------------------------add user--------------------------------------------------
 	var adduser = $('#adduser');
 	var mainContent = $('#main-content');

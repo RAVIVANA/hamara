@@ -165,7 +165,7 @@ public class masterController {
 		// Add the cash chest object to the model attribute "cashChest"
 		model.addAttribute("cashChest", cashchest);
 
-		return "p&l";
+		return "profitLoss";
 	}
 
 }
