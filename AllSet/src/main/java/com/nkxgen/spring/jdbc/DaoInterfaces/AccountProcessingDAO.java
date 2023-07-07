@@ -15,4 +15,6 @@ public interface AccountProcessingDAO {
 	public List<Transaction> AccountTransactionStatementGeneration(int accno);
 
 	public List<LoanTransactions> LoanTransactionStatementGeneration(int accno);
+
+	public List<Account> getthisMonthIntrest();
 }

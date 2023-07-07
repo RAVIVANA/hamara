@@ -98,4 +98,13 @@ public class AccountProcessingDAOimp implements AccountProcessingDAO {
 		return query.getResultList(); // Execute the query and return the list of loan transactions
 	}
 
+	@Override
+	public List<Account> getthisMonthIntrest() {
+		String jpql = "SELECT la FROM Account la";
+
+		TypedQuery<Account> query = em.createQuery(jpql, Account.class); // Create a typed query
+
+		return query.getResultList();
+	}
+
 }
