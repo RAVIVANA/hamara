@@ -133,6 +133,13 @@ public class masterController {
 		return "loan_master_entry";
 	}
 
+	// here @RequestMapping annotation maps the /master_account URL to the masterAccount method, which returns the view
+	// "account_master_entry"
+	@RequestMapping("/masterAccount")
+	public String masterAccount(Model model) {
+		return "account-master-entry";
+	}
+
 	@RequestMapping(value = "/cashChest", method = RequestMethod.GET)
 	public String money(Model model) {
 		// Retrieve the cash chest information

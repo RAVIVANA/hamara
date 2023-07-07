@@ -60,13 +60,6 @@ public class AccountController {
 	@Autowired
 	private CustomerDaoInterface cd;
 
-	// here @RequestMapping annotation maps the /master_account URL to the masterAccount method, which returns the view
-	// "account_master_entry"
-	@RequestMapping("/masterAccount")
-	public String masterAccount(Model model) {
-		return "account-master-entry";
-	}
-
 	// The @RequestMapping annotation maps the /New_account_application URL to the getAccountApplicationByType method,
 	// which accepts a Types object and a Model object as parameters
 
@@ -248,16 +241,6 @@ public class AccountController {
 	}
 
 	// // ======================================================================================================
-	/*
-	 * @RequestMapping(value = "/changeTheStatusOfAccountApp", method = RequestMethod.POST) public String
-	 * getAccountApplicationbyid(@RequestParam("ApplicationId") Long ApplicationId) {
-	 * 
-	 * AccountApplication accountap = ac.getAccountApplicationById(ApplicationId);
-	 * System.out.println("the status of application is :" + accountap.getStatus()); accountap.setStatus("approved");
-	 * return "account-new-application-form";
-	 * 
-	 * }
-	 */
 
 	@RequestMapping(value = "/chnageTheStatusOfAccount", method = RequestMethod.POST)
 	public String chnageTheStatusOfAccount(@RequestParam("num") Long num) {
