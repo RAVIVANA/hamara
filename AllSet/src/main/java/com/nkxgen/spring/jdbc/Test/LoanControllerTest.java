@@ -190,7 +190,7 @@ public class LoanControllerTest {
 		when(viewInterface.getLoanApplicationByValue(toString())).thenReturn(loanApplications);
 
 		// Act
-		String result = loanController.GetLoanApplication("Personal Loan", model);
+		String result = loanController.GetLoanApplication("Personal Loan", model, request, null);
 
 		// Assert
 		verify(model).addAttribute(eq("loanApplications"), eq(loanApplications));
@@ -204,7 +204,7 @@ public class LoanControllerTest {
 		when(viewInterface.getLoanAccountsByLoanType(toString())).thenReturn(loanAccounts);
 
 		// Act
-		String result = loanController.GetLoanAccounts("Personal Loan", model);
+		String result = loanController.GetLoanAccounts("Personal Loan", model, request, null);
 
 		// Assert
 		verify(model).addAttribute(eq("loanAccounts"), eq(loanAccounts));

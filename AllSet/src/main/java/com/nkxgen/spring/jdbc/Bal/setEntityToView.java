@@ -101,8 +101,9 @@ public class setEntityToView implements ViewInterface {
 
 		for (LoanApplication l : list) {
 			LoanApplicationViewModel la = new LoanApplicationViewModel(); // Create a new LoanApplicationViewModel
-																			// object
-			la.copyFromEntity(l); // Copy the values from the LoanApplication object to the LoanApplicationViewModel
+			Customertrail c=cd.getCustomerById(l.getCustId().getId());
+											// object
+			la.copyFromEntity(l,c); // Copy the values from the LoanApplication object to the LoanApplicationViewModel
 									// object
 			viewlist1.add(la); // Add the LoanApplicationViewModel object to the viewlist1 list
 		}
@@ -137,12 +138,11 @@ public class setEntityToView implements ViewInterface {
 	    for (LoanApplication l : list) {
 	        LoanApplicationViewModel la = new LoanApplicationViewModel(); // Create a new LoanApplicationViewModel object
 	        // Fetch the Customertrail association eagerly
-	        Customertrail c=cd.getCustomerById(l.getCustId().getId());
-	        la.setAnnualincome(c.getAnnualincom());
-	        la.setLoancount(c.getLoancount());
+			Customertrail c=cd.getCustomerById(l.getCustId().getId());
+
 	        // Access the required properties without triggering lazy loading
 
-	        la.copyFromEntity(l); // Copy the values from the LoanApplication object to the LoanApplicationViewModel object
+	        la.copyFromEntity(l,c); // Copy the values from the LoanApplication object to the LoanApplicationViewModel object
 	        viewlist1.add(la); // Add the LoanApplicationViewModel object to the viewlist1 list
 	    }
 	    return viewlist1;
@@ -375,8 +375,11 @@ public class setEntityToView implements ViewInterface {
 																	// objects by value
 		if (list == null) {
 			throw new ApplicationNotFound("Application not found");
-		} else { // object
-			la.copyFromEntity(list); // Copy the values from the LoanApplication object to the LoanApplicationViewModel
+		} else { 
+			// object
+			Customertrail c=cd.getCustomerById(list.getCustId().getId());
+
+			la.copyFromEntity(list,c); // Copy the values from the LoanApplication object to the LoanApplicationViewModel
 		} // object
 		return la; // Add the LoanApplicationViewModel object to the viewlist1 list
 		// Return the list of LoanApplicationViewModel objects

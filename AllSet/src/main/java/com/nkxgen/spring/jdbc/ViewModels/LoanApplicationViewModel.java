@@ -1,8 +1,13 @@
 package com.nkxgen.spring.jdbc.ViewModels;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.nkxgen.spring.jdbc.DaoInterfaces.CustomerDaoInterface;
+import com.nkxgen.spring.jdbc.model.Customertrail;
 import com.nkxgen.spring.jdbc.model.LoanApplication;
 
 public class LoanApplicationViewModel {
+
 	private int id;
 	private long customerId;
 	private String applicationDate;
@@ -187,10 +192,10 @@ public class LoanApplicationViewModel {
 		return attachment;
 	}
   public void setLoancount(String s) {
-	  this.loancount=loancount;
+	  this.loancount=s;
   }
   public void setAnnualincome(String s) {
-	  this.Annualincome=Annualincome;
+	  this.Annualincome=s;
   }
   public String getLoancount() {
 	  return loancount;
@@ -198,7 +203,7 @@ public class LoanApplicationViewModel {
   public String getAnnualincome() {
 	  return Annualincome;
   }
-	public void copyFromEntity(LoanApplication loanApplication) {
+	public void copyFromEntity(LoanApplication loanApplication,Customertrail c) {
 		setId((int) loanApplication.getId());
 		setCustomerId(loanApplication.getCustId().getId());
 		setApplicationDate(loanApplication.getApplicationDate());
@@ -219,6 +224,8 @@ public class LoanApplicationViewModel {
 		setStatus(loanApplication.getStatus());
 		setRemarks(loanApplication.getRemarks());
 		setAttachment(loanApplication.getAttachment());
-	
+		setAnnualincome(c.getAnnualincom());
+		setLoancount(c.getLoancount());
 	}
+	
 }

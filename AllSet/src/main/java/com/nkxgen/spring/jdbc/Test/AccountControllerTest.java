@@ -79,7 +79,7 @@ public class AccountControllerTest {
 		List<AccountApplicationViewModel> accountApplications = new ArrayList<>();
 		when(viewInterface.getAccountsappByType(eq(accountType))).thenReturn(accountApplications);
 
-		String result = accountController.getAccountApplicationByType(accountType, model);
+		String result = accountController.getAccountApplicationByType(accountType, model, request, null);
 
 		Assert.assertEquals("new-account-application", result);
 		verify(model).addAttribute(eq("listOfAccountApplications"), eq(accountApplications));
@@ -92,7 +92,7 @@ public class AccountControllerTest {
 		when(viewInterface.getAccountsByType(eq(accountType))).thenReturn(accounts);
 		when(customerDao.getRealCustomerById(anyLong())).thenReturn(new Customertrail());
 
-		String result = accountController.viewAccounts(accountType, model);
+		String result = accountController.viewAccounts(accountType, model, request, null);
 
 		Assert.assertEquals("any-type-account-info", result);
 		verify(model).addAttribute(eq("list_of_account"), eq(accounts));
