@@ -7,11 +7,14 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.nkxgen.spring.jdbc.Bal.CustomerSetter;
 import com.nkxgen.spring.jdbc.DaoInterfaces.CustomerDaoInterface;
+import com.nkxgen.spring.jdbc.controller.LoginController;
 import com.nkxgen.spring.jdbc.model.Customer;
 import com.nkxgen.spring.jdbc.model.CustomerSub;
 import com.nkxgen.spring.jdbc.model.Customertrail;
@@ -25,80 +28,89 @@ public class CustomerDao implements CustomerDaoInterface {
 
 	@Autowired
 	private CustomerSetter s;
+	Logger LOGGER = LoggerFactory.getLogger(CustomerDao.class);
 
 	@Override
 	public void saveCustomer(Customertrail customer) {
-		entityManager.merge(customer);
+        LOGGER.info("Saving customer: {}", customer);
 
-	}
+        entityManager.merge(customer);
+    }
 
-	@Override
-	public Customertrail getCustomerById(Long id) {
-		// Retrieve customer data from the table based on the ID
-		Customertrail customer = entityManager.find(Customertrail.class, id);
-		return customer;
-	}
+    // Get Customer By ID
+    @Override
+    public Customertrail getCustomerById(Long id) {
+        LOGGER.info("Retrieving customer by ID: {}", id);
 
-	@Override
-	public void saveCustomertoDb(Customer customer) {
-		entityManager.persist(customer); // Persist the 'customer' object by adding it to the entity manager
-	}
+        Customertrail customer = entityManager.find(Customertrail.class, id);
+        return customer;
+    }
 
-	@Override
-	public List<Customertrail> getAllCustomers() {
-		String jpql = "SELECT la FROM Customertrail la"; // Define a JPQL query to retrieve all customer objects
-		TypedQuery<Customertrail> query = entityManager.createQuery(jpql, Customertrail.class); // Create a typed query
-																								// using the JPQL query
-																								// and specifying the
-																								// result type as
-																								// 'Customertrail'
-		return query.getResultList(); // Execute the query and return a list of all customer objects
-	}
+    // Save Customer to Database
+    @Override
+    public void saveCustomertoDb(Customer customer) {
+        LOGGER.info("Saving customer to database: {}", customer);
 
-	@Override
-	public void updateCustomerDataById(Customertrail updatedCustomer) {
-		entityManager.merge(updatedCustomer); // Merge the 'updatedCustomer' object with the entity manager to update it
-												// in the data store
-	}
+        entityManager.persist(customer);
+    }
 
-	@Override
-	public void deleteCusById(Customertrail cus) {
-		// TODO Auto-generated method stub
-		// Assuming Customertrail class has an 'id' property
+    // Get All Customers
+    @Override
+    public List<Customertrail> getAllCustomers() {
+        LOGGER.info("Retrieving all customers");
 
-		long customerId = cus.getId(); // Extract the 'id' property from the 'cus' object and store it in 'customerId'
-										// variable
+        String jpql = "SELECT la FROM Customertrail la";
+        TypedQuery<Customertrail> query = entityManager.createQuery(jpql, Customertrail.class);
 
-		Customertrail customer = entityManager.find(Customertrail.class, customerId); // Find the customer object with
-																						// the given 'customerId' using
-																						// the entity manager
+        return query.getResultList();
+    }
 
-		if (customer != null) { // If a customer object is found
-			entityManager.remove(customer); // Remove the customer object from the entity manager
-			System.out.println("Customer with ID " + customerId + " has been deleted successfully.");
-		} else { // If no customer object is found
-			System.out.println("Customer with ID " + customerId + " does not exist.");
-		}
-	}
+    // Update Customer Data By ID
+    @Override
+    public void updateCustomerDataById(Customertrail updatedCustomer) {
+        LOGGER.info("Updating customer data for ID: {}", updatedCustomer.getId());
 
-	@Override
-	public Customertrail getRealCustomerById(Long customerId) {
-		Customertrail customer = entityManager.find(Customertrail.class, customerId); // Find the customer object with
-																						// the given 'customerId' using
-																						// the entity manager
+        entityManager.merge(updatedCustomer);
+    }
 
-		return customer; // Return the found customer object, or null if no customer is found
-	}
+    // Delete Customer By ID
+    @Override
+    public void deleteCusById(Customertrail cus) {
+    	// Assuming Customertrail class has an 'id' property
+    	LOGGER.info("Deleting customer by ID: {}", cus.getId());
 
-	@Override
-	public void changethese(Customertrail customer2, CustomerSub customerSub) {
-		Customertrail customer = s.changing(customer2, customerSub); // Call a method 'changing' from a service or
-																		// utility class 's' to modify the 'customer2'
-																		// object and assign the modified customer to
-																		// 'customer' variable
+    	long customerId = cus.getId(); // Extract the 'id' property from the 'cus' object and store it in 'customerId' variable
 
-		entityManager.merge(customer); // Merge the modified 'customer' object with the entity manager to update it in
-										// the data store
-	}
+    	Customertrail customer = entityManager.find(Customertrail.class, customerId); // Find the customer object with the given 'customerId' using the entity manager
+
+    	if (customer != null) { // If a customer object is found
+    	    entityManager.remove(customer); // Remove the customer object from the entity manager
+    	    LOGGER.info("Customer with ID {} has been deleted successfully.", customerId);
+    	} else { // If no customer object is found
+    	    LOGGER.warn("Customer with ID {} does not exist.", customerId);
+    	}
+    }
+
+    // Get Real Customer By ID
+    @Override
+    public Customertrail getRealCustomerById(Long customerId) {
+    	LOGGER.info("Retrieving real customer by ID: {}", customerId);
+
+
+        Customertrail customer = entityManager.find(Customertrail.class, customerId); // Find the customer object with the given 'customerId' using the entity manager
+
+        return customer; // Return the found customer object, or null if no customer is found
+    }
+
+    // Change Customer Data
+    @Override
+    public void changethese(Customertrail customer2, CustomerSub customerSub) {
+    	LOGGER.info("Modifying customer: {}", customer2);
+
+
+        Customertrail customer = s.changing(customer2, customerSub); // Call a method 'changing' from a service or utility class 's' to modify the 'customer2' object and assign the modified customer to 'customer' variable
+
+        entityManager.merge(customer); // Merge the modified 'customer' object with the entity manager to update it in the data store
+    }
 
 }

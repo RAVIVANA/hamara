@@ -7,9 +7,12 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import com.nkxgen.spring.jdbc.DaoInterfaces.LoanTypesInterface;
+import com.nkxgen.spring.jdbc.controller.LoginController;
 import com.nkxgen.spring.jdbc.model.LoansTypes;
 
 @Repository
@@ -18,43 +21,50 @@ public class LoanTypesDAO implements LoanTypesInterface {
 
 	@PersistenceContext
 	private EntityManager entityManager;
+	Logger LOGGER = LoggerFactory.getLogger(LoanTypesDAO.class);
 
-	public List<LoansTypes> getAllLoans() {
-		String jpql = "SELECT l FROM LoansTypes l"; // Define a JPQL query to retrieve all loan types
-		TypedQuery<LoansTypes> query = entityManager.createQuery(jpql, LoansTypes.class); // Create a typed query using
-																							// the JPQL query and
-																							// specifying the result
-																							// type as 'LoansTypes'
-		return query.getResultList(); // Execute the query and return a list of all loan types
-	}
 
-	public List<LoansTypes> getAllLoanDetails() {
-		String jpql = "SELECT l FROM LoansTypes l"; // Define a JPQL query to retrieve all loan types
-		TypedQuery<LoansTypes> query = entityManager.createQuery(jpql, LoansTypes.class); // Create a typed query using
-																							// the JPQL query and
-																							// specifying the result
-																							// type as 'LoansTypes'
-		return query.getResultList(); // Execute the query and return a list of all loan types
-	}
+public List<LoansTypes> getAllLoans() {
+    LOGGER.info("Retrieving all loan types.");
+    String jpql = "SELECT l FROM LoansTypes l"; // Define a JPQL query to retrieve all loan types
+    TypedQuery<LoansTypes> query = entityManager.createQuery(jpql, LoansTypes.class); // Create a typed query using
+    // the JPQL query and
+    // specifying the result
+    // type as 'LoansTypes'
+    List<LoansTypes> loanTypes = query.getResultList(); // Execute the query and retrieve a list of all loan types
+    LOGGER.info("Retrieved {} loan types.", loanTypes.size());
+    return loanTypes;
+}
 
-	public LoansTypes getSelectedLoanDetails(int loanType) {
-		LoansTypes loan = entityManager.find(LoansTypes.class, loanType); // Find the loan type object with the given
-																			// loanType using the entity manager
-		System.out.println("im in the dao of loan types");
-		System.out.println(loan.getLoanType());
-		System.out.println(loan.getDescriptionForm());
-		return loan; // Return the found loan type object
-	}
+public List<LoansTypes> getAllLoanDetails() {
+    LOGGER.info("Retrieving all loan details.");
+    String jpql = "SELECT l FROM LoansTypes l"; // Define a JPQL query to retrieve all loan types
+    TypedQuery<LoansTypes> query = entityManager.createQuery(jpql, LoansTypes.class); // Create a typed query using
+    // the JPQL query and
+    // specifying the result
+    // type as 'LoansTypes'
+    List<LoansTypes> loanDetails = query.getResultList(); // Execute the query and retrieve a list of all loan details
+    LOGGER.info("Retrieved {} loan details.", loanDetails.size());
+    return loanDetails;
+}
 
-	public void save(LoansTypes LoansTypes) {
-		if (LoansTypes.getLoanType() != null && LoansTypes.getDescriptionForm() != null) {
-			entityManager.merge(LoansTypes); // Merge the account type entity with the persistence context
-		} else {
-			// Handle the case where either accountType or descriptionForm is null
-			// You can throw an exception, log an error, or perform any appropriate action
-			System.err.println("Invalid account type data. Account type or description form is null.");
-		}// Merge the 'LoansTypes' object with the entity manager to update it in the
-											// data store
-	}
+public LoansTypes getSelectedLoanDetails(int loanType) {
+    LOGGER.info("Retrieving loan details for loanType: {}", loanType);
+    LoansTypes loan = entityManager.find(LoansTypes.class, loanType); // Find the loan type object with the given loanType using the entity manager
+    LOGGER.info("Retrieved loan details for loanType: {}. LoanType: {}, DescriptionForm: {}", loanType, loan.getLoanType(), loan.getDescriptionForm());
+    return loan; // Return the found loan type object
+}
+
+public void save(LoansTypes loansTypes) {
+    LOGGER.info("Saving loan type: {}", loansTypes.getLoanType());
+    if (loansTypes.getLoanType() != null && loansTypes.getDescriptionForm() != null) {
+        entityManager.merge(loansTypes); // Merge the account type entity with the persistence context
+    } else {
+        // Handle the case where either accountType or descriptionForm is null
+        // You can throw an exception, log an error, or perform any appropriate action
+        LOGGER.error("Invalid account type data. Account type or description form is null.");
+    }
+    LOGGER.info("Loan type saved successfully.");
+}
 
 }

@@ -8,42 +8,37 @@
 <body>
 <table>
 <tr><th>Test</th><th># Passed</th><th># Skipped</th><th># Retried</th><th># Failed</th><th>Time (ms)</th><th>Included Groups</th><th>Excluded Groups</th></tr>
-<tr><th colspan="8">Default suite</th></tr>
-<tr><td><a href="#t0">Default test</a></td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num attn">1</td><td class="num">654</td><td></td><td></td></tr>
+<tr><th colspan="8">Command line suite</th></tr>
+<tr><td><a href="#t0">Command line test</a></td><td class="num">13</td><td class="num">0</td><td class="num">0</td><td class="num attn">2</td><td class="num">1,985</td><td></td><td></td></tr>
 </table>
-<table id='summary'><thead><tr><th>Class</th><th>Method</th><th>Start</th><th>Time (ms)</th></tr></thead><tbody><tr><th colspan="4">Default suite</th></tr></tbody><tbody id="t0"><tr><th colspan="4">Default test &#8212; failed</th></tr><tr class="failedeven"><td rowspan="1">com.nkxgen.spring.jdbc.Test.CustomerControllerTest</td><td><a href="#m0">testCustomerDataSaveToDb</a></td><td rowspan="1">1688469161722</td><td rowspan="1">6</td></tr></tbody>
+<table id='summary'><thead><tr><th>Class</th><th>Method</th><th>Start</th><th>Time (ms)</th></tr></thead><tbody><tr><th colspan="4">Command line suite</th></tr></tbody><tbody id="t0"><tr><th colspan="4">Command line test &#8212; failed</th></tr><tr class="failedeven"><td rowspan="2">com.nkxgen.spring.jdbc.Test.LoanControllerTest</td><td><a href="#m0">testDeleteLoanApplication_Exception</a></td><td rowspan="1">1688884874236</td><td rowspan="1">14</td></tr><tr class="failedeven"><td><a href="#m1">testUpdateLoanApplication_Exception</a></td><td rowspan="1">1688884874340</td><td rowspan="1">1</td></tr><tr><th colspan="4">Command line test &#8212; passed</th></tr><tr class="passedeven"><td rowspan="13">com.nkxgen.spring.jdbc.Test.LoanControllerTest</td><td><a href="#m2">testApproveLoanApplication_Success</a></td><td rowspan="1">1688884874187</td><td rowspan="1">43</td></tr><tr class="passedeven"><td><a href="#m3">testDeleteLoanApplication_Success</a></td><td rowspan="1">1688884874255</td><td rowspan="1">2</td></tr><tr class="passedeven"><td><a href="#m4">testGetAccountById_AccountNotFound</a></td><td rowspan="1">1688884874262</td><td rowspan="1">2</td></tr><tr class="passedeven"><td><a href="#m5">testGetAccountById_Success</a></td><td rowspan="1">1688884874269</td><td rowspan="1">3</td></tr><tr class="passedeven"><td><a href="#m6">testGetLoanAccounts_PermissionGranted</a></td><td rowspan="1">1688884874277</td><td rowspan="1">3</td></tr><tr class="passedeven"><td><a href="#m7">testGetLoanApplicationById_ApplicationNotFound</a></td><td rowspan="1">1688884874285</td><td rowspan="1">2</td></tr><tr class="passedeven"><td><a href="#m8">testGetLoanApplicationById_Success</a></td><td rowspan="1">1688884874293</td><td rowspan="1">2</td></tr><tr class="passedeven"><td><a href="#m9">testGetLoanApplication_PermissionDenied</a></td><td rowspan="1">1688884874301</td><td rowspan="1">1</td></tr><tr class="passedeven"><td><a href="#m10">testGetLoanApplication_PermissionGranted</a></td><td rowspan="1">1688884874308</td><td rowspan="1">6</td></tr><tr class="passedeven"><td><a href="#m11">testLoanNewApplicationForm</a></td><td rowspan="1">1688884874318</td><td rowspan="1">1</td></tr><tr class="passedeven"><td><a href="#m12">testNewLoanApplication_Success</a></td><td rowspan="1">1688884874326</td><td rowspan="1">4</td></tr><tr class="passedeven"><td><a href="#m13">testRedirectForm</a></td><td rowspan="1">1688884874335</td><td rowspan="1">1</td></tr><tr class="passedeven"><td><a href="#m14">testUpdateLoanApplication_Success</a></td><td rowspan="1">1688884874345</td><td rowspan="1">1</td></tr></tbody>
 </table>
-<h2>Default test</h2><h3 id="m0">com.nkxgen.spring.jdbc.Test.CustomerControllerTest#testCustomerDataSaveToDb</h3><table class="result"><tr><th>Exception</th></tr><tr><td><div class="stacktrace">java.lang.NullPointerException: Cannot invoke &quot;com.nkxgen.spring.jdbc.ViewModels.CustomerViewModel.getId()&quot; because &quot;customertrail&quot; is null
-	at com.nkxgen.spring.jdbc.Bal.CustomerSetter.dotheservice2(CustomerSetter.java:64)
-	at com.nkxgen.spring.jdbc.Test.CustomerControllerTest.testCustomerDataSaveToDb(CustomerControllerTest.java:53)
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
-	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.base/java.lang.reflect.Method.invoke(Method.java:564)
-	at org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:139)
-	at org.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:664)
-	at org.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:227)
-	at org.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:50)
-	at org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:957)
-	at org.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:200)
-	at org.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:148)
-	at org.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:128)
-	at java.base/java.util.ArrayList.forEach(ArrayList.java:1510)
-	at org.testng.TestRunner.privateRun(TestRunner.java:848)
-	at org.testng.TestRunner.run(TestRunner.java:621)
-	at org.testng.SuiteRunner.runTest(SuiteRunner.java:443)
-	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:437)
-	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:397)
-	at org.testng.SuiteRunner.run(SuiteRunner.java:336)
-	at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
-	at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:95)
-	at org.testng.TestNG.runSuitesSequentially(TestNG.java:1280)
-	at org.testng.TestNG.runSuitesLocally(TestNG.java:1200)
-	at org.testng.TestNG.runSuites(TestNG.java:1114)
-	at org.testng.TestNG.run(TestNG.java:1082)
-	at org.testng.remote.AbstractRemoteTestNG.run(AbstractRemoteTestNG.java:115)
-	at org.testng.remote.RemoteTestNG.initAndRun(RemoteTestNG.java:251)
-	at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:77)
-</div></td></tr></table><p class="totop"><a href="#summary">back to summary</a></p>
+<h2>Command line test</h2><h3 id="m0">com.nkxgen.spring.jdbc.Test.LoanControllerTest#testDeleteLoanApplication_Exception</h3><table class="result"><tr><th>Exception</th></tr><tr><td><div class="stacktrace">org.mockito.exceptions.base.MockitoException: 
+Checked exception is invalid for this method!
+Invalid: java.lang.Exception
+	at com.nkxgen.spring.jdbc.Test.LoanControllerTest.testDeleteLoanApplication_Exception(LoanControllerTest.java:273)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at com.nkxgen.spring.jdbc.Test.LoanControllerTestRunner.main(LoanControllerTestRunner.java:20)
+... Removed 24 stack frames</div></td></tr></table><p class="totop"><a href="#summary">back to summary</a></p>
+<h3 id="m1">com.nkxgen.spring.jdbc.Test.LoanControllerTest#testUpdateLoanApplication_Exception</h3><table class="result"><tr><th>Exception</th></tr><tr><td><div class="stacktrace">org.mockito.exceptions.base.MockitoException: 
+Checked exception is invalid for this method!
+Invalid: java.lang.Exception
+	at com.nkxgen.spring.jdbc.Test.LoanControllerTest.testUpdateLoanApplication_Exception(LoanControllerTest.java:170)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at com.nkxgen.spring.jdbc.Test.LoanControllerTestRunner.main(LoanControllerTestRunner.java:20)
+... Removed 24 stack frames</div></td></tr></table><p class="totop"><a href="#summary">back to summary</a></p>
+<h3 id="m2">com.nkxgen.spring.jdbc.Test.LoanControllerTest#testApproveLoanApplication_Success</h3><table class="result"><tr><th class="invisible"/></tr></table><p class="totop"><a href="#summary">back to summary</a></p>
+<h3 id="m3">com.nkxgen.spring.jdbc.Test.LoanControllerTest#testDeleteLoanApplication_Success</h3><table class="result"><tr><th class="invisible"/></tr></table><p class="totop"><a href="#summary">back to summary</a></p>
+<h3 id="m4">com.nkxgen.spring.jdbc.Test.LoanControllerTest#testGetAccountById_AccountNotFound</h3><table class="result"><tr><th class="invisible"/></tr></table><p class="totop"><a href="#summary">back to summary</a></p>
+<h3 id="m5">com.nkxgen.spring.jdbc.Test.LoanControllerTest#testGetAccountById_Success</h3><table class="result"><tr><th class="invisible"/></tr></table><p class="totop"><a href="#summary">back to summary</a></p>
+<h3 id="m6">com.nkxgen.spring.jdbc.Test.LoanControllerTest#testGetLoanAccounts_PermissionGranted</h3><table class="result"><tr><th class="invisible"/></tr></table><p class="totop"><a href="#summary">back to summary</a></p>
+<h3 id="m7">com.nkxgen.spring.jdbc.Test.LoanControllerTest#testGetLoanApplicationById_ApplicationNotFound</h3><table class="result"><tr><th class="invisible"/></tr></table><p class="totop"><a href="#summary">back to summary</a></p>
+<h3 id="m8">com.nkxgen.spring.jdbc.Test.LoanControllerTest#testGetLoanApplicationById_Success</h3><table class="result"><tr><th class="invisible"/></tr></table><p class="totop"><a href="#summary">back to summary</a></p>
+<h3 id="m9">com.nkxgen.spring.jdbc.Test.LoanControllerTest#testGetLoanApplication_PermissionDenied</h3><table class="result"><tr><th class="invisible"/></tr></table><p class="totop"><a href="#summary">back to summary</a></p>
+<h3 id="m10">com.nkxgen.spring.jdbc.Test.LoanControllerTest#testGetLoanApplication_PermissionGranted</h3><table class="result"><tr><th class="invisible"/></tr></table><p class="totop"><a href="#summary">back to summary</a></p>
+<h3 id="m11">com.nkxgen.spring.jdbc.Test.LoanControllerTest#testLoanNewApplicationForm</h3><table class="result"><tr><th class="invisible"/></tr></table><p class="totop"><a href="#summary">back to summary</a></p>
+<h3 id="m12">com.nkxgen.spring.jdbc.Test.LoanControllerTest#testNewLoanApplication_Success</h3><table class="result"><tr><th class="invisible"/></tr></table><p class="totop"><a href="#summary">back to summary</a></p>
+<h3 id="m13">com.nkxgen.spring.jdbc.Test.LoanControllerTest#testRedirectForm</h3><table class="result"><tr><th class="invisible"/></tr></table><p class="totop"><a href="#summary">back to summary</a></p>
+<h3 id="m14">com.nkxgen.spring.jdbc.Test.LoanControllerTest#testUpdateLoanApplication_Success</h3><table class="result"><tr><th class="invisible"/></tr></table><p class="totop"><a href="#summary">back to summary</a></p>
 </body>
 </html>

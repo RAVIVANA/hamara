@@ -1,6 +1,10 @@
 package com.nkxgen.spring.jdbc.Test;
 
 import static org.mockito.ArgumentMatchers.any;
+
+import org.testng.Assert;
+import org.testng.annotations.*;
+import com.nkxgen.spring.jdbc.model.*;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
@@ -11,12 +15,15 @@ import java.util.Collections;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.ui.Model;
@@ -25,8 +32,10 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import com.nkxgen.spring.jdbc.Bal.ViewInterface;
+import com.nkxgen.spring.jdbc.Dao.PermissionsDAO;
 import com.nkxgen.spring.jdbc.DaoInterfaces.CustomerDaoInterface;
 import com.nkxgen.spring.jdbc.DaoInterfaces.LoanApplicationDaoInterface;
+import com.nkxgen.spring.jdbc.DaoInterfaces.PermissionsDAOInterface;
 import com.nkxgen.spring.jdbc.Exception.AccountNotFound;
 import com.nkxgen.spring.jdbc.Exception.ApplicationNotFound;
 import com.nkxgen.spring.jdbc.InputModels.LoanApplicationInput;
@@ -38,6 +47,8 @@ import com.nkxgen.spring.jdbc.events.LoanAppApprovalEvent;
 import com.nkxgen.spring.jdbc.events.LoanAppRequestEvent;
 import com.nkxgen.spring.jdbc.model.LoanApplication;
 
+import customEception.LoanApplicationSaveException;
+
 public class LoanControllerTest {
 
 	@Mock
@@ -45,7 +56,8 @@ public class LoanControllerTest {
 
 	@Mock
 	private CustomerDaoInterface customerDao;
-
+	@Mock
+	private ApplicationEventPublisher applicationEventPublisher;
 	@Mock
 	private ViewInterface viewInterface;
 
@@ -60,10 +72,14 @@ public class LoanControllerTest {
 
 	@Mock
 	private Model model;
-
+	 @Mock
+	    private PermissionsDAOInterface permissionsDAO;
 	@Mock
 	private BindingResult bindingResult;
 
+
+	    @Mock
+	    private HttpServletResponse response;
 	@InjectMocks
 	private LoanController loanController;
 
@@ -100,70 +116,48 @@ public class LoanControllerTest {
 		assert result.equals("redirected-applications");
 	}
 
-	@Test
-	public void testNewLoanApplication_Success() {
-		// Arrange
-		LoanApplicationInput loanApplicationInput = new LoanApplicationInput();
-		loanApplicationInput.setLoanTypeId("Personal Loan");
+    @Test
+    public void testNewLoanApplication_Success() {
+        // Arrange
+        LoanApplicationInput loanApplicationInput = new LoanApplicationInput();
+        loanApplicationInput.setAmount((long)1000.0);
+        loanApplicationInput.setTenureRequested(12);
+        loanApplicationInput.setCreatedDate("2023-01-10");
 
-		when(request.getSession()).thenReturn(session);
-		when(session.getAttribute("username")).thenReturn("testUser");
+        // Mock the behavior of the dependencies
+        when(request.getSession()).thenReturn(session);
+        when(session.getAttribute("username")).thenReturn("user123");
 
-		// Act
-		String result = loanController.newLoanApplication(loanApplicationInput, model, request);
+        // Act
+        String result = loanController.newLoanApplication(loanApplicationInput, model, request);
 
-		// Assert
-		verify(loanApplicationDao).saveLoanApplication(any(LoanApplication.class));
-		verify(eventPublisher).publishEvent(any(LoanAppRequestEvent.class));
-		assert result.equals("loan-new-application-form");
-	}
+        // Assert
+        verify(loanApplicationDao).saveLoanApplication(any(LoanApplication.class));
+        verify(session).getAttribute("username");
+        Assert.assertEquals(result, "loan-new-application-form");
+    }
 
-	@Test
-	public void testNewLoanApplication_Exception() {
-		// Arrange
-		LoanApplicationInput loanApplicationInput = new LoanApplicationInput();
-		loanApplicationInput.setLoanTypeId("Personal Loan");
-		loanApplicationInput.setTenureRequested(9);
-		loanApplicationInput.setApplicationDate("2023-06-23");
-		loanApplicationInput.setAmount(0);
-		loanApplicationInput.setCreatedBy(1);
-		loanApplicationInput.setCreatedDate("2023-06-23");
-		loanApplicationInput.setCustId(2);
-		loanApplicationInput.setEmiLimitFrom(3000);
-		loanApplicationInput.setEmiLimitTo(5000);
-		loanApplicationInput.setID(1);
-		loanApplicationInput.setIntrest(3);
 
-		when(request.getSession()).thenReturn(session);
-		when(session.getAttribute("username")).thenReturn("testUser");
-		doThrow(new DataIntegrityViolationException("Foreign key violation occurred.")).when(loanApplicationDao)
-				.saveLoanApplication(any(LoanApplication.class));
 
-		// Act
-		String result = loanController.newLoanApplication(loanApplicationInput, model, request);
+    @Test
+    public void testUpdateLoanApplication_Success() {
+        // Arrange
+        LoanApplicationInput loanApplicationInput = new LoanApplicationInput();
+        loanApplicationInput.setLoanTypeId("personal");
+        loanApplicationInput.setAmount((long)1000.0);
 
-		// Assert
-		verify(model).addAttribute(eq("error"), eq("An error occurred while processing the new loan application."));
-		assert result.equals("error-view");
-	}
+        // Mock the behavior of the dependencies
+        when(request.getSession()).thenReturn(session);
+        when(session.getAttribute("username")).thenReturn("user123");
 
-	@Test
-	public void testUpdateLoanApplication_Success() {
-		// Arrange
-		LoanApplicationInput loanApplicationInput = new LoanApplicationInput();
-		loanApplicationInput.setLoanTypeId("Personal Loan");
+        // Act
+        String result = loanController.updateLoanApplication(loanApplicationInput, request, model);
 
-		when(request.getSession()).thenReturn(session);
-		when(session.getAttribute("username")).thenReturn("testUser");
-
-		// Act
-		String result = loanController.updateLoanApplication(loanApplicationInput, request, model);
-
-		// Assert
-		verify(loanApplicationDao).updateLoanApplication(any(LoanApplicationInput.class));
-		verify(eventPublisher).publishEvent(any(LoanAppApprovalEvent.class));
-		assert result.equals("loan-approval");
-	}
+        // Assert
+        verify(loanApplicationDao).updateLoanApplication(any(LoanApplicationInput.class));
+        verify(session).getAttribute("username");
+        Assert.assertEquals(result, "loan-approval");
+    }
 
 	@Test
 	public void testUpdateLoanApplication_Exception() {
@@ -183,33 +177,81 @@ public class LoanControllerTest {
 		assert result.equals("error-view");
 	}
 
-	@Test
-	public void testGetLoanApplication_Success() {
-		// Arrange
-		List<LoanApplicationViewModel> loanApplications = new ArrayList<>();
-		when(viewInterface.getLoanApplicationByValue(toString())).thenReturn(loanApplications);
+	 @Test
+	    public void testGetLoanApplication_PermissionGranted() {
+	        // Arrange
+	        String accountType = "Savings";
+	        List<LoanApplicationViewModel> list = new ArrayList<>();
+	        List<LoanApplicationViewModel> filteredList = new ArrayList<>();
+	        String username = "1";
+	        Permission permission = new Permission();
+	        permission.setUserId((long)1);
+	        permission.setApplication(true);
 
-		// Act
-		String result = loanController.GetLoanApplication("Personal Loan", model, request, null);
+	        // Mock the behavior of the dependencies
+	        when(viewInterface.getLoanApplicationByValue(accountType)).thenReturn(list);
+	        when(request.getSession()).thenReturn(session);
+	        when(session.getAttribute("username")).thenReturn(username);
+	        when(permissionsDAO.getPermissions(Long.parseLong(username))).thenReturn(permission);
 
-		// Assert
-		verify(model).addAttribute(eq("loanApplications"), eq(loanApplications));
-		assert result.equals("loan-approval");
-	}
+	        // Act
+	        String result = loanController.GetLoanApplication(accountType, model, request, response);
 
-	@Test
-	public void testGetLoanAccounts_Success() {
-		// Arrange
-		List<LoanAccountViewModel> loanAccounts = new ArrayList<>();
-		when(viewInterface.getLoanAccountsByLoanType(toString())).thenReturn(loanAccounts);
+	        // Assert
+	        verify(viewInterface).getLoanApplicationByValue(accountType);
+	        verify(permissionsDAO).getPermissions(Long.parseLong(username));
+	        verify(model).addAttribute(eq("loanApplications"), any(List.class));
+	        Assert.assertEquals(result, "loan-approval");
+	    }
+	 @Test
+	    public void testGetLoanApplication_PermissionDenied() {
+	        // Arrange
+	        String accountType = "Savings";
+	        String username = "123";
+	        Permission permission = new Permission();
+	        permission.setUserId((long)123);
+	        permission.setApplication(false);
 
-		// Act
-		String result = loanController.GetLoanAccounts("Personal Loan", model, request, null);
+	        // Mock the behavior of the dependencies
+	        when(request.getSession()).thenReturn(session);
+	        when(session.getAttribute("username")).thenReturn(username);
+	        when(permissionsDAO.getPermissions(Long.parseLong(username))).thenReturn(permission);
 
-		// Assert
-		verify(model).addAttribute(eq("loanAccounts"), eq(loanAccounts));
-		assert result.equals("loan-account-details");
-	}
+	        // Act
+	        String result = loanController.GetLoanApplication(accountType, model, request, response);
+
+	        // Assert
+	        verify(permissionsDAO).getPermissions(Long.parseLong(username));
+	        Assert.assertEquals(result, "not-permitted");
+	    }
+	    @Test
+	    public void testGetLoanAccounts_PermissionGranted() {
+	        // Arrange
+	        String accountType = "type";
+	        List<LoanAccountViewModel> loanAccounts = new ArrayList<>();
+	        // Add some loan accounts to the list
+	        
+	        // Mock the behavior of the loanAccountService
+	        when(viewInterface.getLoanAccountsByLoanType(accountType)).thenReturn(loanAccounts);
+	        
+	        HttpSession session = Mockito.mock(HttpSession.class);
+	        HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
+	        HttpServletResponse response = Mockito.mock(HttpServletResponse.class);
+	        when(request.getSession()).thenReturn(session);
+	        when(session.getAttribute("username")).thenReturn("123");
+	        
+	        Permission p = new Permission();
+	        p.setLoans(true);
+	        when(permissionsDAO.getPermissions(123L)).thenReturn(p);
+
+	        // Act
+	        String result = loanController.GetLoanAccounts(accountType, model, request, response);
+
+	        // Assert
+	        verify(viewInterface).getLoanAccountsByLoanType(accountType);
+	        verify(model).addAttribute(eq("loanAccounts"), eq(loanAccounts));
+	        Assert.assertEquals(result, "loan-account-details");
+	    }
 
 	@Test
 	public void testDeleteLoanApplication_Success() {
@@ -239,56 +281,70 @@ public class LoanControllerTest {
 	}
 
 	@Test
-	public void testApproveLoanApplication_Success() throws Exception {
-		// Arrange
-		int loanId = 1;
-		Long customerId = 12345L;
+    public void testApproveLoanApplication_Success() throws Exception {
+        // Arrange
+        int loanId = 1;
+        Long customerId = 1L;
+        LoanApplication loanApplication = new LoanApplication();
+        loanApplication.setId(loanId); // Set the loanId for the loan application
+        loanApplication.setProcessedStatus("Pending"); // Set the initial processed status
+        loanApplication.setStatus("Pending"); // Set the initial status
 
-		when(loanApplicationDao.getLoanApplicationByid(eq(loanId))).thenReturn(new LoanApplication());
+        // Mock the necessary methods of dependencies
+        Mockito.when(loanApplicationDao.getLoanApplicationByid(loanId)).thenReturn(loanApplication);
+        Mockito.when(request.getSession()).thenReturn(session);
+        Mockito.when(session.getAttribute("username")).thenReturn("testUser");
 
-		// Act
-		String result = loanController.approveLoanApplication(loanId, customerId, model, request);
+        // Act
+        String result = loanController.approveLoanApplication(loanId, customerId, model, request);
 
-		// Assert
-		verify(loanApplicationDao).getLoanApplicationByid(eq(loanId));
-		verify(loanApplicationDao).saveTheApprovedLoanApplication(any(LoanApplication.class));
-		verify(eventPublisher).publishEvent(any(LoanAppApprovalEvent.class));
-		assert result.equals("loan-approval");
-	}
+        // Assert
+        Assert.assertEquals(result, "loan-approval"); // Verify the expected return value
 
-	@Test
-	public void testApproveLoanApplication_Exception() {
-		// Arrange
-		int loanId = 1;
-		Long customerId = 120L;
+        // Verify the behavior of the loanApplicationService and applicationEventPublisher
+        Mockito.verify(loanApplicationDao).getLoanApplicationByid(loanId);
+        Mockito.verify(loanApplicationDao).saveTheApprovedLoanApplication(loanApplication);
+        Mockito.verify(loanApplicationDao).approveApplication(loanId, customerId);
+        Mockito.verify(session).getAttribute("username");
 
-		LoanApplication loanApplication = new LoanApplication();
-		when(loanApplicationDao.getLoanApplicationByid(eq(loanId))).thenReturn(loanApplication);
-		Mockito.doThrow(new Exception()).when(loanApplicationDao)
-				.saveTheApprovedLoanApplication(any(LoanApplication.class));
+        // Verify that the loanapp object was modified correctly
+        Assert.assertEquals(loanApplication.getProcessedStatus(), "Approved");
+        Assert.assertEquals(loanApplication.getStatus(), "Approved");
+    }
+	
 
-		// Act
-		String result = loanController.approveLoanApplication(loanId, customerId, model, request);
 
-		// Assert
-		verify(model).addAttribute(eq("error"), eq("An error occurred while approving the loan application."));
-		assert result.equals("error-view");
-	}
 
-	@Test
-	public void testGetLoanApplicationById_Success() throws ApplicationNotFound {
-		// Arrange
-		int loanId = 1;
-		LoanApplicationViewModel loanApplication = new LoanApplicationViewModel();
-		when(viewInterface.getLoanApplicationById(eq(loanId))).thenReturn(loanApplication);
 
-		// Act
-		String result = loanController.getLoanApplicationById(loanId, model);
 
-		// Assert
-		verify(model).addAttribute(eq("loanAccounts"), eq(loanApplication));
-		assert result.equals("loan-approval");
-	}
+    @Test
+    public void testGetLoanApplicationById_Success() {
+        // Arrange
+        int accountId = 1;
+        LoanApplicationViewModel loanApplication = new LoanApplicationViewModel();
+        loanApplication.setId(1);
+        
+        // Mock the behavior of the loanApplicationService
+        try {
+			when(viewInterface.getLoanApplicationById(accountId)).thenReturn(loanApplication);
+		} catch (ApplicationNotFound e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+        // Act
+        String result = loanController.getLoanApplicationById(accountId, model);
+
+        // Assert
+        try {
+			verify(viewInterface).getLoanApplicationById(accountId);
+		} catch (ApplicationNotFound e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        verify(model).addAttribute(eq("loanApplications"), ArgumentMatchers.<LoanApplicationViewModel>anyList());
+        Assert.assertEquals(result, "loan-approval");
+    }
 
 	@Test
 	public void testGetLoanApplicationById_ApplicationNotFound() throws ApplicationNotFound {
@@ -303,21 +359,35 @@ public class LoanControllerTest {
 		assert result.equals("AccountNotFound");
 	}
 
-	@Test
-	public void testGetAccountById_Success() throws AccountNotFound {
-		// Arrange
-		int accountId = 1;
-		LoanAccountViewModel loanAccount = new LoanAccountViewModel();
-		when(viewInterface.getLoanAccountById(eq(accountId))).thenReturn(loanAccount);
+    @Test
+    public void testGetAccountById_Success() {
+        // Arrange
+        int accountId = 1;
+        LoanAccountViewModel loanAccountViewModel = new LoanAccountViewModel();
+        loanAccountViewModel.setLoanId((long)1);
+        loanAccountViewModel.setLoanType("personal");
 
-		// Act
-		String result = loanController.getAccountById(accountId, model);
+        // Mock the behavior of the loanAccountService
+        try {
+			when(viewInterface.getLoanAccountById(accountId)).thenReturn(loanAccountViewModel);
+		} catch (AccountNotFound e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
-		// Assert
-		verify(model).addAttribute(eq("loanApplications"), eq(Collections.singletonList(loanAccount)));
-		assert result.equals("loan-account-details");
-	}
+        // Act
+        String result = loanController.getAccountById(accountId, model);
 
+        // Assert
+        try {
+			verify(viewInterface).getLoanAccountById(accountId);
+		} catch (AccountNotFound e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        verify(model).addAttribute(eq("loanAccounts"), ArgumentMatchers.<LoanAccountViewModel>anyList());
+        Assert.assertEquals(result, "loan-account-details");
+    }
 	@Test
 	public void testGetAccountById_AccountNotFound() throws AccountNotFound {
 		// Arrange

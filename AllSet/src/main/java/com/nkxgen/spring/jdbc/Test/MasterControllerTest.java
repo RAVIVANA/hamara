@@ -1,6 +1,10 @@
 package com.nkxgen.spring.jdbc.Test;
 
 import static org.mockito.ArgumentMatchers.any;
+
+import org.testng.Assert;
+import org.testng.annotations.*;
+
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
@@ -37,6 +41,8 @@ public class MasterControllerTest {
 
 	@InjectMocks
 	private masterController controller;
+    @Mock
+    private com.nkxgen.spring.jdbc.model.cashChest cashChest;
 
 	@Mock
 	private Model model;
@@ -115,16 +121,22 @@ public class MasterControllerTest {
 		assert result.equals("cash-chest");
 	}
 
-	@Test
-	public void testProfitloss() {
-		cashChest cashChest = new cashChest();
+	  @Test
+	    public void testProfitloss() {
+	        // Arrange
+	        when(accountTypeInterface.getallamount()).thenReturn(cashChest);
 
-		when(accountTypeInterface.getallamount()).thenReturn(cashChest);
+	        // Act
+	        String result = controller.Profitloss(model);
 
-		String result = controller.Profitloss(model);
+	        // Assert
+	        verify(model).addAttribute(eq("cashChest"), eq(cashChest));
+	        Assert.assertEquals(result, "profitLoss");
+	    }
+	
 
-		verify(accountTypeInterface).getallamount();
-		verify(model).addAttribute(eq("cashChest"), any(cashChest.class));
-		assert result.equals("p&l");
-	}
+
+
+
+
 }

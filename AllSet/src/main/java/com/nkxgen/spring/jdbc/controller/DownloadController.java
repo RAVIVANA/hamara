@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,58 +27,80 @@ public class DownloadController {
 	private AuditLogDAO auditLogDAO;
 	private Generator generator;
 	private AccountProcessingDAO interestCalDao;
+	Logger LOGGER = LoggerFactory.getLogger(DownloadController.class);
 
 	@Autowired
 	public DownloadController(AuditLogDAO auditLogDAO, PdfGenerator generator, AccountProcessingDAO interestCalDao) {
-		this.auditLogDAO = auditLogDAO;
-		this.generator = generator;
-		this.interestCalDao = interestCalDao;
+	    this.auditLogDAO = auditLogDAO;
+	    this.generator = generator;
+	    this.interestCalDao = interestCalDao;
+	    
+	    // Log the instantiation of DownloadController with dependencies
+	    LOGGER.info("DownloadController instantiated with AuditLogDAO, PdfGenerator, and AccountProcessingDAO.");
 	}
+
 
 	@RequestMapping(value = "auditDownloads")
 	public void downloadAuditData(HttpServletResponse response) {
-		try (OutputStream outputStream = response.getOutputStream()) {
-			response.setContentType("application/pdf");
-			response.setHeader("Content-Disposition", "attachment; filename=audit_logs.pdf");
+	    try (OutputStream outputStream = response.getOutputStream()) {
+	        response.setContentType("application/pdf");
+	        response.setHeader("Content-Disposition", "attachment; filename=audit_logs.pdf");
 
-			List<AuditLogs> auditLogsList = auditLogDAO.getAllAuditLogs();
+	        List<AuditLogs> auditLogsList = auditLogDAO.getAllAuditLogs();
 
-			generator.generateAuditLogsPdf(auditLogsList, outputStream);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+	        generator.generateAuditLogsPdf(auditLogsList, outputStream);
+	        
+	        // Log the successful generation of audit logs PDF
+	        LOGGER.info("Generated audit logs PDF and downloaded it.");
+	    } catch (Exception e) {
+	        // Log the exception if an error occurs
+	        LOGGER.error("Error occurred while downloading audit logs PDF: {}", e.getMessage());
+	        e.printStackTrace();
+	    }
 	}
 
 	@RequestMapping(value = "/generateAccountTransactionsPDF", method = RequestMethod.POST)
 	public void downloadAccountData(HttpServletResponse response, @RequestParam("accountId") String accountid) {
-		try (OutputStream outputStream = response.getOutputStream()) {
+	    try (OutputStream outputStream = response.getOutputStream()) {
+	        response.setContentType("application/pdf");
+	        response.setHeader("Content-Disposition", "attachment; filename=transaction_list.pdf");
+	        int accountId = Integer.parseInt(accountid);
 
-			response.setContentType("application/pdf");
-			response.setHeader("Content-Disposition", "attachment; filename=transaction_list.pdf");
-			int accountId = Integer.parseInt(accountid);
-			System.out.println(accountId);
-			List<Transaction> transactionList = interestCalDao.AccountTransactionStatementGeneration(accountId);
-			generator.generateAccountTransactionPDF(transactionList, outputStream);
+	        LOGGER.info("Account ID: {}", accountId);
 
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+	        List<Transaction> transactionList = interestCalDao.AccountTransactionStatementGeneration(accountId);
+	        generator.generateAccountTransactionPDF(transactionList, outputStream);
+	        
+	        // Log the successful generation of account transactions PDF
+	        LOGGER.info("Generated account transactions PDF and downloaded it.");
+	    } catch (Exception e) {
+	        // Log the exception if an error occurs
+	        LOGGER.error("Error occurred while downloading account transactions PDF: {}", e.getMessage());
+	        e.printStackTrace();
+	    }
 	}
+
 
 	@RequestMapping(value = "/generateLoanTransactionsPDF", method = RequestMethod.POST)
 	public void downloadLoanData(HttpServletResponse response, @RequestParam("accountId") String accountid) {
-		try (OutputStream outputStream = response.getOutputStream()) {
+	    try (OutputStream outputStream = response.getOutputStream()) {
+	        response.setContentType("application/pdf");
+	        response.setHeader("Content-Disposition", "attachment; filename=transaction_list.pdf");
+	        int accountId = Integer.parseInt(accountid);
 
-			response.setContentType("application/pdf");
-			response.setHeader("Content-Disposition", "attachment; filename=transaction_list.pdf");
-			int accountId = Integer.parseInt(accountid);
-			System.out.println(accountId);
-			List<LoanTransactions> transactionList = interestCalDao.LoanTransactionStatementGeneration(accountId);
-			generator.generateLoanTransactionPDF(transactionList, outputStream);
+	        LOGGER.info("Account ID: {}", accountId);
 
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+	        List<LoanTransactions> transactionList = interestCalDao.LoanTransactionStatementGeneration(accountId);
+	        generator.generateLoanTransactionPDF(transactionList, outputStream);
+	        
+	        // Log the successful generation of loan transactions PDF
+	        LOGGER.info("Generated loan transactions PDF and downloaded it.");
+	    } catch (Exception e) {
+	        // Log the exception if an error occurs
+	        LOGGER.error("Error occurred while downloading loan transactions PDF: {}", e.getMessage());
+	        e.printStackTrace();
+	    }
 	}
+
 
 }

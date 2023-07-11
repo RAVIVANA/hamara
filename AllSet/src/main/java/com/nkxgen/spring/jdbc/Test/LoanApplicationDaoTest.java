@@ -1,6 +1,8 @@
 package com.nkxgen.spring.jdbc.Test;
 
 import static org.mockito.ArgumentMatchers.anyString;
+import org.testng.annotations.*;
+
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -181,7 +183,7 @@ public class LoanApplicationDaoTest {
 	@Test
 	public void testGetLoanApplicationById() {
 		// Arrange
-		int loanApplicationId = 1;
+		int loanApplicationId = 130;
 		LoanApplication expectedLoanApplication = new LoanApplication();
 		when(entityManager.find(eq(LoanApplication.class), eq(loanApplicationId))).thenReturn(expectedLoanApplication);
 
@@ -196,7 +198,7 @@ public class LoanApplicationDaoTest {
 	@Test
 	public void testGetLoanAccountById() {
 		// Arrange
-		int accountNumber = 1;
+		int accountNumber = 120;
 		LoanAccount expectedLoanAccount = new LoanAccount();
 		when(entityManager.find(eq(LoanAccount.class), eq((long) accountNumber))).thenReturn(expectedLoanAccount);
 

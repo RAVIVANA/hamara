@@ -3,12 +3,12 @@
 <suite name="Failed suite [Default suite]" guice-stage="DEVELOPMENT">
   <test thread-count="5" name="Default test(failed)">
     <classes>
-      <class name="com.nkxgen.spring.jdbc.Test.CustomerControllerTest">
+      <class name="com.nkxgen.spring.jdbc.Test.MasterControllerTest">
         <methods>
-          <include name="setup"/>
-          <include name="testCustomerDataSaveToDb"/>
+          <include name="setUp"/>
+          <include name="testProfitloss"/>
         </methods>
-      </class> <!-- com.nkxgen.spring.jdbc.Test.CustomerControllerTest -->
+      </class> <!-- com.nkxgen.spring.jdbc.Test.MasterControllerTest -->
     </classes>
   </test> <!-- Default test(failed) -->
 </suite> <!-- Failed suite [Default suite] -->

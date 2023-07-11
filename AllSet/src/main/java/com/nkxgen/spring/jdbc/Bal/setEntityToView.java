@@ -1,9 +1,12 @@
 package com.nkxgen.spring.jdbc.Bal;
 
 import java.time.LocalDate;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.nkxgen.spring.jdbc.DaoInterfaces.AccountApplicationDaoInterface;
@@ -48,6 +51,7 @@ public class setEntityToView implements ViewInterface {
 	private CustomerDaoInterface cd;
 	@Autowired
 	TransactionsInterface ti;
+	Logger logger = LoggerFactory.getLogger(setEntityToView.class);
 
 	List<LoanAccountViewModel> viewlist = new ArrayList<>();
 	List<LoanApplicationViewModel> viewlist1 = new ArrayList<>();
@@ -61,76 +65,88 @@ public class setEntityToView implements ViewInterface {
 
 	@Override
 	public List<LoanAccountViewModel> getLoanAccountsByLoanType(String typee) {
-		viewlist.clear(); // Clear the viewlist to ensure it's empty
+	    logger.info("Getting loan accounts by loan type: {}", typee);
 
-		// Get the list of LoanAccounts by loan type from the ll object
-		List<LoanAccount> list = ll.getLoanAccountsByLoanType(typee);
+	    viewlist.clear(); // Clear the viewlist to ensure it's empty
 
-		for (LoanAccount l : list) {
-			LoanAccountViewModel la = new LoanAccountViewModel(); // Create a new LoanAccountViewModel object
+	    // Get the list of LoanAccounts by loan type from the ll object
+	    List<LoanAccount> list = ll.getLoanAccountsByLoanType(typee);
 
-			// Set the values from the LoanAccount object to the LoanAccountViewModel object
-			la.setValuesFromLoanAccount(l);
+	    for (LoanAccount l : list) {
+	        LoanAccountViewModel la = new LoanAccountViewModel(); // Create a new LoanAccountViewModel object
 
-			viewlist.add(la); // Add the LoanAccountViewModel object to the viewlist
-		}
+	        // Set the values from the LoanAccount object to the LoanAccountViewModel object
+	        la.setValuesFromLoanAccount(l);
 
-		return viewlist; // Return the viewlist containing LoanAccountViewModel objects
+	        viewlist.add(la); // Add the LoanAccountViewModel object to the viewlist
+	    }
+
+	    logger.info("Retrieved {} loan accounts", viewlist.size());
+	    return viewlist; // Return the viewlist containing LoanAccountViewModel objects
 	}
+
 
 	@Override
 	public List<AccountViewModel> getAccoutsByType(List<Account> typee) {
-		viewlist2.clear(); // Clear the existing contents of the viewlist2 list
+	    logger.info("Getting accounts by type");
 
-		for (Account l : typee) {
-			AccountViewModel la = new AccountViewModel(); // Create a new AccountViewModel object
-			AccountViewModel la1 = la.mapToViewModel(l); // Map the values from the Account object to the
-															// AccountViewModel object
-			viewlist2.add(la1); // Add the AccountViewModel object to the viewlist2 list
-		}
+	    viewlist2.clear(); // Clear the existing contents of the viewlist2 list
 
-		return viewlist2; // Return the list of AccountViewModel objects
+	    for (Account l : typee) {
+	        AccountViewModel la = new AccountViewModel(); // Create a new AccountViewModel object
+	        AccountViewModel la1 = la.mapToViewModel(l); // Map the values from the Account object to the AccountViewModel object
+	        viewlist2.add(la1); // Add the AccountViewModel object to the viewlist2 list
+	    }
+
+	    logger.info("Retrieved {} accounts", viewlist2.size());
+	    return viewlist2; // Return the list of AccountViewModel objects
 	}
+
 
 	@Override
 	public List<LoanApplicationViewModel> getLoanApplicationsByStatus(String typee) {
-		viewlist1.clear(); // Clear the existing contents of the viewlist1 list
+	    logger.info("Getting loan applications by status: {}", typee);
 
-		List<LoanApplication> list = ll.getLoanApplicationsByStatus(typee); // Retrieve the list of LoanApplication
-																			// objects by status
+	    viewlist1.clear(); // Clear the existing contents of the viewlist1 list
 
-		for (LoanApplication l : list) {
-			LoanApplicationViewModel la = new LoanApplicationViewModel(); // Create a new LoanApplicationViewModel
-			Customertrail c=cd.getCustomerById(l.getCustId().getId());
-											// object
-			la.copyFromEntity(l,c); // Copy the values from the LoanApplication object to the LoanApplicationViewModel
-									// object
-			viewlist1.add(la); // Add the LoanApplicationViewModel object to the viewlist1 list
-		}
+	    List<LoanApplication> list = ll.getLoanApplicationsByStatus(typee); // Retrieve the list of LoanApplication objects by status
 
-		return viewlist1; // Return the list of LoanApplicationViewModel objects
+	    for (LoanApplication l : list) {
+	        LoanApplicationViewModel la = new LoanApplicationViewModel(); // Create a new LoanApplicationViewModel object
+	        Customertrail c = cd.getCustomerById(l.getCustId().getId()); // Fetch the Customertrail association eagerly
+
+	        la.copyFromEntity(l, c); // Copy the values from the LoanApplication object to the LoanApplicationViewModel object
+	        viewlist1.add(la); // Add the LoanApplicationViewModel object to the viewlist1 list
+	    }
+
+	    logger.info("Retrieved {} loan applications", viewlist1.size());
+	    return viewlist1; // Return the list of LoanApplicationViewModel objects
 	}
+
 
 	@Override
 	public List<AccountApplicationViewModel> getAccountsappByType(String typee) {
-		viewlist4.clear(); // Clear the existing contents of the viewlist4 list
+	    logger.info("Getting account applications by type: {}", typee);
 
-		List<AccountApplication> list = ac.getAccountsappByType(typee); // Retrieve the list of AccountApplication
-																		// objects by type
+	    viewlist4.clear(); // Clear the existing contents of the viewlist4 list
 
-		for (AccountApplication l : list) {
-			AccountApplicationViewModel la = new AccountApplicationViewModel(); // Create a new
-																				// AccountApplicationViewModel object
-			la.setEntityModelValues(l); // Set the values from the AccountApplication object to the
-										// AccountApplicationViewModel object
-			viewlist4.add(la); // Add the AccountApplicationViewModel object to the viewlist4 list
-		}
+	    List<AccountApplication> list = ac.getAccountsappByType(typee); // Retrieve the list of AccountApplication objects by type
 
-		return viewlist4; // Return the list of AccountApplicationViewModel objects
+	    for (AccountApplication l : list) {
+	        AccountApplicationViewModel la = new AccountApplicationViewModel(); // Create a new AccountApplicationViewModel object
+	        la.setEntityModelValues(l); // Set the values from the AccountApplication object to the AccountApplicationViewModel object
+	        viewlist4.add(la); // Add the AccountApplicationViewModel object to the viewlist4 list
+	    }
+
+	    logger.info("Retrieved {} account applications", viewlist4.size());
+	    return viewlist4; // Return the list of AccountApplicationViewModel objects
 	}
+
 
 	@Override
 	public List<LoanApplicationViewModel> getLoanApplicationByValue(String typee) {
+	    logger.info("Getting loan applications by value: {}", typee);
+
 	    viewlist1.clear(); // Clear the existing contents of the viewlist1 list
 
 	    List<LoanApplication> list = ll.getLoanApplicationByValue(typee); // Retrieve the list of LoanApplication objects by value
@@ -138,252 +154,324 @@ public class setEntityToView implements ViewInterface {
 	    for (LoanApplication l : list) {
 	        LoanApplicationViewModel la = new LoanApplicationViewModel(); // Create a new LoanApplicationViewModel object
 	        // Fetch the Customertrail association eagerly
-			Customertrail c=cd.getCustomerById(l.getCustId().getId());
+	        Customertrail c = cd.getCustomerById(l.getCustId().getId());
 
 	        // Access the required properties without triggering lazy loading
 
-	        la.copyFromEntity(l,c); // Copy the values from the LoanApplication object to the LoanApplicationViewModel object
+	        la.copyFromEntity(l, c); // Copy the values from the LoanApplication object to the LoanApplicationViewModel object
 	        viewlist1.add(la); // Add the LoanApplicationViewModel object to the viewlist1 list
 	    }
+
+	    logger.info("Retrieved {} loan applications", viewlist1.size());
 	    return viewlist1;
 	}
 
 
 
 
+
 	@Override
 	public List<AccountViewModel> getAccountsByType(String typee) {
-		viewlist2.clear(); // Clear the existing contents of the viewlist2 list
+	    logger.info("Getting accounts by type: {}", typee);
 
-		List<Account> list = ac.getAccountsByType(typee); // Retrieve the list of Account objects by typee
+	    viewlist2.clear(); // Clear the existing contents of the viewlist2 list
 
-		for (Account l : list) {
-			AccountViewModel la = new AccountViewModel(); // Create a new AccountViewModel object
-			AccountViewModel la1 = la.mapToViewModel(l); // Map the values from the Account object to the
-															// AccountViewModel object
-			viewlist2.add(la1); // Add the AccountViewModel object to the viewlist2 list
-		}
+	    List<Account> list = ac.getAccountsByType(typee); // Retrieve the list of Account objects by typee
 
-		return viewlist2; // Return the list of AccountViewModel objects
+	    for (Account l : list) {
+	        AccountViewModel la = new AccountViewModel(); // Create a new AccountViewModel object
+	        AccountViewModel la1 = la.mapToViewModel(l); // Map the values from the Account object to the AccountViewModel object
+	        viewlist2.add(la1); // Add the AccountViewModel object to the viewlist2 list
+	    }
+
+	    logger.info("Retrieved {} accounts", viewlist2.size());
+	    return viewlist2; // Return the list of AccountViewModel objects
 	}
+
 
 	@Override
 	public List<BankUserViewModel> getAllBankUsers() {
-		viewlist3.clear(); // Clear the existing contents of the viewlist3 list
+	    logger.info("Getting all bank users");
 
-		List<BankUser> list = bankUserService.getAllBankUsers(); // Retrieve the list of BankUser objects
+	    viewlist3.clear(); // Clear the existing contents of the viewlist3 list
 
-		for (BankUser l : list) {
-			BankUserViewModel la = new BankUserViewModel(); // Create a new BankUserViewModel object
-			la.setFromEntity(l); // Set the values in the BankUserViewModel object based on the BankUser entity
-			viewlist3.add(la); // Add the BankUserViewModel object to the viewlist3 list
-		}
+	    List<BankUser> list = bankUserService.getAllBankUsers(); // Retrieve the list of BankUser objects
 
-		return viewlist3; // Return the list of BankUserViewModel objects
+	    for (BankUser l : list) {
+	        BankUserViewModel la = new BankUserViewModel(); // Create a new BankUserViewModel object
+	        la.setFromEntity(l); // Set the values in the BankUserViewModel object based on the BankUser entity
+	        viewlist3.add(la); // Add the BankUserViewModel object to the viewlist3 list
+	    }
+
+	    logger.info("Retrieved {} bank users", viewlist3.size());
+	    return viewlist3; // Return the list of BankUserViewModel objects
 	}
+
 
 	@Override
 	public BankUser getBankUserById(BankUserInput status) {
-		BankUser b = bankUserService.getBankUserById(status.getBusr_id()); // Retrieve the BankUser object by its
-																			// busr_id
+	    logger.info("Getting bank user by ID: {}", status.getBusr_id());
 
-		return b; // Return the BankUser object
+	    BankUser b = bankUserService.getBankUserById(status.getBusr_id()); // Retrieve the BankUser object by its busr_id
+
+	    logger.info("Bank user retrieved successfully");
+	    return b; // Return the BankUser object
 	}
+
 
 	@Override
 	public List<BankUserViewModel> getBankUsersByDesignation(BankUser status) {
-		viewlist3.clear(); // Clear the viewlist3 to start with an empty list
+	    logger.info("Getting bank users by designation: {}", status);
 
-		// Retrieve a list of BankUser objects based on the designation
-		List<BankUser> list = bankUserService.getBankUsersByDesignation(status);
+	    viewlist3.clear(); // Clear the viewlist3 to start with an empty list
 
-		for (BankUser l : list) {
-			BankUserViewModel la = new BankUserViewModel();
-			la.setFromEntity(l); // Set the values of BankUserViewModel based on the BankUser object
-			viewlist3.add(la); // Add the BankUserViewModel object to the viewlist3
-		}
+	    // Retrieve a list of BankUser objects based on the designation
+	    List<BankUser> list = bankUserService.getBankUsersByDesignation(status);
 
-		return viewlist3; // Return the list of BankUserViewModel objects
+	    for (BankUser l : list) {
+	        BankUserViewModel la = new BankUserViewModel();
+	        la.setFromEntity(l); // Set the values of BankUserViewModel based on the BankUser object
+	        viewlist3.add(la); // Add the BankUserViewModel object to the viewlist3
+	    }
+
+	    logger.info("Retrieved {} bank users", viewlist3.size());
+	    return viewlist3; // Return the list of BankUserViewModel objects
 	}
+
 
 	@Override
 	public List<BankUserViewModel> getBankUsersByDesignation(String status) {
-		viewlist3.clear(); // Clear the viewlist3 to start with an empty list
+	    logger.info("Getting bank users by designation: {}", status);
 
-		// Retrieve a list of BankUser objects based on the designation
-		List<BankUser> list = bankUserService.getBankUsersByDesignation(status);
+	    viewlist3.clear(); // Clear the viewlist3 to start with an empty list
 
-		for (BankUser l : list) {
-			BankUserViewModel la = new BankUserViewModel();
-			la.setFromEntity(l); // Set the values of BankUserViewModel based on the BankUser object
-			viewlist3.add(la); // Add the BankUserViewModel object to the viewlist3
-		}
+	    // Retrieve a list of BankUser objects based on the designation
+	    List<BankUser> list = bankUserService.getBankUsersByDesignation(status);
 
-		return viewlist3; // Return the list of BankUserViewModel objects
+	    for (BankUser l : list) {
+	        BankUserViewModel la = new BankUserViewModel();
+	        la.setFromEntity(l); // Set the values of BankUserViewModel based on the BankUser object
+	        viewlist3.add(la); // Add the BankUserViewModel object to the viewlist3
+	    }
+
+	    logger.info("Retrieved {} bank users", viewlist3.size());
+	    return viewlist3; // Return the list of BankUserViewModel objects
 	}
 
 	@Override
 	public LoanViewModel getSelectedLoanDetails(int status) {
-		LoansTypes loank = loan.getSelectedLoanDetails(status); // Retrieve the selected loan details based on the
-																// status
+	    logger.info("Getting selected loan details for status: {}", status);
 
-		LoanViewModel la = new LoanViewModel();
-		LoanViewModel la1 = la.mapEntityToViewModel(loank); // Map the LoansTypes object to a LoanViewModel object
-		return la1; // Return the LoanViewModel object
+	    LoansTypes loank = loan.getSelectedLoanDetails(status); // Retrieve the selected loan details based on the status
+
+	    LoanViewModel la = new LoanViewModel();
+	    LoanViewModel la1 = la.mapEntityToViewModel(loank); // Map the LoansTypes object to a LoanViewModel object
+
+	    logger.info("Selected loan details retrieved successfully");
+	    return la1; // Return the LoanViewModel object
 	}
 
 	@Override
 	public List<LoanViewModel> getAllLoans() {
-		viewlist5.clear();
-		List<LoansTypes> loank = loan.getAllLoans(); // Retrieve all loans
+	    logger.info("Getting all loans");
 
-		for (LoansTypes l : loank) {
-			LoanViewModel la = new LoanViewModel();
-			LoanViewModel la1 = la.mapEntityToViewModel(l); // Map each LoansTypes object to a LoanViewModel object
-			viewlist5.add(la1); // Add the LoanViewModel object to the viewlist5 list
-		}
+	    viewlist5.clear(); // Clear the existing list
 
-		return viewlist5; // Return the list of LoanViewModel objects
+	    List<LoansTypes> loank = loan.getAllLoans(); // Retrieve all loans
+
+	    for (LoansTypes l : loank) {
+	        LoanViewModel la = new LoanViewModel();
+	        LoanViewModel la1 = la.mapEntityToViewModel(l); // Map each LoansTypes object to a LoanViewModel object
+	        viewlist5.add(la1); // Add the LoanViewModel object to the viewlist5 list
+	    }
+
+	    logger.info("Retrieved {} loans", viewlist5.size());
+	    return viewlist5; // Return the list of LoanViewModel objects
 	}
+
 
 	@Override
 	public AccountTypeView getSelectedAccountDetails(int status) {
-		accountTypes loank = account.getSelectedAccountDetails(status); // Retrieve selected account details
+	    logger.info("Getting selected account details for status: {}", status);
 
-		AccountTypeView la = new AccountTypeView();
-		AccountTypeView la1 = la.mapEntityToViewModel(loank); // Map the account details to an AccountTypeView object
-		return la1; // Return the AccountTypeView object
+	    accountTypes loank = account.getSelectedAccountDetails(status); // Retrieve selected account details
+
+	    AccountTypeView la = new AccountTypeView();
+	    AccountTypeView la1 = la.mapEntityToViewModel(loank); // Map the account details to an AccountTypeView object
+
+	    logger.info("Selected account details retrieved successfully");
+	    return la1; // Return the AccountTypeView object
 	}
+
 
 	@Override
 	public List<AccountTypeView> set11() {
-		viewlist6.clear(); // Clear the existing list
+	    logger.info("Setting account types");
 
-		List<accountTypes> loank = account.getAllAccounts(); // Retrieve all the accounts
+	    viewlist6.clear(); // Clear the existing list
 
-		for (accountTypes l : loank) {
-			AccountTypeView la = new AccountTypeView();
-			AccountTypeView la1 = la.mapEntityToViewModel(l); // Map each account to an AccountTypeView object
-			viewlist6.add(la1); // Add the mapped object to the list
-		}
+	    List<accountTypes> loank = account.getAllAccounts(); // Retrieve all the accounts
 
-		return viewlist6; // Return the list of AccountTypeView objects
+	    for (accountTypes l : loank) {
+	        AccountTypeView la = new AccountTypeView();
+	        AccountTypeView la1 = la.mapEntityToViewModel(l); // Map each account to an AccountTypeView object
+	        viewlist6.add(la1); // Add the mapped object to the list
+	    }
+
+	    logger.info("Account types set. Total account types: {}", viewlist6.size());
+	    return viewlist6; // Return the list of AccountTypeView objects
 	}
+
 
 	@Override
 	public List<Account> checkdate(List<Account> l) {
-		viewlist7.clear(); // Clear the existing list
+	    logger.info("Checking account update date");
 
-		LocalDate currentDate = LocalDate.now(); // Get the current date
-		LocalDate oneMonthBackDate = currentDate.minusMonths(1); // Calculate the date one month ago
+	    viewlist7.clear(); // Clear the existing list
 
-		for (Account a : l) {
-			LocalDate ld = LocalDate.parse(a.getLastUpdate()); // Parse the last update date of the account
+	    LocalDate currentDate = LocalDate.now(); // Get the current date
+	    LocalDate oneMonthBackDate = currentDate.minusMonths(1); // Calculate the date one month ago
 
-			// Compare the last update date with one month ago
-			if (oneMonthBackDate.equals(ld)) {
-				viewlist7.add(a); // Add the account to the filtered list
-			}
-		}
+	    for (Account a : l) {
+	        LocalDate lastUpdateDate = LocalDate.parse(a.getLastUpdate()); // Parse the last update date of the account
 
-		return viewlist7; // Return the filtered list of accounts
+	        // Compare the last update date with one month ago
+	        if (oneMonthBackDate.equals(lastUpdateDate)) {
+	            viewlist7.add(a); // Add the account to the filtered list
+	        }
+	    }
+
+	    logger.info("Filtered accounts based on update date. Total accounts: {}", viewlist7.size());
+	    return viewlist7; // Return the filtered list of accounts
 	}
+
 
 	@Override
 	public List<Account> checkdates(List<Account> l) {
-		viewlist7.clear(); // Clear the existing list
+	    logger.info("Checking account update dates");
 
-		LocalDate currentDate = LocalDate.now(); // Get the current date
-		LocalDate oneMonthBackDate = currentDate.minusMonths(6); // Calculate the date 6 months ago
+	    viewlist7.clear(); // Clear the existing list
 
-		for (Account a : l) {
-			LocalDate ld = LocalDate.parse(a.getLastUpdate()); // Parse the last update date of the account
+	    LocalDate currentDate = LocalDate.now(); // Get the current date
+	    LocalDate sixMonthsAgoDate = currentDate.minusMonths(6); // Calculate the date 6 months ago
 
-			// Compare the last update date with 6 months ago
-			if (oneMonthBackDate.compareTo(ld) > 0) {
-				viewlist7.add(a); // Add the account to the filtered list
-			}
-		}
+	    for (Account a : l) {
+	        LocalDate lastUpdateDate = LocalDate.parse(a.getLastUpdate()); // Parse the last update date of the account
 
-		return viewlist7; // Return the filtered list of accounts
+	        // Compare the last update date with 6 months ago
+	        if (sixMonthsAgoDate.compareTo(lastUpdateDate) > 0 ||sixMonthsAgoDate.compareTo(lastUpdateDate) == 0) {
+	            viewlist7.add(a); // Add the account to the filtered list
+	        }
+	    }
+
+	    logger.info("Filtered accounts based on update dates. Total accounts: {}", viewlist7.size());
+	    return viewlist7; // Return the filtered list of accounts
 	}
+
 
 	@Override
 	public List<Customer> getAllCustomers() {
-		viewlist8.clear(); // Clear the existing list
+	    logger.info("Getting all customers");
 
-		List<Customertrail> loank = cd.getAllCustomers(); // Retrieve all customers from the Customertrail table
+	    viewlist8.clear(); // Clear the existing list
 
-		for (Customertrail l : loank) {
-			Customer la = new Customer();
-			Customer la1 = la.dotheservice1(l); // Convert Customertrail object to Customer object
-			viewlist8.add(la1); // Add the converted Customer object to the list
-		}
+	    List<Customertrail> loank = cd.getAllCustomers(); // Retrieve all customers from the Customertrail table
 
-		return viewlist8; // Return the list of customers
+	    for (Customertrail l : loank) {
+	        Customer la = new Customer();
+	        Customer la1 = la.dotheservice1(l); // Convert Customertrail object to Customer object
+	        viewlist8.add(la1); // Add the converted Customer object to the list
+	    }
+
+	    logger.info("Retrieved {} customers", viewlist8.size());
+	    return viewlist8; // Return the list of customers
 	}
+
 
 	@Override
 	public LoanAccountViewModel getLoanAccountById(int accountnumber) throws AccountNotFound {
-		LoanAccountViewModel la2 = new LoanAccountViewModel();
-		LoanAccount la = ll.getLoanAccountById(accountnumber); // Retrieve LoanAccount by account number
-		if (la == null) {
-			throw new AccountNotFound("Accountnot found");
-		} else {
-			la2.setValuesFromLoanAccount(la); // Convert LoanAccount to LoanAccountViewModel
-		}
-		return la2; // Return the LoanAccountViewModel
+	    logger.info("Getting loan account by account number: {}", accountnumber);
+
+	    LoanAccountViewModel la2 = new LoanAccountViewModel();
+	    LoanAccount la = ll.getLoanAccountById(accountnumber);
+
+	    if (la == null) {
+	        logger.error("Loan account not found for account number: {}", accountnumber);
+	        throw new AccountNotFound("Account not found");
+	    } else {
+	        la2.setValuesFromLoanAccount(la);
+	    }
+
+	    logger.info("Loan account retrieved successfully");
+	    return la2;
 	}
 
 	@Override
 	public AccountViewModel getAccountById(int act) throws AccountNotFound {
-		AccountViewModel a2 = new AccountViewModel();
-		Account a = new Account();
-		a = ac.getAccountById((long) act);
-		// TODO Auto-generated catch block } // Get the Account object by account ID from the ti object
-		if (a == null) {
-			throw new AccountNotFound("Account not founded");
+	    logger.info("Getting account by ID: {}", act);
 
-		} else {
-			AccountViewModel a1 = new AccountViewModel(); // Create a new AccountViewModel object
-			a2 = a1.mapToViewModel(a);
-		} // Map the values from the Account object to the AccountViewModel
-			// object
+	    AccountViewModel a2 = new AccountViewModel();
+	    Account a;
 
-		return a2; // Return the AccountViewModel object
+	    try {
+	        a = ac.getAccountById((long) act);
+	    } catch (Exception e) {
+	        logger.error("Error retrieving account by ID: {}", act);
+	        throw new AccountNotFound("Account not found");
+	    }
+
+	    if (a == null) {
+	        logger.error("Account not found for ID: {}", act);
+	        throw new AccountNotFound("Account not found");
+	    } else {
+	        AccountViewModel a1 = new AccountViewModel();
+	        a2 = a1.mapToViewModel(a);
+	    }
+
+	    logger.info("Account retrieved successfully");
+	    return a2;
 	}
+
 
 	@Override
 	public AccountApplicationViewModel getAccountsappById(int typee) throws ApplicationNotFound {
-		AccountApplicationViewModel la = new AccountApplicationViewModel();
-		AccountApplication list = ac.getAccountsappById((long) typee); // Retrieve the list of AccountApplication
-		if (list == null) {
-			throw new ApplicationNotFound("ApplicationNotFound");
-		} else {
-			// Create a new
-			// AccountApplicationViewModel object
-			la.setEntityModelValues(list); // Set the values from the AccountApplication object to the
-		} // AccountApplicationViewModel object
+	    logger.info("Getting account application by ID: {}", typee);
 
-		return la; // Return the list of AccountApplicationViewModel objects
+	    AccountApplicationViewModel la = new AccountApplicationViewModel();
+	    AccountApplication list = ac.getAccountsappById((long) typee); // Retrieve the list of AccountApplication
+
+	    if (list == null) {
+	        logger.error("Account application not found for ID: {}", typee);
+	        throw new ApplicationNotFound("ApplicationNotFound");
+	    } else {
+	        la.setEntityModelValues(list); // Set the values from the AccountApplication object to the AccountApplicationViewModel
+	    }
+
+	    logger.info("Account application retrieved successfully");
+	    return la; // Return the AccountApplicationViewModel object
 	}
+
 
 	@Override
 	public LoanApplicationViewModel getLoanApplicationById(int typee) throws ApplicationNotFound {
-		LoanApplicationViewModel la = new LoanApplicationViewModel();
-		LoanApplication list = ll.getLoanApplicationById((long)typee); // Retrieve the list of LoanApplication
-																	// objects by value
-		if (list == null) {
-			throw new ApplicationNotFound("Application not found");
-		} else { 
-			// object
-			Customertrail c=cd.getCustomerById(list.getCustId().getId());
+	    logger.info("Getting loan application by ID: {}", typee);
 
-			la.copyFromEntity(list,c); // Copy the values from the LoanApplication object to the LoanApplicationViewModel
-		} // object
-		return la; // Add the LoanApplicationViewModel object to the viewlist1 list
-		// Return the list of LoanApplicationViewModel objects
+	    LoanApplicationViewModel la = new LoanApplicationViewModel();
+	    LoanApplication list = ll.getLoanApplicationById((long) typee); // Retrieve the list of LoanApplication objects by value
 
+	    if (list == null) {
+	        logger.error("Loan application not found for ID: {}", typee);
+	        throw new ApplicationNotFound("Application not found");
+	    } else {
+	        Customertrail c = cd.getCustomerById(list.getCustId().getId());
+	        logger.debug("Retrieved customer details for loan application");
+
+	        la.copyFromEntity(list, c); // Copy the values from the LoanApplication object to the LoanApplicationViewModel
+	    }
+
+	    logger.info("Loan application retrieved successfully");
+	    return la; // Return the LoanApplicationViewModel object
 	}
+
 
 }

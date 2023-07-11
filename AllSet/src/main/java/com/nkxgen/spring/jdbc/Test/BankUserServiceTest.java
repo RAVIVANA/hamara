@@ -1,5 +1,7 @@
 package com.nkxgen.spring.jdbc.Test;
 import com.nkxgen.spring.jdbc.Dao.BankUserService;
+import org.testng.annotations.*;
+
 import com.nkxgen.spring.jdbc.DaoInterfaces.BankUserInterface;
 import com.nkxgen.spring.jdbc.model.BankUser;
 import org.mockito.InjectMocks;
@@ -18,6 +20,7 @@ import java.util.List;
 
 import static org.mockito.Mockito.*;
 import static org.testng.Assert.assertEquals;
+
 
 public class BankUserServiceTest {
 

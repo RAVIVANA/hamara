@@ -2,6 +2,8 @@ package com.nkxgen.spring.jdbc.controller;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,148 +26,111 @@ import com.nkxgen.spring.jdbc.model.cashChest;
 @Controller
 public class masterController {
 
+	private final AccountTypeInterface account;
+	private final ViewInterface v;
+	private final Accounts ac1;
+	private final LoanTypesInterface loan;
+
 	@Autowired
-	private AccountTypeInterface account;
-	@Autowired
-	ViewInterface v;
-	@Autowired
-	private Accounts ac1;
-	@Autowired
-	private LoanTypesInterface loan;
+	public masterController(AccountTypeInterface account, ViewInterface v, Accounts ac1, LoanTypesInterface loan) {
+	    this.account = account;
+	    this.v = v;
+	    this.ac1 = ac1;
+	    this.loan = loan;
+	}
+
+	
+	Logger LOGGER = LoggerFactory.getLogger(masterController.class);
+
 
 	@RequestMapping(value = "/accountDataSave", method = RequestMethod.POST)
 	public String accountApplicationSave(AccountTypeInput accountTypes, Model model) {
-		// Create a new instance of accountTypes
-		accountTypes at = new accountTypes();
-
-		// Set the input model values of the accountTypes using the accountTypesInput object
-		at.setInputModelValues(accountTypes);
-
-		// Save the accountTypes to the database using the account.saveAccountTypes() method
-		account.saveAccountTypes(at);
-
-		return "account-master-entry"; // Return the view name "account_master_entry" to render the page
+	    LOGGER.info("Handling POST request for /accountDataSave");
+	    accountTypes at = new accountTypes();
+	    at.setInputModelValues(accountTypes);
+	    account.saveAccountTypes(at);
+	    return "account-master-entry";
 	}
 
 	@RequestMapping(value = "/getAccountTypes", method = RequestMethod.GET)
 	public String getAccounts(Model model) {
-		// Get the list of AccountTypeView objects
-		List<AccountTypeView> list = v.set11();
-
-		for (AccountTypeView ll : list) {
-			System.out.println(ll.getAccountType());
-		}
-
-		// Add the list of AccountTypeView objects to the model attribute "accountTypes"
-		model.addAttribute("accountTypes", list);
-
-		return "get-accounts"; // Return the view name "getaccounts" to render the page
+	    LOGGER.info("Handling GET request for /getAccountTypes");
+	    List<AccountTypeView> list = v.set11();
+	    for (AccountTypeView ll : list) {
+	        LOGGER.info("Account Type: {}", ll.getAccountType());
+	    }
+	    model.addAttribute("accountTypes", list);
+	    return "get-accounts";
 	}
 
 	@RequestMapping(value = "/getSelectedAccountDetails", method = RequestMethod.GET)
 	public String getSelectedAccountDetails(@RequestParam("accountType") int accountType, Model model) {
-		// Get the selected account details based on the account type
-		AccountTypeView accountT = v.getSelectedAccountDetails(accountType);
-
-		// Print the account type and description form
-		System.out.println("the iid value is :" + accountT.getAccountType());
-		System.out.println("the iid value is :" + accountT.getDescriptionForm());
-
-		// Add the accountT object to the model attribute "accounts"
-		model.addAttribute("accounts", accountT);
-
-		return "account-details"; // Return the view name "accountdetails" to render the page
+	    LOGGER.info("Handling GET request for /getSelectedAccountDetails");
+	    AccountTypeView accountT = v.getSelectedAccountDetails(accountType);
+	    LOGGER.info("Account Type: {}", accountT.getAccountType());
+	    LOGGER.info("Description Form: {}", accountT.getDescriptionForm());
+	    model.addAttribute("accounts", accountT);
+	    return "account-details";
 	}
 
 	@RequestMapping(value = "/loanDataSave", method = RequestMethod.POST)
 	public String loanInfoSaveToDb(LoanTypeInput loans, Model model) {
-		// Create a new instance of LoansTypes
-		LoansTypes lt = new LoansTypes();
-
-		// Set the input model values of the LoansTypes using the LoanTypeInput object
-		lt.setInputModelValues(loans);
-
-		System.out.println("hello"); // Print "hello"
-
-		// Save the LoansTypes to the database using the loan.save() method
-		loan.save(lt);
-
-		return "loan-master-entry"; // Return the view name "loan_master_entry" to render the page
+	    LOGGER.info("Handling POST request for /loanDataSave");
+	    LoansTypes lt = new LoansTypes();
+	    lt.setInputModelValues(loans);
+	    LOGGER.info("Hello");
+	    loan.save(lt);
+	    return "loan-master-entry";
 	}
 
 	@RequestMapping(value = "/getLoanTypes", method = RequestMethod.GET)
 	public String getLoans(Model model) {
-		// Get all loan types
-		List<LoanViewModel> list = v.getAllLoans();
-
-		// Print the loan type for each loan in the list
-		for (LoanViewModel ll : list) {
-			System.out.println(ll.getLoanType());
-		}
-
-		// Add the list of loans to the model attribute "loans"
-		model.addAttribute("loans", list);
-
-		return "get-loans"; // Return the view name "getloans" to render the page
+	    LOGGER.info("Handling GET request for /getLoanTypes");
+	    List<LoanViewModel> list = v.getAllLoans();
+	    for (LoanViewModel ll : list) {
+	        LOGGER.info("Loan Type: {}", ll.getLoanType());
+	    }
+	    model.addAttribute("loans", list);
+	    return "get-loans";
 	}
 
 	@RequestMapping(value = "/getSelectedLoanDetails", method = RequestMethod.GET)
 	public String getSelectedLoanDetails(@RequestParam("loanType") int loanType, Model model) {
-		// Print the value of loanType
-		System.out.println("the value is" + loanType);
-
-		// Get the selected loan details based on the loanType
-		LoanViewModel loank = v.getSelectedLoanDetails(loanType);
-
-		// Print the loan ID
-		System.out.println("the iid value is :" + loank.getLoanId());
-
-		// Add the loank object to the model attribute "loans"
-		model.addAttribute("loans", loank);
-
-		return "loan-details"; // Return the view name "loandetails" to render the page
+	    LOGGER.info("Handling GET request for /getSelectedLoanDetails");
+	    LOGGER.info("The value is: {}", loanType);
+	    LoanViewModel loank = v.getSelectedLoanDetails(loanType);
+	    LOGGER.info("The loan ID is: {}", loank.getLoanId());
+	    model.addAttribute("loans", loank);
+	    return "loan-details";
 	}
-
-	// =================================================================================================================
 
 	@RequestMapping("/masterLoan")
 	public String LoanMasterEntry(Model model) {
-		return "loan_master_entry";
+	    LOGGER.info("Handling request for /masterLoan");
+	    return "loan_master_entry";
 	}
 
-	// here @RequestMapping annotation maps the /master_account URL to the masterAccount method, which returns the view
-	// "account_master_entry"
 	@RequestMapping("/masterAccount")
 	public String masterAccount(Model model) {
-		return "account-master-entry";
+	    LOGGER.info("Handling request for /masterAccount");
+	    return "account-master-entry";
 	}
 
 	@RequestMapping(value = "/cashChest", method = RequestMethod.GET)
 	public String money(Model model) {
-		// Retrieve the cash chest information
-		cashChest cashchest = account.getallamount();
-
-		// Set the cash chest in the ac1 object
-		ac1.setcashChest(cashchest);
-
-		// Add the cash chest object to the model attribute "cashChest"
-		model.addAttribute("cashChest", cashchest);
-
-		return "cash-chest"; // Return the view name "cashchest" to render the page
+	    LOGGER.info("Handling GET request for /cashChest");
+	    cashChest cashchest = account.getallamount();
+	    ac1.setcashChest(cashchest);
+	    model.addAttribute("cashChest", cashchest);
+	    return "cash-chest";
 	}
 
 	@RequestMapping(value = "profitLoss", method = RequestMethod.GET)
 	public String Profitloss(Model model) {
-		// Retrieve the cash chest information
-		cashChest cashchest = account.getallamount();
-
-		// Set the cash chest in the ac1 object
-		ac1.setcashChest(cashchest);
-
-		// Add the cash chest object to the model attribute "cashChest"
-		model.addAttribute("cashChest", cashchest);
-
-		return "profitLoss";
+	    LOGGER.info("Handling GET request for /profitLoss");
+	    cashChest cashchest = account.getallamount();
+	    ac1.setcashChest(cashchest);
+	    model.addAttribute("cashChest", cashchest);
+	    return "profitLoss";
 	}
-
 }

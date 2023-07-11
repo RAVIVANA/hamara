@@ -6,6 +6,8 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.ResponseEntity;
@@ -32,6 +34,8 @@ public class UserController {
 	private BankUserInterface bankUserService;
 	private MailSender mailSender;
 	private ViewInterface v;
+	Logger LOGGER = LoggerFactory.getLogger(UserController.class);
+
 
 	@Autowired
 	public UserController(BankUserInterface bankUserService, ApplicationEventPublisher applicationEventPublisher,
@@ -44,6 +48,7 @@ public class UserController {
 
 	@RequestMapping(value = "/addUser", method = RequestMethod.POST)
 	public String addUser() {
+		LOGGER.info("Add User form requested");
 		return "add-user";
 	}
 
@@ -53,17 +58,12 @@ public class UserController {
 		BankUser user = new BankUser();
 		user.setInputModelValues(bankUser); // Set the input model values from the bankUser object
 		user = bankUserService.saveBankUser(user); // Save the bank user details
-		System.out.println("Submitted Form" + user); // Print a message indicating that the form has been submitted
+		LOGGER.info("Form submitted: {}", user);
 		HttpSession session = request.getSession();
 		String username = (String) session.getAttribute("username");
 		mailSender.userAdded(user, username);// Get the username from the session attribute
-		applicationEventPublisher.publishEvent(new BankUserCreationEvent("Bank User Created ", username)); // Publish a
-																											// Bank User
-																											// Creation
-																											// event
-		return ResponseEntity.ok("User Added successfully and Mail is sent"); // Return a response entity indicating
-																				// successful data
-		// submission
+		applicationEventPublisher.publishEvent(new BankUserCreationEvent("Bank User Created ", username)); // Publish a Bank User Creation event
+		return ResponseEntity.ok("User Added successfully and Mail is sent"); // Return a response entity indicating successful data submission
 	}
 
 	@RequestMapping(value = "/mainUser", method = RequestMethod.GET)
@@ -71,6 +71,7 @@ public class UserController {
 
 		List<BankUserViewModel> bankUsers = v.getAllBankUsers(); // Retrieve all bank users from the view model
 		model.addAttribute("bankUsers", bankUsers); // Add the bank users to the model attribute
+		LOGGER.info("Retrieved all bank users");
 		return "bank-users"; // Return the view name "mainUser"
 	}
 
@@ -78,16 +79,13 @@ public class UserController {
 	@ResponseBody
 	public String saveUserData(BankUserInput bankUser, HttpServletRequest request) {
 		BankUser b = new BankUser(); // Create a new BankUser object
-		System.out.println(bankUser.getBusr_id()); // Print the value of busr_id from the bankUser input
+		LOGGER.info("busr_id value from input: {}", bankUser.getBusr_id());
 		b.setInputModelValues(bankUser); // Set the input model values on the BankUser object
-		System.out.println(b.getBusr_id()); // Print the value of busr_id from the BankUser object
+		LOGGER.info("busr_id value from BankUser object: {}", b.getBusr_id());
 		bankUserService.saveUser(b); // Save the BankUser object using the bankUserService
 		HttpSession session = request.getSession();
 		String username = (String) session.getAttribute("username"); // Get the username from the session
-		applicationEventPublisher
-				.publishEvent(new BankUserDetailsModificationEvent("Bank User Details Modified", username)); // Publish
-																												// a
-																												// BankUserDetailsModificationEvent
+		applicationEventPublisher.publishEvent(new BankUserDetailsModificationEvent("Bank User Details Modified", username)); // Publish a BankUserDetailsModificationEvent
 		return "User data updated successfully"; // Return a success message
 	}
 
@@ -104,6 +102,7 @@ public class UserController {
 		}
 
 		model.addAttribute("bankUsers", bankUsers); // Add the bankUsers list to the model
+		LOGGER.info("Retrieved bank users by designation");
 		return "bank-users"; // Return the name of the HTML page as the view
 	}
 

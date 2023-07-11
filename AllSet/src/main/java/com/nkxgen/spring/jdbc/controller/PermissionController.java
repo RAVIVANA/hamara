@@ -4,6 +4,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -14,38 +16,39 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.nkxgen.spring.jdbc.Dao.PermissionsDAO;
 import com.nkxgen.spring.jdbc.DaoInterfaces.BankUserInterface;
+import com.nkxgen.spring.jdbc.DaoInterfaces.PermissionsDAOInterface;
 import com.nkxgen.spring.jdbc.model.BankUser;
 import com.nkxgen.spring.jdbc.model.Permission;
 
 @Controller
 
 public class PermissionController {
+ 
+	Logger LOGGER = LoggerFactory.getLogger(PermissionController.class);
 
-	private final PermissionsDAO permissionsDAO;
+	private final PermissionsDAOInterface permissionsDAO;
 	@Autowired
 	private BankUserInterface bankUserService;
 
 	@Autowired
-	public PermissionController(PermissionsDAO permissionsDAO) {
+	public PermissionController(PermissionsDAOInterface permissionsDAO,BankUserInterface bankUserService) {
 		this.permissionsDAO = permissionsDAO;
+		this.bankUserService=bankUserService;
 	}
 
 	@RequestMapping(value = "/permission", method = RequestMethod.GET)
 	public String permission(Model model, HttpServletRequest request, HttpServletResponse response) {
-		HttpSession session = request.getSession();
-
-		// Get the username attribute from the session
-		String username = (String) session.getAttribute("username");
-		Permission p = permissionsDAO.getPermissions(Long.parseLong(username));
-		BankUser b = bankUserService.getBankUserById(Long.parseLong(username));
-
-		if (b.getBusr_desg().equals("Manager")) {
-			model.addAttribute("permissions", p);
-
-			return "permission-management";
-		} else {
-			return "not-permitted";
-		}
+	    LOGGER.info("Handling GET request for /permission");
+	    HttpSession session = request.getSession();
+	    String username = (String) session.getAttribute("username");
+	    Permission p = permissionsDAO.getPermissions(Long.parseLong(username));
+	    BankUser b = bankUserService.getBankUserById(Long.parseLong(username));
+	    if (b.getBusr_desg().equals("Manager")) {
+	        model.addAttribute("permissions", p);
+	        return "permission-management";
+	    } else {
+	        return "not-permitted";
+	    }
 	}
 
 	// @GetMapping("/permissionurl")
@@ -55,14 +58,16 @@ public class PermissionController {
 	// return "permissions";
 	//
 	// }
-	@RequestMapping(value = "/permissionurl", method = RequestMethod.POST)
-	@ResponseBody
-	public ResponseEntity<String> idpermission(Permission permissions) {
-		// Assuming customer1 is an instance of your CustomerRepository or service
-		System.out.println(permissions);
-		permissionsDAO.updatePermissions(permissions);
-		return ResponseEntity.ok("Customer data updated successfully");
-	}
+
+@RequestMapping(value = "/permissionurl", method = RequestMethod.POST)
+@ResponseBody
+public ResponseEntity<String> idpermission(Permission permissions) {
+    LOGGER.info("Handling POST request for /permissionurl");
+    System.out.println(permissions);
+    permissionsDAO.updatePermissions(permissions);
+    return ResponseEntity.ok("Customer data updated successfully");
+}
+
 
 	// @RequestMapping(value = "/checkUserAccess", method = RequestMethod.POST)
 	// public void checkUser(@RequestParam("id") int id, Model model) {
@@ -72,13 +77,13 @@ public class PermissionController {
 	//
 	// }
 
-	@RequestMapping(value = "/allpermissionurl", method = RequestMethod.POST)
-	@ResponseBody
-	public ResponseEntity<String> allpermission(Permission permissions) {
-		// Assuming customer1 is an instance of your CustomerRepository or service
-		System.out.println(permissions);
-		permissionsDAO.allUpdatePermissions(permissions);
-		return ResponseEntity.ok("Customer data updated successfully");
-	}
+@RequestMapping(value = "/allpermissionurl", method = RequestMethod.POST)
+@ResponseBody
+public ResponseEntity<String> allpermission(Permission permissions) {
+    LOGGER.info("Handling POST request for /allpermissionurl");
+    System.out.println(permissions);
+    permissionsDAO.allUpdatePermissions(permissions);
+    return ResponseEntity.ok("Customer data updated successfully");
+}
 
 }

@@ -71,6 +71,7 @@
     <bean id="ac1" class="com.nkxgen.spring.jdbc.Bal.Intrestcaluclation" autowire="byName" />
     <bean id="interestCalDao" class="com.nkxgen.spring.jdbc.Dao.AccountProcessingDAOimp" autowire="byName" />
     <bean id="loginFilter" class="com.nkxgen.spring.jdbc.filter.LoginFilter" />
+     <bean id="permissionsDAO" class="com.nkxgen.spring.jdbc.Dao.PermissionsDAO" />
     
     <mvc:resources mapping="/js/**" location="/WEB-INF/js/" />
     <mvc:resources mapping="/css/**" location="/WEB-INF/css/" />
