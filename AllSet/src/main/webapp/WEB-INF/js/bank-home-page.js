@@ -10,12 +10,7 @@ $(document).ready(function() {
 			url: 'graphs',
 			type: 'GET',
 			success: function(response) {
-				$("#spinner").show();
-
-				// Set a timer to hide the spinner after 10 seconds
-				setTimeout(function() {
-					$("#spinner").hide();
-				}, 10000);
+				
 				mainContent.html(response);
 			},
 			error: function() {
