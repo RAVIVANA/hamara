@@ -19,7 +19,7 @@
 				<td><label for="cust_id">Customer ID:</label></td>
 				<td><input type="text" id="apcust_id" name="apcust_id" required></td>
 				<td><label for="apdate">Application Date:</label></td>
-				<td><input type="date" id="apdate" name="apdate" required></td>
+				<td><input type="date" id="apdate" name="apdate" min="" required></td>
 				<td><label for="lnty_id">Select an Account Type:</label></td>
 				<td>
 					<select id="lnty_id" name="lnty_id" value="selectloan">
@@ -47,18 +47,18 @@
 			<tr>
 				<td><label for="createdby">Created By:</label></td>
 				<td><input type="text" id="createdby" name="createdby" required></td>
-				<td><label for="createddate">Created Date:</label></td>
-				<td><input type="date" id="createddate" name="createddate" required></td>
+				 <td><label for="acap_processBy">createdate:</label></td>
+           <td><input type="date" id="createddate" name="acap_createddate" min="" /></td>
 				<td><label for="processedby">Processed By:</label></td>
 				<td><input type="text" id="processedby" name="processedby" required></td>
 			</tr>
 			<tr>
-				<td><label for="processdate">Process Date:</label></td>
-				<td><input type="date" id="processdate" name="processdate" required></td>
+			 <td><label for="processdate">Process Date:</label></td>
+           <td><input type="date" id="processdate" name="processdate" min="" /></td>
 				<td><label for="processedstatus">Processed Status:</label></td>
 				<td><input type="text" id="processedstatus" name="processedstatus" required></td>
 				<td><label for="luudate">Last Updated Date:</label></td>
-				<td><input type="date" id="luudate" name="luudate" required></td>
+				<td><input type="date" id="luudate" name="luudate" min="" required></td>
 				<td></td>
 			</tr>
 			<tr>
@@ -108,19 +108,15 @@
 					<td><input type="text" id="cust_capincode"
 						name="cust_capincode" class="form-control"></td>
 
-					<td>Customer Date of Birth:</td>
-					<td><input type="date" id="cust_dob" name="cust_dob"
-						class="form-control"></td>
+					<td><label for="cust_dob">Customer Date of Birth:</label></td>
+                 <td><input type="date" id="cust_dob" name="cust_dob" oninput="validate()"></td>
 				</tr>
 				<tr>
-					<td>Customer Mobile 1:</td>
-					<td><input type="text" id="cust_mobile1" name="cust_mobile1"
-						class="form-control"></td>
-
-					<td>Customer Mobile 2:</td>
-					<td><input type="text" id="cust_mobile2" name="cust_mobile2"
-						class="form-control"></td>
-				</tr>
+                <td><label for="cust_mobile1">Customer Mobile 1:</label></td>
+                <td><input type="text" id="cust_mobile1" name="cust_mobile1" pattern="[0-9]{10}" required></td>
+                <td><label for="cust_mobile2">Customer Mobile 2:</label></td>
+                <td><input type="text" id="cust_mobile2" name="cust_mobile2" pattern="[0-9]{10}" required></td>
+                </tr>
 				<tr>
 					<td>Customer Residence Phone:</td>
 					<td><input type="text" id="cust_rphone" name="cust_rphone"
@@ -141,7 +137,28 @@
 			<button type="button" onclick="submit2()">Submit</button>
 		</form>
 	</div>
+<script>
+	  function validate() {
+	    var dobInput = document.getElementById("cust_dob").value;
+	    var dob = new Date(dobInput);
+	    var currentDate = new Date();
+	    var eighteenYearsAgo = new Date();
+	    eighteenYearsAgo.setFullYear(currentDate.getFullYear() - 18);
 
+	    if (dob > eighteenYearsAgo) {
+	      alert("You must be at least 18 years old.");
+	      return false;
+	    }
+
+	    return true;
+	  }
+	  var currentDate = new Date().toISOString().split("T")[0];
+	  document.getElementById("createddate").setAttribute("min", currentDate);
+	  document.getElementById("processdate").setAttribute("min", currentDate);
+	  document.getElementById("luudate").setAttribute("min", currentDate);
+	  document.getElementById("apdate").setAttribute("min", currentDate);
+
+	</script>
 	<script
 		src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 

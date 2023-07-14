@@ -54,12 +54,11 @@
 						name="acap_createdby"></td>
 				</tr>
 				<tr>
-					<td><label for="acap_apdate">Application Date:</label></td>
-					<td><input type="date" id="acap_apdate" name="acap_apdate">
-					</td>
-					<td><label for="acap_createddate">Created Date:</label></td>
-					<td><input type="date" id="acap_createddate"
-						name="acap_createddate"></td>
+			<td><label for="acap_processBy">applicationdate:</label></td>
+				
+           <td><input type="date" id="acap_apdate" name="acap_apdate" min="" /></td>
+           <td><label for="acap_processBy">createdate:</label></td>
+           <td><input type="date" id="acap_createddate" name="acap_createddate" min="" /></td>
 				</tr>
 				<tr>
 					<td><label for="acap_processBy">Process by:</label></td>
@@ -115,17 +114,16 @@
 					<td><input type="text" id="cust_capincode"
 						name="cust_capincode"></td>
 					<td><label for="cust_dob">Customer Date of Birth:</label></td>
-					<td><input type="date" id="cust_dob" name="cust_dob">
+                 <td><input type="date" id="cust_dob" name="cust_dob" oninput="validate()" ></td>
 					</td>
 				</tr>
 				<tr>
-					<td><label for="cust_mobile1">Customer Mobile 1:</label></td>
-					<td><input type="text" id="cust_mobile1" name="cust_mobile1">
-					</td>
-					<td><label for="cust_mobile2">Customer Mobile 2:</label></td>
-					<td><input type="text" id="cust_mobile2" name="cust_mobile2">
-					</td>
-				</tr>
+                <td><label for="cust_mobile1">Customer Mobile 1:</label></td>
+                <td><input type="text" id="cust_mobile1" name="cust_mobile1" pattern="[0-9]{10}" required></td>
+                <td><label for="cust_mobile2">Customer Mobile 2:</label></td>
+                <td><input type="text" id="cust_mobile2" name="cust_mobile2" pattern="[0-9]{10}" required></td>
+                </tr>
+
 				<tr>
 					<td><label for="cust_rphone">Customer Residence Phone:</label>
 					</td>
@@ -143,7 +141,27 @@
 
 	</div>
 
+	
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script>
+	  function validate() {
+	    var dobInput = document.getElementById("cust_dob").value;
+	    var dob = new Date(dobInput);
+	    var currentDate = new Date();
+	    var eighteenYearsAgo = new Date();
+	    eighteenYearsAgo.setFullYear(currentDate.getFullYear() - 18);
+
+	    if (dob > eighteenYearsAgo) {
+	      alert("You must be at least 18 years old.");
+	      return false;
+	    }
+
+	    return true;
+	  }
+	  var currentDate = new Date().toISOString().split("T")[0];
+	  document.getElementById("acap_apdate").setAttribute("min", currentDate);
+	  document.getElementById("acap_createddate").setAttribute("min", currentDate);
+	</script>
 	<script
 		src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
